@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./built",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "removeComments": true
+  },
+  "include": [
+    "./src/core/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+]
+}
