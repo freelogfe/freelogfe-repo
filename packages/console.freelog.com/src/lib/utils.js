@@ -136,6 +136,34 @@ function versionDescendingOrder(vIt1, vIt2) {
 }
 
 
+export function togglePolicy(policies, policy, type) {
+  toggleArrayItem(type, policies, policy, (i1, i2) => i1.policyId === i2.policyId)
+}
+
+function toggleArrayItem(type, arr, target, verify) {
+  var index = -1
+  for(let i = 0; i < arr.length; i++) {
+    if(verify(target, arr[i])) {
+      index = i
+      break
+    }
+  }
+  switch (type) {
+    case 'add': {
+      if(index === -1) {
+        arr.push(target)
+      }
+      break
+    }
+    case 'delete': {
+      if(index !== -1) {
+        arr.splice(index, 1)
+      }
+    }
+    default: {}
+  }
+}
+
 export const checkResponse = (res) => {
   const {ret, errcode} = res.data
   return ret === 0 && errcode === 0

@@ -1,36 +1,100 @@
 {
   "zh-CN": {
-    "upcast": "上抛",
-    "signContractBtnText": "签约",
-    "applyBtnText": "应用",
-    "layAsideBtnText": "搁置",
-    "offline": "已下线",
-    "signedContracts": "历史合约",
-    "contractID": "合同ID",
-    "signingDate": "签约时间",
-    "partyA": "授权方",
-    "partyB": "被授权方",
-    "policyStatus": [ "已应用", "已搁置" ],
-    "signStatus": [ "已签约" ],
-    "contractStatus": [ "执行中", "生效中", "合同终止", "上抛" ],
-    "tips": [ "该发行已上抛", "以下策略可进行新的签约", "此发行存在历史签约，可直接使用" ],
-    "messages": [ "" ]
+    "release": "发行",
+    "releaseID": "发行ID",
+    "policiesComparison": "策略对比",
+    "selectionPlaceholder": "请选择签约节点",
+    "noDesc": "暂无描述",
+    "warings": [
+      "当前发行未上线，无可用策略！",
+      "当前发行的上抛发行未上线，不可用！",
+      "你还没有创建节点；"
+    ],
+    "messages": [
+      "请先选择签约的节点", 
+      "未选择策略！", 
+      "签约成功！", 
+      "授权签约成功；即将跳转至节点发行管理页！"
+    ],
+    "titles": [ "添加节点",  "当前发行", "基础上抛", "资源描述", "签约确认" ],
+    "iconTexts": [ "上抛", "已签约" ],
+    "steps": [
+      "步骤1：选择签约节点",
+      "步骤2：选择授权策略"
+    ],
+    "linkBtns": {
+      "editRelease": "前去编辑",
+      "createNode": "前去创建"
+    },
+    "btns": {
+      "cancel": "取消",
+      "sign": "签约",
+      "getAuth": "获取授权"
+    },
+    "signPolicyBox": {
+      "titles": [ "已签约至", "历史合约" ],
+      "signState": "作为被授权方，如果您满足且接受授权方的授权策略，则可以选择和授权方签约。授权双方之间存在一个按照未来发生的事件改变资源授权状态的机制，称之为合约。",
+      "signRuleState1": "合约的复用：授权方和被授权方的合约在同一个授权方（节点或发行）范围内可以复用。",
+      "signRuleState2": "合约的启用和停用：如果您和授权方的多个授权策略签订了多个合约，则在管理合约时，至少要有一个合约是启用状态。您可以选择启用或者停用其中某一个或某几个合约，在授权链中，系统仅会验证启用合约的授权状态。",
+      "tips": [ 
+        "存在历史签约，可复用此合约", 
+        "以下策略可进行新的签约" 
+      ],
+      "contractID": "合同ID",
+      "signDate": "签约时间"
+    },
+    "signConfirm": {
+      "title1": "选择的节点",
+      "title2": "策略确认"
+    }
   },
   "en": {
-    "upcast": "Upcast",
-    "signContractBtnText": "Sign contract",
-    "applyBtnText": "apply",
-    "layAsideBtnText": "lay aside",
-    "offline": "Already offline",
-    "signedContracts": "Signed contracts",
-    "contractID": "Contract ID",
-    "signingDate": "Signing Date",
-    "partyA": "Party A",
-    "partyB": "Party B",
-    "policyStatus": [ "Already applied", "Already lay aside" ],
-    "signStatus": [ "Already signed" ],
-    "contractStatus": [ "Executing", "In effect", "Termination of contract", "Upcast" ],
-    "tips": [ "The release has been upcasted", "The following policies are available for new signings", "This issue has a historical contract and can be used directly." ],
-    "messages": [ "" ]
+    "release": "Release ",
+    "releaseID": "Release ID",
+    "policiesComparison": "Policies comparison",
+    "selectionPlaceholder": "Please select a contract node",
+    "noDesc": "No description",
+    "warings": [
+      "The current release is not online, no strategy is available!",
+      "The current upsell issue is not online and is not available!",
+      "You have not created a node;"
+    ],
+    "messages": [
+      "Please select the contracted node first",
+      " have not chosen a policy!",
+      "Successful signing!",
+      "Successful authorization signing; will soon jump to the node distribution management page!"
+    ],
+    "titles": [ "Add node", "Current release", "Put on basis", "Resource description", "Confirmation" ],
+    "iconTexts": [ "Upsell", "Signed" ],
+    "steps": [
+      "Step 1: Select a contract node",
+      "Step 2: Select Authorization Policy"
+    ],
+    "linkBtns": {
+      "editRelease": "Go to edit",
+      "createNode": "Go to create"
+    },
+    "btns": {
+      "cancel": "cancel",
+      "sign": "Sign a contract",
+      "getAuth": "Get authorized"
+    },
+    "signPolicyBox": {
+      "titles": [ "Signed to ", "Historical contract" ],
+      "signState": "As an authorized party, if you meet and accept the authorized party's authorization policy, you can choose to sign up with the authorized party. There is a mechanism between authorized parties to change the status of resource authorization according to future events, which is called a contract.",
+      "signRuleState1": "Reuse of contracts: Contracts of authorized parties and authorized parties can be reused within the same authorized party (node or issue).",
+      "signRuleState2": "Activation and deactivation of contracts: If you have multiple contracts with multiple authorization policies of the licensor, at least one contract must be active when managing the contract. You can choose to enable or disable one or more of these contracts. In the authorization chain, the system will only verify the authorization status of the enabled contracts.",
+      "tips": [ 
+        "This issue has a historical contract and can be used directly.", 
+        "The following policies are available for new signings" 
+      ],
+      "contractID": "Contract ID",
+      "signDate": "Sign Date"
+    },
+    "signConfirm": {
+      "title1": "Selected nodes",
+      "title2": "Policy confirmation"
+    }
   }
 }

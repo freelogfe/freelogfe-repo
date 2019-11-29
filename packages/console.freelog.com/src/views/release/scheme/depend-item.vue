@@ -22,7 +22,7 @@
         <template v-if="!release.isUpcasted">
           <div 
             class="r-p-item" 
-            :class="{'disabled': p.contractId && p.isEnbledContract === false}" 
+            :class="{'disabled': p.contractId && p.isEnbledContract === false, 'isHasContract': !!p.contractId }" 
             v-for="(p, index) in selectedPolicies" 
             :key="'s-policy-'+index"
           >
@@ -69,7 +69,7 @@
     }
 
     .r-item-cont {
-      padding: 10px 0 10px 10px; overflow: hidden;
+      padding: 10px 0; overflow: hidden;
     }
 
     .r-name, .r-info, .r-policies { padding-left: 20px; }
@@ -121,6 +121,10 @@
         display: inline-block;
         margin: 0 8px 8px 0; padding: 2px 10px; border: 1px solid #A5D1FF; border-radius: 2px;
         background-color: #E9F4FF; color: #248fff;
+        &.isHasContract {
+          border-color: #E7E7E7;
+          background-color: #FAFBFB; color: #999;
+        }
         .contract-status {
           display: inline-block; width: 8px; height: 8px; margin-left: 2px; border-radius: 50%;
           &.status-2 { background-color: #FBB726; }

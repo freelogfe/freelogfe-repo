@@ -5,7 +5,6 @@
             :style="styleObject"
             class="node-manager__aside"
         >
-
             <NodeHeader
                 :nodeName="nodeInfo.name"
                 :nodeHref="nodeInfo.origin"
@@ -13,7 +12,7 @@
                 :enterNode="`/node/test-manager/${$route.params.nodeId}`"
                 btnText="进入测试节点管理"
             />
-
+ 
             <div class="node-manager__aside__navs">
                 <a
                     @click="switchIsPageStyle(false)"
@@ -50,13 +49,13 @@
                     v-model="filterSearch"
                     debounce="1000"
                 >
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    <i slot="prefix" class="el-input__icon el-icon-search"/>
                     <i
                         @click="filterSearch = ''"
                         v-show="filterSearch && filterSearch.length > 0"
                         slot="suffix"
                         class="el-input__icon el-icon-circle-close"
-                    ></i>
+                    />
                 </el-input>
             </div>
 
@@ -248,11 +247,16 @@
                             <span
                                 v-if="scope.row.isOnline === 1"
                                 class="node-manager__main__table__state__text--online"
-                            >{{$t('online')}}</span>
+                            >
+                                {{scope.row.releaseInfo.resourceType === 'page_build' ? '已激活' : $t('online')}}
+                            </span>
                             <span
                                 v-if="scope.row.isOnline === 0"
                                 class="node-manager__main__table__state__text--no-online"
-                            >{{$t('noOnline')}}</span>
+                            >
+<!--                                {{$t('noOnline')}}-->
+                                 {{scope.row.releaseInfo.resourceType === 'page_build' ? '未激活' : $t('noOnline')}}
+                            </span>
                             <template v-if="!scope.row.isAuth">
                                 <el-popover
                                     placement="top"
@@ -263,7 +267,7 @@
                                     <i
                                         slot="reference"
                                         class="el-icon-warning"
-                                    ></i>
+                                    />
                                 </el-popover>
                             </template>
                         </div>
@@ -277,39 +281,50 @@
                 >
 
                     <template slot-scope="scope">
-                        <el-dropdown>
+                        <el-dropdown @command="handleOperation($event, scope.row)">
 
                             <el-button
                                 icon="el-icon-more"
                                 type="small"
                                 circle
                                 class="node-manager__main__table__operation"
-                            ></el-button>
+                            />
 
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>
+                                <el-dropdown-item command="edit">
+                                    <!--                                    @click="goToEditPage(scope.row.presentableId)"-->
                                     <a
-                                        @click="goToEditPage(scope.row.presentableId)"
                                         class="node-manager__main__table__operation__dropdown-link"
                                     >{{$t('action.edit')}}</a>
                                 </el-dropdown-item>
-                                <el-dropdown-item>
-                                    <a
-                                        class="node-manager__main__table__operation__dropdown-link"
-                                    >{{$t('action.top')}}</a>
-                                </el-dropdown-item>
-                                <el-dropdown-item>
+                                <!--                                <el-dropdown-item>-->
+                                <!--                                    <a-->
+                                <!--                                        class="node-manager__main__table__operation__dropdown-link"-->
+                                <!--                                    >{{$t('action.top')}}</a>-->
+                                <!--                                </el-dropdown-item>-->
+                                <el-dropdown-item command="upgrade">
+                                    <!--                                     @click="upgradePresentable(scope.row)"-->
                                     <a class="node-manager__main__table__operation__dropdown-link"
-                                       @click="upgradePresentable(scope.row)"
+
                                     >{{$t('action.upgrade')}}</a>
                                 </el-dropdown-item>
-                                <el-dropdown-item>
+                                <el-dropdown-item
+                                    command="online"
+                                    v-if="scope.row.releaseInfo.resourceType !== 'page_build' || scope.row.isOnline === 0"
+                                >
+                                    <!--                                     @click="onLineAndOffLine(scope.row)"-->
                                     <a
-                                        @click="onLineAndOffLine(scope.row)"
+
                                         style="display: block; width: 100%; height: 100%;"
                                     >
-                                        <span v-if="scope.row.isOnline === 0" style="color: #44a0ff;">{{$t('action.online')}}</span>
-                                        <span v-if="scope.row.isOnline === 1" style="color: #ee4040;">{{$t('action.downline')}}</span>
+                                        <span
+                                            v-if="scope.row.releaseInfo.resourceType === 'page_build'"
+                                            style="color: #44a0ff;"
+                                        >激活</span>
+                                        <template v-else>
+                                            <span v-if="scope.row.isOnline === 0" style="color: #44a0ff;">{{$t('action.online')}}</span>
+                                            <span v-if="scope.row.isOnline === 1" style="color: #ee4040;">{{$t('action.downline')}}</span>
+                                        </template>
                                     </a>
                                 </el-dropdown-item>
                             </el-dropdown-menu>

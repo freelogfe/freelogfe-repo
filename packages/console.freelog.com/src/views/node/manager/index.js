@@ -276,7 +276,7 @@ export default {
             if (res.data.errcode !== 0) {
                 return this.$message.error(res.data.msg);
             }
-            item.isOnline === 0 ? this.$message.success('上线成功') : this.$message.success('下线成功');
+            item.isOnline === 0 ? this.$message.success(item.releaseInfo.resourceType === 'page_build' ? '激活成功' : '上线成功') : this.$message.success('下线成功');
             // item.isOnline = item.isOnline === 0 ? 1 : 0;
             this.handleTableData();
         },
@@ -305,6 +305,20 @@ export default {
                 })
                 .catch(this.$error.showErrorMessage)
         },
+        /**
+         * 处理操作
+         * @param e
+         * @param row
+         */
+        handleOperation(e, row) {
+            if (e === 'edit') {
+                this.goToEditPage(row.presentableId);
+            } else if (e === 'upgrade') {
+                this.upgradePresentable(row);
+            } else if (e === 'online') {
+                this.onLineAndOffLine(row);
+            }
+        }
         /**
          * 去来源编辑页
          */

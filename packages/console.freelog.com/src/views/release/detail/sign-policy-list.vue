@@ -3,49 +3,56 @@
   <div>
     <div class="signed-list" v-if="signedPolicies.length">
       <h3>
-        {{type !== 'edit' ? $t('signedContracts') : $t('signStatus[0]')}} 
-        <el-tooltip placement="right" :content="$t('tips[2]')" v-if="type !== 'edit'" >
+        {{checkedNodeIsSigned ? $t('signPolicyBox.titles[0]') + checkedNodeName : $t('signPolicyBox.titles[1]')}}
+        <el-tooltip placement="right" :content="$t('signPolicyBox.tips[0]')" >
           <i class="el-icon-info"></i>
         </el-tooltip>
       </h3>
-      <div class="s-l-item" v-for="policy in signedPolicies" :key="policy.policyId">
-        <div class="p-name" :class="[type]" @click="selectPolicy(signedPolicies, policy)">
-          <span class="p-n-check-box" v-if="!policy.isSelected"></span>
-          <i class="el-icon-check" v-else></i>
+      <div class="s-l-item" v-for="policy in signedPolicies" :key="policy.pCombinationID">
+        <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(signedPolicies, policy)">
+          <template v-if="!checkedNodeIsSigned"> 
+            <span class="p-n-check-box" v-if="!policy.isSelected"></span>
+            <i class="el-icon-check" v-else></i>
+          </template>
           {{policy.policyName}}
-          <span class="contract-status" :class="['status-'+contractsPolicyIdMap[policy.policyId].status]">{{contractsPolicyIdMap[policy.policyId].statusTip}}</span>
+          <span class="contract-status" :class="['status-'+policy.contract.status]">{{policy.statusTip}}</span>
         </div>
         <div class="p-auth-info">
-          <span>{{$t('contractID')}}：{{contractsPolicyIdMap[policy.policyId].contractId}}</span>
-          <span>{{$t('signingDate')}}：{{contractsPolicyIdMap[policy.policyId].updateDate | fmtDate}}</span>
+          <span>{{$t('signPolicyBox.contractID')}}：{{policy.contract.contractId}}</span>
+          <span>{{$t('signPolicyBox.signingDate')}}：{{policy.contract.updateDate | fmtDate}}</span>
         </div>
         <div class="p-detail">
           <contract-detail
                   class="contract-policy-content"
-                  :contract.sync="contractsPolicyIdMap[policy.policyId]"
-                  :policyText="contractsPolicyIdMap[policy.policyId].contractClause.policyText"
-                  @update-contract="updateContractAfterEvent"></contract-detail>
+                  :contract.sync="policy.contract"
+                  :policyText="policy.contract.contractClause.policyText"
+                  @update-contract="updateContractAfterEvent(policy)"></contract-detail>
         </div>
       </div>
     </div>
     <div class="no-sign-list" v-if="nodSignPolicies.length">
       <h3>
-        签约
+        {{signedPolicies.length > 0 ? $t('signPolicyBox.tips[1]') : $t('btns.sign')}}
         <el-tooltip placement="right" effect="light">
           <div class="s-m-w-c-ubh-tip" slot="content">
-            作为被授权方，如果您满足且接受授权方的授权策略，则可以选择和授权方签约。授权双方之间存在一个按照未来发生的事件改变资源授权状态的机制，称之为合约。
+            {{$t('signPolicyBox.signState')}}
             <ul>
-              <li>合约的复用：授权方和被授权方的合约在同一个授权方（节点或发行）范围内可以复用。</li>
-              <li>合约的启用和停用：如果您和授权方的多个授权策略签订了多个合约，则在管理合约时，至少要有一个合约是启用状态。您可以选择启用或者停用其中某一个或某几个合约，在授权链中，系统仅会验证启用合约的授权状态。</li>
+              <li>{{$t('signPolicyBox.signRuleState1')}}</li>
+              <li>{{$t('signPolicyBox.signRuleState2')}}</li>
             </ul>
           </div>
           <i class="el-icon-info"></i>
         </el-tooltip>
       </h3>
       <div class="no-s-l-item" v-for="p in nodSignPolicies" :key="p.policyId">
-        <div class="p-name" :class="[type]" @click="selectPolicy(nodSignPolicies, p)">
-          <span class="p-n-check-box" v-if="!p.isSelected"></span>
-          <i class="el-icon-check" v-else></i>
+        <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(nodSignPolicies, p)">
+          <template v-if="checkedNodeIsSigned">
+            <el-button class="p-sign-btn" type="primary" size="mini" @click="signNewPolicy(p)">{{$t('btns.sign')}}</el-button>
+          </template>
+          <template v-else>
+            <span class="p-n-check-box" v-if="!p.isSelected"></span>
+            <i class="el-icon-check" v-else></i>
+          </template>
           {{p.policyName}}<span v-if="p.status === 0">（{{$t('offline')}}）</span>  
         </div>
         <div class="p-detail">
@@ -60,112 +67,97 @@
 import { beautifyPolicy } from '@freelog/freelog-policy-lang'
 import { ContractDetail } from '@freelog/freelog-ui-contract'
 import { CONTRACT_STATUS_TIPS } from '@/config/contract.js'
+import { togglePolicy } from '@/lib/utils'
 export default {
   name: 'sign-policy-list',
   components: { ContractDetail },
   props: {
     policies: {
-      type: 'Array',
+      type: Array,
       default: () => []
     },
     contracts: {
-      type: 'Array',
+      type: Array,
       default: () => []
     },
     release: {
-      type: "Object",
-      default: () => []
-    }
+      type: Object,
+      default: () => {}
+    },
+    checkedNode: Object
   },
   data() {
-    return {}
+    return {
+      nodSignPolicies: [],
+      signedPolicies: []
+    }
   },
   computed: {
-    // policyId和contract的映射
-    contractsPolicyIdMap() {
-      const map = {}
-      this.contracts.forEach(c => {
-        c.statusTip = CONTRACT_STATUS_TIPS[c.status]
-        map[c.policyId] = c
-      })
-      return map
+    checkedNodeId() {
+      return this.checkedNode.nodeId
     },
-    signedPolicies() {
-      return this.policies.filter(p => this.contractsPolicyIdMap[p.policyId]).map(p => {
-        const contract = this.contractsPolicyIdMap[p.policyId]
-        p.contractId = contract.contractId
-        return p
-      })
+    checkedNodeName() {
+      return this.checkedNode.nodeName
     },
-    nodSignPolicies() {
-      return this.policies.filter(p => !this.contractsPolicyIdMap[p.policyId]).map(p => {
-        p.contractId = ''
-        return p
-      })
+    checkedNodeIsSigned() {
+      return this.checkedNode.isSigned
     }
   },
   watch: {
-    contracts() {
-      const tmpPolicies = this.release.selectedPolicies
-      const leng = tmpPolicies.length
-      for(let i = 0; i < leng; i++) {
-        const p = tmpPolicies[i]
-        const contract = this.contractsPolicyIdMap[p.policyId]
-        if(p.contractId) {
-          if(!contract) {
-            p.contractId = ''
-            tmpPolicies.splice(i, 1, p)
-          }
-        }else {
-          if(contract) {
-            p.contractId = contract.contractId
-            tmpPolicies.splice(i, 1, p)
-          }
-        }
-      }
+    policies() {
+      this.resolvePolicies()
     },
+    contracts() {
+      this.resolvePolicies()
+    },
+  },
+  mounted() {
+    this.resolvePolicies()
   },
   methods: {
     fmtPolicyTextList(p) {
       return beautifyPolicy(p.policyText)
     },
+    resolvePolicies() {
+      this.signedPolicies = this.getSignedPolicies()
+      this.nodSignPolicies = this.getNoSignedPolicies()
+    },
+    getNoSignedPolicies() {
+      return this.policies.filter(p => p.contract == null).map(p => {
+        p.statusTip = ''
+        return p
+      })
+    },
+    getSignedPolicies() {
+      return this.policies.filter(p => p.contract != null).map(p => {
+        p.statusTip = CONTRACT_STATUS_TIPS[p.contract.status]
+        return p
+      })
+    },
     // 选择策略
     selectPolicy(policies, policy) {
-      if(this.type === 'edit') return 
+      if(this.checkedNodeId === '') {
+        this.$message({
+          message: '请先选择签约节点',
+          type: 'warning'
+        })
+        return 
+      }
 
       policy.isSelected = !policy.isSelected
       this.policies = this.policies.map(p => p)
       if(policy.isSelected) {
-        this.togglePolicy(this.release.selectedPolicies, policy, 'add')
+        togglePolicy(this.release.selectedPolicies, policy, 'add')
       }else {
-        this.togglePolicy(this.release.selectedPolicies, policy, 'delete')
+        togglePolicy(this.release.selectedPolicies, policy, 'delete')
       }
     },
-    togglePolicy(policies, policy, type) {
-      this.toggleArrayItem(type, policies, policy, (i1, i2) => i1.policyId === i2.policyId)
+    signNewPolicy(policy) {
+      togglePolicy(this.release.selectedPolicies, policy, 'add')
+      this.$emit('sign-new-policy')
     },
-    toggleArrayItem(type, arr, target, verify) {
-      var index = -1
-      for(let i = 0; i < arr.length; i++) {
-        if(verify(target, arr[i])) {
-          index = i
-          break
-        }
-      }
-      switch (type) {
-        case 'add': {
-          if(index === -1) {
-            arr.push(target)
-          }
-          break
-        }
-        case 'delete': {
-          if(index !== -1) {
-            arr.splice(index, 1)
-          }
-        }
-        default: {}
-      }
+    updateContractAfterEvent() {
+      this.resolvePolicies()
     },
   },
 }
@@ -182,11 +174,16 @@ export default {
   margin-bottom: 20px; border: 1px solid #ccc; border-top-left-radius: 4px; border-top-right-radius: 4px;
   color: #333;
   
-  
   .p-name {
     position: relative; cursor: pointer;
     padding: 10px 0 10px 40px;
     font-size: 16px; color: #333;
+    &.isSigned { padding-left: 15px; background-color: #FAFBFB; }
+    .p-sign-btn {
+      float: right;
+      margin-right: 15px; border-radius: 20px;
+      font-size: 12px; 
+    }
 
     .p-n-check-box {
       display: inline-block;
@@ -215,7 +212,7 @@ export default {
 }
 .s-l-item {
   position: relative;
-  border: 1px solid #ccc; border-radius: 4px; background-color: #fbfbfb;
+  border: 1px solid #ccc; border-radius: 4px; background-color: #FAFBFB;
   
   .p-name{ 
     margin-top: 8px; font-weight: 600;

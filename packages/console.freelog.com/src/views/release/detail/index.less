@@ -2,21 +2,22 @@
 
 .r-d-w-waring { margin-bottom: 20px; }
 .r-d-w-header {
+  @previewImgWidth: 140px;
   padding: 30px 0;
 
   .preview-box {
     float: left; overflow: hidden;
-    width: 160px; height: 120px; border-radius: 2px;
+    width: @previewImgWidth; height: 105px; border-radius: 2px;
     box-shadow: 0 0 1px #999;
 
     img{ display: block; width: 100%; height: 100%; }
   }
   .cont {
-    padding-left: 180px;
+    padding-left: @previewImgWidth + 40;
   }
   .r-d-w-name {
     display: flex; align-items: center;
-    font-size: 30px; color: #333;
+    font-size: 24px; color: #333;
     span {
       display: inline-block;
       overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
@@ -26,6 +27,7 @@
     .el-icon-star-off, .el-icon-star-on {
       display: inline-block; cursor: pointer;
       margin-left: 60px; padding: 4px; border: 1px solid #D8D8D8; border-radius: 50%;
+      font-size: 20px;
     }
     .el-icon-star-on{
       border-color: #409EFF; color: #409EFF;
@@ -68,7 +70,7 @@
     margin: 20px 0;
     h3 {
       margin-bottom: 8px;
-      font-size: 14px; color: #333;
+      font-size: 12px; font-weight: 400; color: #999;
     }
   }
   .r-d-w-node-list {
@@ -85,15 +87,13 @@
     }
   }
   .r-d-w-policy-box { 
+    position: relative;
     &.highlight {
-      h3, .rdw-p-scheme-box { opacity: 1; }
       .rdw-p-scheme-box{
-         pointer-events: auto; cursor: auto;
         box-shadow:0px 2px 8px 0px rgba(0,159,255,0.3); border:1px solid rgba(145,199,255,1);
       }
     } 
     h3 {
-      opacity: .3; 
       span {
         float: right; 
         margin-right: 5px; color: #333;
@@ -104,10 +104,15 @@
 
   .r-d-node-select { width: 500px; box-shadow:0px 2px 8px 0px rgba(0,159,255,0.3); }
   .rdw-p-scheme-box {
-    position: relative; height: 500px; opacity: .3;  pointer-events: none; cursor: not-allowed;
+    position: relative; height: 500px; border: 1px solid #e3e3e3; border-radius: 2px;
     .rdw-p-left-box { 
+      box-sizing: border-box;
       float: left; overflow: auto;
-      width: 32%; height: 100%;
+      width: 32%; height: 100%; padding-bottom: 50px;
+      background-color: #FAFBFB;
+      h4 { 
+        padding-left: 20px; 
+        line-height: 30px; font-size: 12px; font-weight: 400; color: #999; background-color: #F5F5F5; }
     }
     .rdw-p-right-box {
       box-sizing: border-box;
@@ -116,80 +121,16 @@
     }
   }
   .rdw-p-auth-btn-bar {
-    padding-top: 24px;
+    position: absolute; bottom: 10px; left: 3%; z-index: 5;
+    width: 26%;
     .rdw-p-auth-btn {
-      width: 26%; margin-left: 3%; padding: 12px 0;
-    }
-    .rdw-p-compare-btn {
-      float: right;
-      padding: 7px 15px; 
-      font-size: 12px; background-color: #F3F3F3; color: #666;
+      width: 100%; padding: 12px 0;
     }
   }
-}
-
-.r-d-w-r-p-compare {
-  box-sizing: border-box;
-  float: left; width: 50%; padding: 20px 0 30px 40px; border-top: 1px solid #D8D8D8;
-  &:first-child {
-    border-right: 1px solid #D8D8D8;
-  }
-
-  .r-d-w-r-p-btn {
-    display: inline-block; cursor: pointer;
-    margin-right: 15px; margin-bottom: 10px; padding: 3px 12px; border: 1px solid #D4D4D4; border-radius: 15px;
-    font-size: 12px;
-
-    &.active {
-      border-color: #409EFF; box-shadow: 0 2px 5px rgba(143, 188, 234, 1);
-    }
-  }
-
-  .r-d-w-r-p-box {
-    margin-top: 15px; margin-right: 40px; border-radius: 4px;
-    box-shadow: 1px 2px 5px #D8D8D8;
-    h4 {
-      padding: 10px 12px; border-bottom: 1px solid #D8D8D8;
-    }
-    .r-d-w-r-p-text {
-      overflow: auto; white-space: pre-wrap;
-      height: 280px; padding: 12px;
-    }
-  }
-}
-
-.r-d-w-r-sign {
-  overflow: auto; max-height: 520px;
-  margin: 0 20px; padding: 25px 20px; border-top: 1px solid #DDDDDD;
-
-  h4 {
-    margin-bottom: 10px;
-    font-size: 14px; font-weight: 600; color: #333;
-
-    a {
-      display: inline-block;
-      width: 26px; height: 20px; line-height: 20px; margin-left: 5px; border-radius: 10px;
-      color: #fff; background-color: #409EFF; text-align: center;
-    }
-  }
-  .r-d-w-r-node { overflow: hidden; margin-left: 60px; margin-bottom: 15px; }
-  
-  .r-d-w-r-s-releases {
-    margin: 0 50px 25px 60px;
-    font-size: 14px; font-weight: 500; color: #333;
-    .rdwr-s-r-item { overflow: hidden; margin: 10px 0; }
-    .rdwr-s-r-item-policy {
-      float: right;
-      margin: 0 0 0 8px; padding: 2px 10px; border: 1px solid #A5D1FF; border-radius: 2px;
-      background-color: #E9F4FF; color: #248fff;
-    }
-  }
-  .rdwr-s-btn-group {
-    text-align: center;
-
-    .rdwr-s-btn { width: 110px; padding: 8px 0; border-width: 0; }
-    .rdwr-s-btn-cancel { color: #999;  }
-    .rdwr-s-btn-sign { border-radius: 4px; }
+  .rdw-p-compare-btn {
+    position: absolute; top: -7px; right: 55px; z-index: 5;
+    padding: 7px 15px; 
+    font-size: 12px; background-color: #F3F3F3; color: #666;
   }
 }
 
