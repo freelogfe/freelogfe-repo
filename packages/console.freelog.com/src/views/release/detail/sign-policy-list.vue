@@ -94,7 +94,7 @@ export default {
   },
   computed: {
     checkedNodeId() {
-      return this.checkedNode.nodeId
+      return this.checkedNode ? this.checkedNode.nodeId : ''
     },
     checkedNodeName() {
       return this.checkedNode.nodeName
