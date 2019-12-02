@@ -15,7 +15,7 @@
                     :trigger-on-focus="false"
                     @select="handleSelect"
                 >
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    <i slot="prefix" class="el-input__icon el-icon-search"/>
                     <!--                    <i-->
                     <!--                        style="cursor: pointer"-->
                     <!--                        @click="filterSearch = ''"-->
@@ -144,7 +144,7 @@
                 this.searchTestResource();
             },
             async handleSelect(item) {
-                console.log(item);
+                // console.log(item);
                 // await this.$axios.get(`/v1/testNodes/testResources/${item.id}/dependencyTree`);
                 this.selectedExact = item;
                 this.searchTestResource()
@@ -183,6 +183,7 @@
              * @returns {*}
              */
             loadNode1(node, resolve) {
+                // console.log(node, 'nodenodenode');
                 if (node.level === 0) {
                     return resolve([]);
                 }
@@ -193,7 +194,8 @@
                 // console.log(this.selectedExact, 'nodenodenode');
                 setTimeout(async () => {
                     const params = {
-                        testResourceId: node.data.id,
+                        // testResourceId: node.data.id,
+                        // testResourceId: node.data.testResourceId,
                         dependentEntityId: this.selectedExact.id,
                         dependentEntityVersionRange: this.version,
                     };

@@ -1,5 +1,21 @@
 @import '../../../styles/variables.less';
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all .3s;
+}
+.list-enter, .list-leave-to
+/* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
 .r-d-w-waring { margin-bottom: 20px; }
 .r-d-w-header {
   @previewImgWidth: 140px;
@@ -64,7 +80,6 @@
 
 .r-d-w-auth-box {
   overflow: auto;
-  background-color: #FAFBFB;
 
   .r-d-w-node-list, .r-d-w-policy-box {
     margin: 20px 0;

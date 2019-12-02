@@ -81,6 +81,7 @@
   import UploadCover from '@/components/UploadCover/index.vue'
   import SchemeManage from '../scheme/index.vue'
   import {mapGetters} from 'vuex'
+  import config from '@/config/index'
 
   export default {
     name: 'release-creator',
@@ -90,10 +91,10 @@
       const validateName = (rule, value, callback) => {
         if(value.length < 1 || value.length > 60) {
           callback($i18n.t('messages[0]'))
-        }else if(/^[^\/\\\:\*\?\"\<\>\|\!\@\[\]]+$/.test(value)) {
+        }else if(config['COMMON_NAME_REGEXP'].test(value)) {
           callback()
         }else {
-          callback($i18n.t('messages[1]') + '：\\ / : * ? " < > | @ [ ]')
+          callback($i18n.t('messages[1]') + '：\ / : * ? " < > | @ # $')
         }
       }
       const validateVersion = (rule, value, callback) => {

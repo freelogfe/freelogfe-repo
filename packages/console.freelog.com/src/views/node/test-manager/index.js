@@ -24,7 +24,7 @@ export default {
                 name: '',
             },
             tabList: [
-                { name: '节点发行列表', tab: 'ReleaseList' },
+                { name: '展品管理', tab: 'ReleaseList' },
                 { name: '主题管理', tab: 'StylePage' },
                 { name: '映射规则管理', tab: 'MappingRules' },
             ]
@@ -53,11 +53,11 @@ export default {
         },
         exchangeTab(tab) {
             this.selectedTab = tab.tab
-            this.$router.replace({ 
-                path: this.$route.path, 
+            this.$router.replace({
+                path: this.$route.path,
                 query: {
                     tab: tab.tab
-                } 
+                }
             })
         }
     }

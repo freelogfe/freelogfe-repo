@@ -50,7 +50,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                label="来源 | 测试资源名称"
+                label="相关条目|展示版本"
                 min-width="25%"
             >
                 <template slot-scope="scope">
@@ -73,11 +73,12 @@
                         </label>
                         <span>{{scope.row.testResourceName}}</span>
                     </div>
+                    <div style="font-size: 12px; color: #888; padding-left: 50px;">{{scope.row.originInfo.version}}</div>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="entries"
-                label="相关条目 | 展示版本"
+                label="相关测试资源"
                 min-width="30%"
             >
                 <template slot-scope="scope">
@@ -121,7 +122,7 @@
                         style="height: 32px; padding-left: 0;"
                     >
                         <div style="padding-left: 0; cursor: pointer;">
-                            {{selectedState}} <i class="el-icon-caret-bottom"></i>
+                            {{selectedState}} <i class="el-icon-caret-bottom"/>
                         </div>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item
@@ -146,13 +147,16 @@
                                 placement="top"
                                 width="100"
                                 trigger="hover"
-                                :content="'此合约链上存在异常'"
                             >
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span>尚未获得测试授权</span>
+                                    <el-button @click="operationCommand('编辑', scope.row)" type="text">详情</el-button>
+                                </div>
                                 <i
                                     slot="reference"
                                     class="el-icon-warning"
                                     style="font-size: 20px; color: #ffc210; margin-left: 8px;"
-                                ></i>
+                                />
                             </el-popover>
                         </template>
                     </div>
@@ -172,7 +176,7 @@
                             type="small"
                             circle
                             class="release-list__table__operation"
-                        ></el-button>
+                        />
 
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item :command="'编辑'">

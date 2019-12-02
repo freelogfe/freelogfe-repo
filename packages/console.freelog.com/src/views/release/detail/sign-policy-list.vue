@@ -8,27 +8,30 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </h3>
-      <div class="s-l-item" v-for="policy in signedPolicies" :key="policy.pCombinationID">
-        <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(signedPolicies, policy)">
-          <template v-if="!checkedNodeIsSigned"> 
-            <span class="p-n-check-box" v-if="!policy.isSelected"></span>
-            <i class="el-icon-check" v-else></i>
-          </template>
-          {{policy.policyName}}
-          <span class="contract-status" :class="['status-'+policy.contract.status]">{{policy.statusTip}}</span>
+      <transition-group name="list" tag="p">
+        <div class="s-l-item" v-for="policy in signedPolicies" :key="policy.pCombinationID">
+          <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(signedPolicies, policy)">
+            <template v-if="!checkedNodeIsSigned"> 
+              <span class="p-n-check-box" v-if="!policy.isSelected"></span>
+              <i class="el-icon-check" v-else></i>
+            </template>
+            {{policy.policyName}}
+            <span class="contract-status" :class="['status-'+policy.contract.status]">{{policy.statusTip}}</span>
+          </div>
+          <div class="p-auth-info">
+            <span>{{$t('signPolicyBox.contractID')}}：{{policy.contract.contractId}}</span>
+            <span>{{$t('signPolicyBox.signingDate')}}：{{policy.contract.updateDate | fmtDate}}</span>
+          </div>
+          <div class="p-detail">
+            <contract-detail
+                    class="contract-policy-content"
+                    :contract.sync="policy.contract"
+                    :policyText="policy.contract.contractClause.policyText"
+                    @update-contract="updateContractAfterEvent(policy)"></contract-detail>
+          </div>
         </div>
-        <div class="p-auth-info">
-          <span>{{$t('signPolicyBox.contractID')}}：{{policy.contract.contractId}}</span>
-          <span>{{$t('signPolicyBox.signingDate')}}：{{policy.contract.updateDate | fmtDate}}</span>
-        </div>
-        <div class="p-detail">
-          <contract-detail
-                  class="contract-policy-content"
-                  :contract.sync="policy.contract"
-                  :policyText="policy.contract.contractClause.policyText"
-                  @update-contract="updateContractAfterEvent(policy)"></contract-detail>
-        </div>
-      </div>
+      </transition-group>
+      
     </div>
     <div class="no-sign-list" v-if="nodSignPolicies.length">
       <h3>
@@ -44,21 +47,23 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </h3>
-      <div class="no-s-l-item" v-for="p in nodSignPolicies" :key="p.policyId">
-        <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(nodSignPolicies, p)">
-          <template v-if="checkedNodeIsSigned">
-            <el-button class="p-sign-btn" type="primary" size="mini" @click="signNewPolicy(p)">{{$t('btns.sign')}}</el-button>
-          </template>
-          <template v-else>
-            <span class="p-n-check-box" v-if="!p.isSelected"></span>
-            <i class="el-icon-check" v-else></i>
-          </template>
-          {{p.policyName}}<span v-if="p.status === 0">（{{$t('offline')}}）</span>  
+      <transition-group name="list" tag="p">
+        <div class="no-s-l-item" v-for="p in nodSignPolicies" :key="p.pCombinationID">
+          <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(nodSignPolicies, p)">
+            <template v-if="checkedNodeIsSigned">
+              <el-button class="p-sign-btn" type="primary" size="mini" @click="signNewPolicy(p)">{{$t('btns.sign')}}</el-button>
+            </template>
+            <template v-else>
+              <span class="p-n-check-box" v-if="!p.isSelected"></span>
+              <i class="el-icon-check" v-else></i>
+            </template>
+            {{p.policyName}}<span v-if="p.status === 0">（{{$t('offline')}}）</span>  
+          </div>
+          <div class="p-detail">
+            <pre class="p-segment-text" >{{fmtPolicyTextList(p)}}</pre>
+          </div>
         </div>
-        <div class="p-detail">
-          <pre class="p-segment-text" >{{fmtPolicyTextList(p)}}</pre>
-        </div>
-      </div>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -163,7 +168,16 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+.list-enter-active {
+  transition: all .3s;
+}
+.list-enter
+/* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
 .no-sign-list, .signed-list {
   h3 {
     margin-bottom: 8px;
@@ -177,7 +191,7 @@ export default {
   .p-name {
     position: relative; cursor: pointer;
     padding: 10px 0 10px 40px;
-    font-size: 16px; color: #333;
+    font-size: 14px; color: #333;
     &.isSigned { padding-left: 15px; background-color: #FAFBFB; }
     .p-sign-btn {
       float: right;

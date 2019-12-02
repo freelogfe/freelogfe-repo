@@ -34,7 +34,7 @@
                     class="el-icon-close"
                     style="font-size: 20px; color: #666; margin-right: 30px;"
                     @click="$emit('onClose')"
-                ></i>
+                />
             </div>
 
             <div style="flex-shrink: 1; height: 100%; overflow: hidden;">

@@ -37,11 +37,11 @@
 						<rule-text :textRule="scope.row"></rule-text>
 					</template>
 				</el-table-column>
-				<el-table-column :label="$t('operation')" width="160">
+				<el-table-column :label="$t('operation')" width="120">
 					<template slot-scope="scope">
 						<!-- <el-button type="text" class="mrb-btn--online" v-if="!scope.row.ruleInfo.online" @click="exchangeOnlineStatus(scope.row, true)">{{$t('onlineBtnText')}}</el-button>
 						<el-button type="text" class="mrb-btn--offline" v-else @click="exchangeOnlineStatus(scope.row, false)">{{$t('offlineBtnText')}}</el-button> -->
-						<el-button type="text" class="mrb-btn--delete" @click="tapDeleteBtn(scope.row)">{{$t('deleteBtnText')}}</el-button>
+						<el-button type="text" class="mrb-btn--delete" @click="tapDeleteBtn(scope.row)"><i class="el-icon-delete"></i></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -526,12 +526,6 @@ export default {
 </style>
 
 <style lang="less" type="text/less">
-.t-rule-tag-mock, .t-rule-tag-release {
-	margin-right: 5px; padding: 2px 8px; 
-	font-size: 12px; color: #fff;
-}
-.t-rule-tag-release { background-color: #72BB1F; }
-.t-rule-tag-mock { background-color: #F5A623; }
 
 .mapping-rule-wrapper {
 	.mapping-rule__body {

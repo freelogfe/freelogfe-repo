@@ -4,6 +4,7 @@
     "mappingRuleContent": "映射规则内容",
     "matchResult": "匹配结果",
     "release": "发行",
+    "presentable": "展品",
     "operation": "操作",
     "editMappingRules": "编辑映射规则",
     "inputPlaceHolder": "请输入规则",
@@ -20,8 +21,8 @@
     "deleteBtnText": "删除",
     "sureBtnText": "确定",
     "cancalBtnText": "取消",
-    "operations": [
-      "添加", "到测试节点作为", "，展示版本设置为", "，设置标签：", "上线", "下线", "替换", "激活"
+    "operationsTexts": [
+      "新增", "；来源", "，展示版本 ", "设置标签 ", "展品状态 上线", "展品状态 下线", "替换", "激活主题", "变更", "作用域"
     ],
     "confirmTexts": [
       "是否导出所选的规则？", "是否导出全部的规则？", "此操作将删除规则", "是否继续？", "提示", "此操作将删除所选中的", "条规则", "上线规则", "下线规则", "成功"
@@ -38,6 +39,7 @@
     "mappingRuleContent": "Mapping rule content",
     "matchResult": "Match result",
     "release": "release",
+    "presentable": "presentable",
     "operation": "Operation",
     "editBtnText": "Edit",
     "enterBtnText": "Enter mapping rules",
@@ -54,8 +56,8 @@
     "deleteBtnText": "Delete",
     "sureBtnText": "Sure",
     "cancalBtnText": "Cancel",
-    "operations": [
-      "Add", "to test node as", ", display version: ", ", set label: ", "online", "offline", "replace", "activate"
+    "operationsTexts": [
+      "Add", "Source", "Display version ", "Set label ", "online", "offline", "replace", "Activate theme", "Change", "scopes"
     ],
     "confirmTexts": [
       "Whether to export the selected rule?", "Whether to export all rules?", "This action will delete the rule", "Whether to continue?", "Prompt", "This will delete the ", " rules selected", "Online rules", "Offline rules", " are successful"

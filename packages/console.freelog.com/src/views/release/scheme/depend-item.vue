@@ -7,15 +7,15 @@
   >
     <div class="r-item-cont">
       <p class="r-name" :class="[resolveStatus]">
-        <i class="el-icon-top"></i>
+        <i class="el-icon-top" v-if="!hideUpcastIcon"></i>
         {{release.releaseName}}
-        <router-link :to="`/release/detail/${release.releaseId}?version=${release.latestVersion.version}`" target="_blank">
+        <router-link :to="`/release/detail/${release.releaseId}?version=${release.latestVersion.version}`" target="_blank" v-if="release && release.latestVersion">
           {{$t('detail')}}
         </router-link>
       </p>
-      <div class="r-info" v-if="release.policies">
+      <div class="r-info">
         <span>{{release.resourceType}}</span>
-        <span>{{release.latestVersion.version}}</span>
+        <span>{{release.latestVersion && release.latestVersion.version}}</span>
         <span>{{release.updateDate | fmtDate }}</span>
       </div>
       <div class="r-policies">
@@ -44,6 +44,10 @@
       resolveStatus: String,
       isScondLevel: Boolean,
       isActive: Boolean,
+      hideUpcastIcon: {
+        type: Boolean,
+        default: false
+      },
     },
     data() {
       return {
@@ -76,7 +80,7 @@
     .r-name {
       position: relative;
       margin-bottom: 6px;
-      font-size: 16px; font-weight: 500;
+      font-size: 14px; font-weight: 500;
 
       i {
         position: absolute; left: 0; top: 54%; z-index: 1;

@@ -51,7 +51,7 @@
                     remove: 'Remove'
                 },
                 'zh-CN': {
-                    noOnline: 'No Online',
+                    noOnline: '未上线',
                     added: '已添加',
                     add: '加入',
                     remove: '移除',

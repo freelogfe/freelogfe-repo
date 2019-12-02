@@ -1,6 +1,6 @@
 <template>
-    <div ref="boxRef" style="margin: 0 90px; height: 100%; overflow-y: auto;">
-        <slot></slot>
+    <div ref="boxRef" style="height: 100%; overflow-y: auto;">
+        <slot/>
         <div
             ref="loadingRef"
             style="font-size: 14px; color: #999; text-align: center; line-height: 40px; padding-top: 10px;"

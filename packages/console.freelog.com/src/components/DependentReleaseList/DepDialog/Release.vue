@@ -1,16 +1,22 @@
 <template>
     <div style="height: 100%;">
-        <LazyLoadingBox v-if="data.length > 0" :end="dataEnd" @toBottom="toBottom">
-            <DepItem
-                v-for="i in data"
-                :name="i.name"
-                :isOnline="i.isOnline"
-                :type="i.type"
-                :version="i.version"
-                :date="i.date"
-                @click="$emit('add', i)"
-                :showRemove="exists.includes(i.id)"
-                @remove="$emit('remove', i)"/>
+        <LazyLoadingBox
+            v-if="data.length > 0"
+            :end="dataEnd"
+            @toBottom="toBottom"
+        >
+            <div style="padding: 0 90px;">
+                <DepItem
+                    v-for="i in data"
+                    :name="i.name"
+                    :isOnline="i.isOnline"
+                    :type="i.type"
+                    :version="i.version"
+                    :date="i.date"
+                    @click="$emit('add', i)"
+                    :showRemove="exists.includes(i.id)"
+                    @remove="$emit('remove', i)"/>
+            </div>
         </LazyLoadingBox>
         <div style="line-height: 300px; font-size: 16px; color: #333; text-align: center;"
              v-if="data.length === 0">

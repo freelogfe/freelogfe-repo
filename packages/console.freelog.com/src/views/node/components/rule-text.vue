@@ -24,7 +24,8 @@ export default {
       content: '',
       tagsMap: {
         'mock': `<span class="t-rule-tag-mock">mock</span>`,
-        'release': `<span class="t-rule-tag-release">${this.$i18n.t('release')}</span>`
+        'release': `<span class="t-rule-tag-release">${this.$i18n.t('release')}</span>`,
+        'presentable': `<span class="t-rule-tag-presentable">${this.$i18n.t('presentable')}</span>`
       }
     }
   },
@@ -60,11 +61,11 @@ export default {
           if(replaces && replaces.length > 0) {
             contentsArr.push(this.resolveReplaceRule())
           }
-          contentsArr.push(this.resolveSetVersionRule())
           contentsArr.push(this.resolveSetTagRule())
           break
         }
         case 'alter': {
+          contentsArr.push(this.resolveAlterRule())
           contentsArr.push(this.resolveReplaceRule())
           contentsArr.push(this.resolveSetTagRule())
           break
@@ -76,31 +77,46 @@ export default {
         default: {}
       } 
       contentsArr.push(this.resolveOnlineRule())
-      this.content = contentsArr.filter(cont => cont !== '').join('，')
+      const symbolString = this.$i18n.locale === 'zh-CN' ? '；' : '; '
+      this.content = contentsArr.filter(cont => cont !== '').join(symbolString)
     },
     resolveAddRule() {
       const { presentableName, candidate: { name, type } } = this.ruleInfo
-			const operationsTexts = this.$i18n.t('operations')
-      return `${operationsTexts[0]} ${this.tagsMap[type]}<strong>${name}</strong> ${operationsTexts[1]} <strong>${presentableName}</strong>`
+      const operationsTexts = this.$i18n.t('operationsTexts')
+      const versionText = this.resolveSetVersionRule()
+      return `${operationsTexts[0]}${this.tagsMap['presentable']}<strong>${presentableName}</strong>${operationsTexts[1]}${this.tagsMap[type]}<strong>${name}</strong>${versionText}`
     },
     resolveSetVersionRule() {
       const { candidate: { versionRange = '' } } = this.ruleInfo
-			const operationsTexts = this.$i18n.t('operations')
+			const operationsTexts = this.$i18n.t('operationsTexts')
       if(versionRange !== '' && versionRange !== 'latest') {
         return `${operationsTexts[2]} ${versionRange}`
       } else {
         return ''
       }
     },
+    resolveAlterRule() {
+			const operationsTexts = this.$i18n.t('operationsTexts')
+      const { presentableName } = this.ruleInfo
+      return `${operationsTexts[8]}${this.tagsMap['presentable']}<strong>${presentableName}</strong>`
+    },
     resolveReplaceRule() {
       const { replaces } = this.ruleInfo
       if(replaces.length > 0) {
-			  const operationsTexts = this.$i18n.t('operations')
+			  const operationsTexts = this.$i18n.t('operationsTexts')
+        const symbolString = this.$i18n.locale === 'zh-CN' ? '，' : ', '
         return replaces.map(item => {
           const { name: n1, type: t1 } = item['replacer']
           const { name: n2, type: t2 } = item['replaced']
-          return `<strong>${this.tagsMap[t1]}${n1}</strong> ${operationsTexts[6]} <strong>${this.tagsMap[t2]}${n2}</strong>`
-        }).join('，')
+          var replaceText = `<strong>${this.tagsMap[t1]}${n1}</strong> ${operationsTexts[6]} <strong>${this.tagsMap[t2]}${n2}</strong>${symbolString}`
+          if (item['scopes'].length > 0) {
+            replaceText += `<span>${operationsTexts[9]}</span> ` + item['scopes'].map(item => {
+              const { name, type } = item
+              return `${this.tagsMap[type]}<strong>${name}</strong>`
+            }).join('-')
+          }
+          return replaceText
+        }).join(symbolString)
       } else {
         return ''
       }
@@ -108,27 +124,28 @@ export default {
     resolveSetTagRule() {
       const { tags } = this.ruleInfo
       if(tags != null && tags.length > 0) {
-        const operationsTexts = this.$i18n.t('operations')
-        return `${operationsTexts[3]}` + tags.map(tag => `<strong>${tag}</strong>`).join(' ')
+        const operationsTexts = this.$i18n.t('operationsTexts')
+        const symbolString = this.$i18n.locale === 'zh-CN' ? '，' : ', '
+        return `${operationsTexts[3]}` + tags.map(tag => `<strong>${tag}</strong>`).join(symbolString)
       }else {
         return ''
       }
     },
     resolveOnlineRule() {
       const { online, presentableName } = this.ruleInfo
-      const operationsTexts = this.$i18n.t('operations')
+      const operationsTexts = this.$i18n.t('operationsTexts')
       if (online === true) {
-        return `${operationsTexts[4]} <strong>${presentableName}</strong>`
+        return operationsTexts[4]
       } else if (online === false){
-        return `${operationsTexts[5]} <strong>${presentableName}</strong>`
+        return operationsTexts[5]
       } else {
         return ''
       }
     },
     resolveActivateTheme() {
       const { themeName } = this.ruleInfo
-      const operationsTexts = this.$i18n.t('operations')
-      return `${operationsTexts[7]}<strong>${themeName}</strong>`
+      const operationsTexts = this.$i18n.t('operationsTexts')
+      return `${operationsTexts[7]}${this.tagsMap['presentable']}<strong>${themeName}</strong>`
     }
   },
 }
@@ -144,6 +161,11 @@ export default {
 </style>
 <style lang="less" type="text/less">
 .node-mapping-rule-text {
+  .t-rule-tag-mock, .t-rule-tag-release, .t-rule-tag-presentable {
+    margin: 0 5px 0 8px; padding: 2px 8px; border-radius: 2px;
+    font-size: 12px; color: #fff;
+  }
+  .t-rule-tag-presentable { background-color: #409EFF; }
   .t-rule-tag-release { background-color: #72BB1F; }
   .t-rule-tag-mock { background-color: #F5A623; }
 }

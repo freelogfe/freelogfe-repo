@@ -3,24 +3,26 @@
         :end="dataEnd"
         @toBottom="toBottom"
     >
-        <div style="height: 40px;"></div>
-        <el-input
-            v-model="input"
-            :placeholder="$t('pleaseEnter')"
-        ></el-input>
-        <div style="height: 30px;"></div>
+        <div style="padding: 0 90px;">
+            <div style="height: 40px;"></div>
+            <el-input
+                v-model="input"
+                :placeholder="$t('pleaseEnter')"
+            />
+            <div style="height: 30px;"></div>
 
-        <DepItem
-            v-for="i in data"
-            :name="i.name"
-            :isOnline="i.isOnline"
-            :type="i.type"
-            :version="i.version"
-            :date="i.date"
-            @click="$emit('add', i)"
-            :showRemove="exists.includes(i.id)"
-            @remove="$emit('remove', i)"
-        />
+            <DepItem
+                v-for="i in data"
+                :name="i.name"
+                :isOnline="i.isOnline"
+                :type="i.type"
+                :version="i.version"
+                :date="i.date"
+                @click="$emit('add', i)"
+                :showRemove="exists.includes(i.id)"
+                @remove="$emit('remove', i)"
+            />
+        </div>
     </LazyLoadingBox>
 </template>
 

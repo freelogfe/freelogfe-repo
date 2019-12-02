@@ -20,7 +20,7 @@
         <div class="cont">
           <div class="r-d-w-name">
             <span>{{release.releaseName}}</span>
-            <el-select class="r-d-w-version" v-model="activeReleaseVersion" default-first-option v-if="release.resourceVersions.length > 1">
+            <el-select class="r-d-w-version" v-model="activeReleaseVersion" default-first-option v-if="release.resourceVersions.length">
               <el-option
                       class="r-d-w-version-option"
                       v-for="item in release.resourceVersions"
@@ -50,7 +50,7 @@
             <el-option
               v-for="node in nodeSelections"
               :key="node.nodeId"
-              :label="node.nodeName + (node.isSigned ? `（$t('iconTexts[1]')）` : '')"
+              :label="node.nodeName + (node.isSigned ? `（${$t('iconTexts[1]')}）` : '')"
               :value="node.nodeId">
             </el-option>
           </el-select>
@@ -64,7 +64,8 @@
         </div>  
         <div class="r-d-w-policy-box " :class="{'highlight': checkedNodeId!=''}" v-loading="isShowContentLoading">
           <h3>
-            {{$t('steps[1]')}}<span><i class="el-icon-top"></i> {{$t('iconTexts[0]')}}</span>
+            {{$t('steps[1]')}}
+            <!-- <span><i class="el-icon-top"></i> {{$t('iconTexts[0]')}}</span> -->
           </h3>
           <div class="rdw-p-scheme-box">
             <div class="rdw-p-left-box">
@@ -80,7 +81,7 @@
               <release-depend-item
                       v-for="(urItem, _index) in baseUpcastReleasesList"
                       :key="'dep-item-'+_index"
-                      is-scond-level
+                      hide-upcast-icon
                       resolveStatus="upcast"
                       :release="urItem"
                       :is-active="selectedRelease.releaseId === urItem.releaseId"
@@ -89,12 +90,12 @@
             </div>
             <div class="rdw-p-right-box">
               <sign-policy-list 
-                :release="selectedRelease"
-                :policies="selectedRelease.policies" 
-                :contracts="nodeContracts"
-                :checkedNode="checkedNode"
-                @sign-new-policy="signNewPolicy"
-              ></sign-policy-list>
+                  :release="selectedRelease"
+                  :policies="selectedRelease.policies" 
+                  :contracts="nodeContracts"
+                  :checkedNode="checkedNode"
+                  @sign-new-policy="signNewPolicy"
+                ></sign-policy-list>
             </div>
           </div>
           <div class="rdw-p-auth-btn-bar" v-if="!checkedNode.isSigned">

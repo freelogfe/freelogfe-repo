@@ -13,14 +13,14 @@
                 class="release-list__header__input"
                 v-model="filterSearch"
             >
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                <i slot="prefix" class="el-input__icon el-icon-search"/>
                 <i
                     style="cursor: pointer"
                     @click="filterSearch = ''"
                     v-show="filterSearch.length !== 0"
                     slot="suffix"
                     class="el-input__icon el-icon-circle-close"
-                ></i>
+                />
             </el-input>
         </div>
 
@@ -51,7 +51,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                label="来源 | 测试资源名称"
+                label="相关条目|展示版本"
                 min-width="25%"
             >
                 <template slot-scope="scope">
@@ -70,15 +70,16 @@
                             class="release-list__table__name--presentable"
                             v-if="scope.row.originInfo.type === 'presentable'"
                         >
-                            <div></div>
+                            <div/>
                         </label>
                         <span>{{scope.row.testResourceName}}</span>
                     </div>
+                    <div style="font-size: 12px; color: #888; padding-left: 50px;">{{scope.row.originInfo.version}}</div>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="entries"
-                label="相关条目 | 展示版本"
+                label="相关测试资源"
                 min-width="30%"
             >
                 <template slot-scope="scope">
@@ -93,6 +94,7 @@
                                 v-if="scope.row.previewImages.length > 0"
                                 :src="scope.row.previewImages[0]"
                                 class="resource-default-preview"
+                                alt=""
                             />
                         </div>
                         <div class="release-list__table__entries__info">
@@ -100,7 +102,7 @@
                                 {{scope.row.originInfo.name}}
                             </div>
                             <div>
-                                {{scope.row.originInfo.version}}
+                                {{scope.row.originInfo.versions[scope.row.originInfo.versions.length - 1]}}
                             </div>
                         </div>
                     </a>
@@ -175,11 +177,11 @@
                         <template v-if="scope.row.resolveReleaseSignStatus === 2">
                             <el-popover
                                 placement="top"
-                                width="160"
+                                width="150"
                                 trigger="hover"
                             >
                                 <div style="display: flex; align-items: center; justify-content: space-between;">
-                                    <span>此合约链上存在异常</span>
+                                    <span>尚未获得测试授权</span>
                                     <el-button @click="operationCommand('编辑', scope.row)" type="text">详情</el-button>
                                 </div>
                                 <!-- operationCommand('编辑', scope.row)   -->

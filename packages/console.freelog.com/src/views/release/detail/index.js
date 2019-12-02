@@ -64,8 +64,8 @@ export default {
     },
     checkedNode() {
       return this.nodeMap[this.checkedNodeId] || {
-        checkedNodeId: '',
-        checkedNodeName: '',
+        nodeId: '',
+        nodeName: '',
         isSigned: false
       }
     },
@@ -111,7 +111,6 @@ export default {
     activeReleaseVersion(newV, oldV) {
       if(oldV !== '') {
         this.$router.replace(`/release/detail/${this.release.releaseId}?version=${newV}`)
-        this.isShowContentLoading = true
         this.fetchResourceDetail()
       }
     },
