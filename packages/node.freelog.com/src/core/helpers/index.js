@@ -1,9 +1,9 @@
-import { isObject } from "../utils/util";
+import { isObject } from "../utils/util"
 
 export function combineURLs(baseURL, relativeURL) {
   return relativeURL
     ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
-    : baseURL;
+    : baseURL
 }
 
 export function complementQueryString(url, data){

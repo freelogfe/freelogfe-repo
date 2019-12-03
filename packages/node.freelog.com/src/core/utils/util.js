@@ -94,15 +94,3 @@ export function toArray (list, start = 0) {
   return ret
 }
 
-
-// 节流函数
-function throttle(fn, context, interval) {
-  var lastTime = +new Date()
-  return function(...args) {
-    let now = +new Date()
-    if((now - lastTime) > interval) {
-      fn.apply(context, args)
-      lastTime = now
-    }
-  }
-}
