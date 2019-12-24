@@ -7,37 +7,30 @@
  *
  */
 import { isAbsoluteURL, combineURLs, complementQueryString, deepMerge } from '../utils'
-import { throwError, createError } from "../exceptions/throwError"
-import { EXCEPTION_NETWORK, EXCEPTION_TIMEOUT } from '../constant'
 import { transformRequests, transformResponses } from './transform'
 
-interface fetchOpts {
-  method: string
-  body: any
-  headers?: plainObject
-} 
-
-function createQIFetch(opts = {}) {
-  const defaultQIFetchOpts: QIFetchOpts = {
-    baseURL: '',
-    credentials: 'include',
-    timeout: 0,
-    headers: {
-      'Accept': 'application/json, text/plain, */*'
-    }
+const defaultQIFetchOpts: QIFetchOpts = {
+  baseURL: '',
+  credentials: 'include',
+  timeout: 10000,
+  headers: {
+    'Accept': 'application/json, text/plain, */*'
   }
+}
+
+export default function createQIFetch(opts: QIFetchOpts) {
   const defaultOpts = deepMerge(defaultQIFetchOpts, opts)
-  return function (url: string, options = {}) {
+  return function (url: string, options: QIFetchOpts) {
     if(typeof url === 'object') {
       options = Object.assign(options, url)
     }else {
       options.url = url
     }
-    return qiFetch(deepMerge(defaultOpts, options))
+    return qiFetch(deepMerge(defaultOpts, options) as QIFetchOpts)
   }
 }
 
-function qiFetch(opts: QIFetchOpts) {
+function qiFetch(opts: QIFetchOpts): Promise<any> {
   opts.method = opts.method ? opts.method.toLowerCase() : 'get'
   opts.headers = opts.headers || {}
 
@@ -69,14 +62,16 @@ function qiFetch(opts: QIFetchOpts) {
 
   const url = opts.url || ''
   Reflect.deleteProperty(opts, 'url')
-  const timeout = opts.timeout || 0
+  const timeout = opts.timeout
   Reflect.deleteProperty(opts, 'timeout')
-  let requestPromise = window.fetch(url, opts)
+  let requestPromise: Promise<any> = window.fetch(url, opts)
+
+  // 请求超时则退出
   if(timeout > 0) {
     requestPromise = Promise.race([
       requestPromise,
       new Promise(function (resolve, reject) {
-        setTimeout(() => reject(createError('request timeout', EXCEPTION_TIMEOUT)), timeout)
+        setTimeout(() => reject('request timeout...'), timeout)
       })
     ])
   }
@@ -88,8 +83,8 @@ function qiFetch(opts: QIFetchOpts) {
       })
       return response
     }
-    throwError('response was not ok...', EXCEPTION_NETWORK)
+    throw new Error('response was not ok...')
   })
 }
 
-export default qiFetch
+

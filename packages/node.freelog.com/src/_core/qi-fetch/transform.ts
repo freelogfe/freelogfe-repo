@@ -6,7 +6,7 @@ function setContentTypeIfUnset(headers: plainObject, value: string): void {
   }
 }
 
-export const transformRequests = [
+export const transformRequests: Array<(options: QIFetchOpts) => QIFetchOpts> = [
   function transformBody(options) {
     var body = options.body
     const headers = options.headers
@@ -29,5 +29,5 @@ export const transformRequests = [
   }
 ]
 
-export const transformResponses = []
+export const transformResponses: Array<(resp: Response) => Response> = []
 

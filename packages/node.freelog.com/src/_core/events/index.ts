@@ -1,6 +1,6 @@
 import {throwError} from '../exceptions/throwError'
 import {EXCEPTION_CODE} from '../exceptions/names'
-import { toArray } from '../utils/util'
+import { toArray } from '../utils'
 
 export default class EventCenter {
   _events: plainObject;

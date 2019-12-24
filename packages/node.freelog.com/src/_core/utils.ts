@@ -71,10 +71,9 @@ export function complementQueryString(url: string, data: plainObject): string {
   return url
 }
 
-export function deepMerge(...args: plainObject []): plainObject {
-  var result = {}
-
+export function deepMerge (...args: plainObject[]): plainObject {
   var leng = args.length
+  var result: plainObject = {}
   if(leng > 0) {
     result = Object.assign({}, args[0])
     for(let i = 1; i < leng; i++) {
@@ -94,7 +93,7 @@ export function deepMerge(...args: plainObject []): plainObject {
         }
       }
     }
-  }
+  } 
   return result
 }
 

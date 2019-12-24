@@ -21,17 +21,49 @@ interface QI {
   requireSubDepend(url: string): any;
 }
 
+interface Env {
+  leaguage: string;
+  type: string;
+  mainDomain: string;
+  qiOrigin: string;
+  nodeType: string;
+  isTest: boolean;
+  isMobile: boolean;
+}
+
 interface FreelogApp {
+  QI: QI;
+  Env: Env;
   on(event: string): any;
   off(event: string, fn: () => any): any;
   once(event: string): any;
   trigger(event: string): any;
 }
 
+interface authInfo {
+  __auth_user_id__: number;
+  __auth_node_id__: number;
+  __auth_node_name__: string;
+  __auth_error_info__?: plainObject;
+  __page_build_id?: string;
+  __page_build_entity_id?: string;
+  __page_build_sub_releases?: subRelease [];
+}
+
+interface subRelease {
+  id: string;
+  name: string;
+  type: string;
+  resourceType: string;
+}
+
 interface Window {
-  FreelogApp: plainObject;
+  FreelogApp: FreelogApp;
+  __auth_info__: authInfo;
 }
 
 interface plainObject extends Object {
-  [key: string]: any;
+  [propName: string]: any;
 }
+
+
