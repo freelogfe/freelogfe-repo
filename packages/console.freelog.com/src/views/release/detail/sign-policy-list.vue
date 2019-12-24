@@ -4,14 +4,14 @@
     <div class="signed-list" v-if="signedPolicies.length">
       <h3>
         {{checkedNodeIsSigned ? $t('signPolicyBox.titles[0]') + checkedNodeName : $t('signPolicyBox.titles[1]')}}
-        <el-tooltip placement="right" :content="$t('signPolicyBox.tips[0]')" >
+        <el-tooltip placement="right" :content="$t('signPolicyBox.tips[0]')" effect="light">
           <i class="el-icon-info"></i>
         </el-tooltip>
       </h3>
       <transition-group name="list" tag="p">
         <div class="s-l-item" v-for="policy in signedPolicies" :key="policy.pCombinationID">
           <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(signedPolicies, policy)">
-            <template v-if="!checkedNodeIsSigned"> 
+            <template v-if="!checkedNodeIsSigned">
               <span class="p-n-check-box" v-if="!policy.isSelected"></span>
               <i class="el-icon-check" v-else></i>
             </template>
@@ -31,7 +31,7 @@
           </div>
         </div>
       </transition-group>
-      
+
     </div>
     <div class="no-sign-list" v-if="nodSignPolicies.length">
       <h3>
@@ -50,15 +50,13 @@
       <transition-group name="list" tag="p">
         <div class="no-s-l-item" v-for="p in nodSignPolicies" :key="p.pCombinationID">
           <div class="p-name" :class="{'isSigned': checkedNodeIsSigned}" @click="selectPolicy(nodSignPolicies, p)">
-            <template v-if="checkedNodeIsSigned">
-              <el-button class="p-sign-btn" type="primary" size="mini" @click="signNewPolicy(p)">{{$t('btns.sign')}}</el-button>
-            </template>
-            <template v-else>
+            <template v-if="!checkedNodeIsSigned">
               <span class="p-n-check-box" v-if="!p.isSelected"></span>
               <i class="el-icon-check" v-else></i>
             </template>
-            {{p.policyName}}<span v-if="p.status === 0">（{{$t('offline')}}）</span>  
+            {{p.policyName}}<span v-if="p.status === 0">（{{$t('offline')}}）</span>
           </div>
+          <el-button class="p-sign-btn" type="primary" size="mini" v-if="checkedNodeIsSigned" @click="signNewPolicy(p)">{{$t('btns.sign')}}</el-button>
           <div class="p-detail">
             <pre class="p-segment-text" >{{fmtPolicyTextList(p)}}</pre>
           </div>
@@ -146,7 +144,7 @@ export default {
           message: '请先选择签约节点',
           type: 'warning'
         })
-        return 
+        return
       }
 
       policy.isSelected = !policy.isSelected
@@ -181,23 +179,20 @@ export default {
 .no-sign-list, .signed-list {
   h3 {
     margin-bottom: 8px;
-    font-size: 14px; color: #4497EC;
+    font-size: 14px; font-weight: 400; color: #666;
+    .el-icon-info { color: #c6c6c6; }
   }
 }
 .no-s-l-item, .s-l-item  {
+  position: relative;
   margin-bottom: 20px; border: 1px solid #ccc; border-top-left-radius: 4px; border-top-right-radius: 4px;
   color: #333;
-  
+
   .p-name {
     position: relative; cursor: pointer;
     padding: 10px 0 10px 40px;
     font-size: 14px; color: #333;
-    &.isSigned { padding-left: 15px; background-color: #FAFBFB; }
-    .p-sign-btn {
-      float: right;
-      margin-right: 15px; border-radius: 20px;
-      font-size: 12px; 
-    }
+    &.isSigned { pointer-events: none; cursor: auto; padding-left: 15px; background-color: #FAFBFB; }
 
     .p-n-check-box {
       display: inline-block;
@@ -216,6 +211,11 @@ export default {
       }
     }
   }
+  .p-sign-btn {
+    position: absolute; top: 7px; right: 15px; z-index: 10;
+    border-radius: 20px;
+    font-size: 12px;
+  }
   .p-detail {
     padding: 10px 15px; font-size: 14px;  border-top: 1px solid #ccc;
   }
@@ -227,15 +227,14 @@ export default {
 .s-l-item {
   position: relative;
   border: 1px solid #ccc; border-radius: 4px; background-color: #FAFBFB;
-  
-  .p-name{ 
-    margin-top: 8px; font-weight: 600;
 
-    .contract-status {
-      display: inline-block; 
+  .p-name{
+    margin-top: 8px; font-weight: 600;
+      .contract-status {
+      display: inline-block;
       margin-left: 10px; padding: 0 10px; border: 1px solid; border-radius: 12px;
       font-size: 14px;
-    
+
       &.status-0 { color: #fff; border-color: #999; background: #999; }
       &.status-1, &.status-2 { color: #FBB726; border-color: #FBB726; }
       &.status-4 { color: #45BC7B; border-color: #45BC7B; }
@@ -244,9 +243,9 @@ export default {
   }
 
   .p-auth-info {
-    padding: 5px 15px 10px; 
+    padding: 5px 15px 10px;
     span { display: inline-block; width: 49%; color: #999; }
   }
 }
-  
+
 </style>

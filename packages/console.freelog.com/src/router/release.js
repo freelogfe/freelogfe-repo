@@ -51,7 +51,8 @@ export default {
       meta: {
         requiresAuth: true,
         hideFooter: true,
-        title: i18n.t('routes.releaseManager'),
+        // title: i18n.t('routes.releaseManager'),
+        title: '发行信息',
         type: 'release',
         theme: 'white'
       },

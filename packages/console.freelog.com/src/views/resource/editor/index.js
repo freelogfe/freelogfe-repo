@@ -121,38 +121,47 @@ export default {
                 return;
             }
             const res = await this.$axios.get(`/v1/resources/${resourceId}`);
-            // return;
-            // console.log(res.data.data, 'res.data.datares.data.data');
+            if (res.data.ret !== 0 || res.data.ret !== 0) {
+                return this.message.error(res.data.msg);
+            }
             const result = res.data.data;
-            // console.log(result, 'resultresult');
             this.resourceType = result.resourceType;
-            // this.uploadFileInfo = {
-            //     fileID: '',
-            //     sha1: '',
-            //     name: result.systemMeta.filename,
-            //     size: result.systemMeta.fileSize,
-            // };
             this.resourceName = result.aliasName;
-            // this.coverURL = result.previewImages[0] || '';
-            // this.depList = [
-            //     ...result.systemMeta.dependencyInfo.releases.map(i => ({
-            //         id: i.releaseId,
-            //         name: i.releaseName,
-            //         version: i.versionRange,
-            //     })),
-            //     ...result.systemMeta.dependencyInfo.mocks.map(i => ({
-            //         id: i.mockResourceId,
-            //         name: i.mockResourceName,
-            //     })),
-            // ];
-            this.depList = result.systemMeta.dependencies.map(i => ({
-                id: i.releaseId,
-                name: i.releaseName,
-                version: i.versionRange,
-            }));
-            // console.log(this.depList, 'this.depList');
             this.description = result.description;
             this.metaInfo = JSON.stringify(result.meta);
+
+            // this.depList = result.systemMeta.dependencies.map(i => ({
+            //     id: i.releaseId,
+            //     name: i.releaseName,
+            //     version: i.versionRange,
+            // }));
+
+            const releaseIds = result.systemMeta.dependencies.map(i => i.releaseId).join(',');
+            if (!releaseIds) {
+                return;
+            }
+            const res1 = await this.$axios.get(`/v1/releases/list?releaseIds=${releaseIds}`);
+
+            // console.log(res1, 'res1res1');
+            if (res1.data.ret !== 0 || res1.data.ret !== 0) {
+                return this.message.error(res1.data.msg);
+            }
+
+            const result1 = res1.data.data;
+            this.depList = result1.map(i => {
+                const version = result.systemMeta.dependencies.find(j => j.releaseId === i.releaseId).versionRange;
+                return {
+                    date: i.createDate.split('T')[0],
+                    id: i.releaseId,
+                    isOnline: i.status === 1,
+                    name: i.releaseName,
+                    type: i.resourceType,
+                    // version: i.resourceVersions[0].version,
+                    version,
+                    versions: i.resourceVersions.map(k => k.version),
+                };
+            });
+            // console.log(this.depList, 'this.depList');
         },
 
         /**
@@ -308,7 +317,7 @@ export default {
             if (!this.isUpdateResource) {
                 const res = await this.$axios.post('/v1/resources', params);
                 if (res.data.errcode !== 0) {
-                    this.$message.error(this.$t('creationFailed'));
+                    this.$message.error(res.data.msg);
                     throw new Error(this.$t('creationFailed'));
                 }
                 this.$message.success(this.$t('createdSuccessfully'));
@@ -318,11 +327,11 @@ export default {
                 const {resourceId} = this.$route.params;
                 const res = await this.$axios.put(`/v1/resources/${resourceId}`, params);
                 if (res.data.errcode !== 0) {
-                    this.$message.error(this.$t('saveFailed'));
+                    this.$message.error(res.data.msg);
                     throw new Error(this.$t('saveFailed'));
                 }
                 this.targetResourceData = res.data.data
-                this.$message.success(this.$t('saveSuccess'));
+                this.$message.success('保存成功');
                 return res.data.data.resourceId;
             }
 
@@ -345,8 +354,10 @@ export default {
             }
             const resourceId = await this.submit();
             if (!bool) {
-                return this.$router.replace(`/resource/list`);
-                // return ;
+                if (!this.$route.params.resourceId) {
+                    this.$router.replace(`/resource/editor/${resourceId}`);
+                }
+                return;
             }
             this.tmpRreatedResourceID = resourceId;
             this.isShowReleaseSearchDialog = true;
@@ -384,7 +395,9 @@ export default {
         isShowReleaseSearchDialog(val) {
             // console.log(val, 'val');
             if (val === false) {
-                this.$router.replace(`/resource/list`);
+                if (!this.$route.params.resourceId) {
+                    this.$router.replace(`/resource/editor/${this.tmpRreatedResourceID}`);
+                }
             }
         }
     }

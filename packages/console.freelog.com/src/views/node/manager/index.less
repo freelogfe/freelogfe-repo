@@ -5,6 +5,11 @@
         width: 280px;
         flex-shrink: 0;
         background-color: #fafbfb;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        bottom: 0;
+        border-bottom: 0;
 
         .node-manager__aside__name {
             color: #333;
@@ -60,6 +65,7 @@
         flex-shrink: 1;
         background-color: #fff;
         padding: 0 60px;
+        margin-left: 280px;
 
         .node-manager__main__header {
             display: flex;
@@ -83,6 +89,10 @@
 
         .node-manager__main__table {
             width: 100%;
+
+            .el-input--mini {
+                font-size: 16px;
+            }
 
             .node-manager__main__table__release {
                 display: flex;
@@ -125,6 +135,10 @@
                 color: #000;
                 font-size: 14px;
                 display: block;
+                cursor: pointer;
+                &:hover{
+                    text-decoration: underline;
+                }
             }
 
             .node-manager__main__table__type {

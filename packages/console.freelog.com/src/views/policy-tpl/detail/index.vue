@@ -15,7 +15,7 @@
         <span v-else>{{detail.name}}</span>
       </el-form-item>
       <el-form-item label="策略模板类型" class="flex-grid">
-        {{resolveType(detail.templateType)}}
+        {{resolveType(detail.templateType) | pageBuildFilter}}
       </el-form-item>
       <el-form-item label="状态" class="flex-grid">
         {{resolveStatus(detail.status)}}

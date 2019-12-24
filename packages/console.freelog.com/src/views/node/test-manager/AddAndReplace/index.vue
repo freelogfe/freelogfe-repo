@@ -4,7 +4,7 @@
             style="color: #333; font-size: 14px; padding: 10px; cursor: pointer;"
             @click="dialogVisible = true"
         >
-            <i class="el-icon-plus" style="font-size: 16px; font-weight: 600;"></i>
+            <i class="el-icon-plus" style="font-size: 16px; font-weight: 600;"/>
             <span style="vertical-align: center;">新增测试展品</span>
         </a>
 
@@ -12,7 +12,7 @@
             @click="elDialogVisible = true"
             style="color: #333; font-size: 14px; padding: 10px; cursor: pointer;"
         >
-            <i class="el-icon-refresh" style="font-size: 16px; font-weight: 600;"></i>
+            <i class="el-icon-refresh" style="font-size: 16px; font-weight: 600;"/>
             <span style="vertical-align: center;">替换依赖</span>
         </a>
 
@@ -42,13 +42,13 @@
                         @click="elDialogVisible = false"
                         class="el-icon-close"
                         style="font-size: 10px; color: #999; cursor: pointer;"
-                    ></i>
+                    />
                 </div>
 
                 <div v-if="controlShowHide"
                      style="padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
                     <Replacer @onChange="replacerChange"/>
-                    <i class="el-icon-back" style="transform: rotate(180deg)"></i>
+                    <i class="el-icon-back" style="transform: rotate(180deg)"/>
                     <Replaced @onChange="replacedChange"/>
                 </div>
 

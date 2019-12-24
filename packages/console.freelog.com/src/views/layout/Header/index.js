@@ -2,6 +2,9 @@ import {mapGetters} from 'vuex'
 import SearchInput from '@/components/SearchInput/index.vue'
 import { logout, LOGIN_PATH } from '@freelog/freelog-ui-login'
 
+import HeaderMenu from './HeaderMenu/index.vue';
+import HeaderTools from './HeaderTools/index.vue';
+
 export default {
   name: 'fl-header',
 
@@ -25,11 +28,13 @@ export default {
   },
 
   components: {
-    SearchInput
+    SearchInput,
+      HeaderMenu,
+      HeaderTools,
   },
 
   created() {
-    
+
   },
   mounted() {
     if (this.session && this.session.user && this.session.user.userId) {
@@ -49,7 +54,7 @@ export default {
 
   methods: {
     initData() {
-      this.$store.dispatch('loadNodes')
+      // this.$store.dispatch('loadNodes')
       if (this.session.user.headImage) {
         this.avatarUrl = `${this.session.user.headImage}?x-oss-process=style/head-image`
       }
@@ -70,22 +75,22 @@ export default {
     logout() {
       logout().catch(this.$error.showErrorMessage)
     },
-    searchHandler(qs) {
-      this.$router.push({path: '/', query: {q: qs}})
-    },
-    handleCommand(lang) {
-      if (lang === this.$i18n.locale) return
-      var langMap = {
-        'en': 'English',
-        'zh-CN': '中文'
-      }
-      this.$confirm(this.$t('header.langSwitchQuestion', {lang: langMap[lang]}))
-        .then(() => {
-          window.localStorage.setItem('locale', lang)
-          this.$i18n.locale = lang
-          window.location.reload()
-        }).catch(() => {
-      })
-    }
+    // searchHandler(qs) {
+    //   this.$router.push({path: '/', query: {q: qs}})
+    // },
+    // handleCommand(lang) {
+    //   if (lang === this.$i18n.locale) return
+    //   var langMap = {
+    //     'en': 'English',
+    //     'zh-CN': '中文'
+    //   }
+    //   this.$confirm(this.$t('header.langSwitchQuestion', {lang: langMap[lang]}))
+    //     .then(() => {
+    //       window.localStorage.setItem('locale', lang)
+    //       this.$i18n.locale = lang
+    //       window.location.reload()
+    //     }).catch(() => {
+    //   })
+    // }
   }
 }

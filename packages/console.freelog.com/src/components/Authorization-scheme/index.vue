@@ -18,7 +18,7 @@
           <div>
             <span>{{resourceAuthScheme.userName}}</span>
             <span>{{resourceAuthScheme.updateDate|fmtDate}}</span>
-            <span>{{resourceAuthScheme.resourceType}}</span>
+            <span>{{resourceAuthScheme.resourceType | pageBuildFilter}}</span>
           </div>
         </div>
         <div

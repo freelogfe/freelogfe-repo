@@ -16,6 +16,10 @@ export default {
       default() {
         return '300px'
       }
+    },
+    placeholder: {
+      type: String,
+      default: ''
     }
   },
   mounted() {

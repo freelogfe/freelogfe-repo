@@ -13,7 +13,7 @@
                     :name="item.name"
                     :version="item.version"
                     :date="item.date"
-                ></ReleasedItem>
+                />
             </div>
         </BlockBody>
 
@@ -37,7 +37,7 @@
                     <el-option
                         v-for="item in resourceTypes"
                         :key="item"
-                        :label="item"
+                        :label="item | pageBuildFilter"
                         :value="item">
                     </el-option>
 
@@ -80,7 +80,7 @@
                     v-model="resourceName"
                     :placeholder="$t('enterResourceName')"
                     class="resource-editor__name__input"
-                ></el-input>
+                />
 
                 <span
                     class="resource-editor__name__length"
@@ -98,7 +98,7 @@
                 <div
                     class="resource-editor__dependency--lock"
                 >
-                    <i class="el-icon-info"></i> {{$t('cannotChangedDep')}}
+                    <i class="el-icon-info"/> {{$t('cannotChangedDep')}}
                 </div>
             </template>
             <!--            :isLock="releasedList.length > 0"-->
@@ -126,7 +126,7 @@
                 class="resource-editor__meta__button"
                 size="medium"
                 @click="showMetaInput"
-            ><i class="el-icon-plus"></i> {{$t('addMeta')}}
+            ><i class="el-icon-plus"/> {{$t('addMeta')}}
             </el-button>
         </div>
 
@@ -138,7 +138,7 @@
                     <MetaInfoInput
                         @validate="checkMetaValid"
                         v-model="metaInfo"
-                    ></MetaInfoInput>
+                    />
                 </div>
             </div>
         </BlockBody>
@@ -160,12 +160,12 @@
                 <el-button
                     size="medium"
                     round
-                    type="primary"
                     @click="onSubmitButtonClick(false)"
                 >{{isUpdateResource ? $t('save'): $t('completeCreating')}}
                 </el-button>
                 <el-button
                     size="medium"
+                    type="primary"
                     round
                     @click="onSubmitButtonClick(true)"
                 >{{isUpdateResource ? $t('saveAndRelease'): $t('createAndRelease')}}
@@ -185,7 +185,7 @@
                 :tabLayout="['my-release']"
                 :historicalReleases="this.releasedList.map(i => ({releaseId: i.id}))"
                 @add="createRelease"
-            ></release-search>
+            />
             <div slot="footer">
                 <el-button
                     round

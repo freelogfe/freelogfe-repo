@@ -2,12 +2,12 @@
 <template>
   <section class="my-collections">
     <div class="m-c-header clearfix">
-      <router-link :to="releasesMarketLink">
-        <el-button size="medium" type="primary" class="m-c-go-to-market">{{$t('goToMarket')}}</el-button>
-      </router-link>
       <div class="right-tool-bar-wrap">
         <search-input @search="searchHandler" showInputImmediately></search-input>
       </div>
+      <router-link :to="releasesMarketLink">
+        <el-button size="medium" type="warning" class="m-c-go-to-market">{{$t('goToMarket')}}</el-button>
+      </router-link>
     </div>
     <release-items-list type='myCollections' :query="queryInput"></release-items-list>
   </section>
@@ -47,16 +47,17 @@ export default {
   .my-collections {
     width: @main-content-width-1190;
     margin: auto;
-    padding-top: 50px;
+    padding-top: 30px;
     padding-left: 50px;
   }
   .m-c-header {
-    margin-bottom: 40px;
+    margin-bottom: 28px; text-align: right;
     .m-c-go-to-market {
-      width:160px; border-radius: 2px;
+      width: 120px; margin-left: 20px; border-radius: 2px; border-color: #F6BE25;
+      background-color: #F6BE25; color: #fff;
     }
     .right-tool-bar-wrap {
-      float: right;
+      display: inline-block;
     }
   }
   @media screen and (max-width: 1250px){

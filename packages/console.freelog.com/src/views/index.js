@@ -16,6 +16,7 @@ const error = resolve => require.ensure([], () => resolve(require('@/views/error
 const aboutView = resolve => require.ensure([], () => resolve(require('@/views/about/index.vue')), 'other')
 const helpView = resolve => require.ensure([], () => resolve(require('@/views/help/index.vue')), 'other')
 const mainView = resolve => require.ensure([], () => resolve(require('@/views/main/index.vue')), 'index')
+const releaseManagementView = resolve => require.ensure([], () => resolve(require('@/views/main/release-management.vue')), 'release-management')
 const marketView = resolve => require.ensure([], () => resolve(require('@/views/market/index.vue')), 'index')
 const userView = resolve => require.ensure([], () => resolve(require('@/views/user/setting/index.vue')), 'user')
 
@@ -26,6 +27,7 @@ export const views = {
     helpView,
     error,
     mainView,
+    releaseManagementView,
     marketView,
     userView,
     ...ResourceViews,
@@ -42,6 +44,7 @@ export default {
     helpView,
     error,
     mainView,
+    releaseManagementView,
     marketView,
     userView,
     ...ResourceViews,

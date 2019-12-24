@@ -22,6 +22,7 @@ export default {
         sureText: '确定',
         sureBtnText: '确 定',
         cancelBtnText: '取 消',
+        allTypes: '全部类型'
     },
 
     header: {
@@ -80,6 +81,7 @@ export default {
 
     release: {
         myReleases: '我的发行',
+        management: '发行管理',
     },
 
     node: {

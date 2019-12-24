@@ -4,7 +4,7 @@
     <div class="r-e-l-header clearfix">
       <div class="r-e-l-main-content">
         <div class="preview-box">
-          <UploadCover 
+          <UploadCover
             width="100"
             height="75"
             multiple
@@ -47,7 +47,7 @@
             </div>
           </div>
           <div class="r-e-l-info">
-            <span class="r-i-type">{{release.resourceType}}</span>
+            <span class="r-i-type">{{release.resourceType | pageBuildFilter}}</span>
             <span class="r-i-date">{{release.updateDate | fmtDate}}</span>
             <span class="r-i-version">{{$t('releaseId')}} {{release.releaseId}}</span>
           </div>
@@ -256,7 +256,7 @@
         this.tempEditingIntro = ''
       },
       saveIntroHandler() {
-        const $i18n = this.$i18n 
+        const $i18n = this.$i18n
         var successMsg = this.release.intro === '' ? $i18n.t('messages[2]') : $i18n.t('messages[3]')
         const intro = this.tempEditingIntro.replace(/^(\s*)|(\s*)$/g, '')
         this.updateRelease({ intro }, successMsg)
@@ -317,12 +317,12 @@
 <style lang="less" type="text/less">
 .release-editor-layout {
   .preview-box {
-    #upload-cover {
+    .avatar-uploader {
       .el-upload {
         border: none; border-radius: 2px;
       }
       .el-upload-dragger {
-        overflow: initial; border-width: 0; 
+        overflow: initial; border-width: 0;
       }
     }
   }

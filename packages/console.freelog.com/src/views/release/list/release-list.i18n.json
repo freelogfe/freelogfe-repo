@@ -20,7 +20,7 @@
       "cancelCollectionBtnText": "取消收藏",
       "tips": [ "策略已下架" ],
       "messages": [ "没有符合条件的发行", "您还没有创建任何发行。", "您还没有收藏任何发行。您在发行市场收藏的发行之后将会出现在这里。", "取消成功！" ],
-      "status": [ "未上线", "已上线" ],
+      "status": [ "全部", "已上线", "未上线" ],
       "statusText": "状态"
     }
   },
@@ -45,8 +45,8 @@
       "cancelCollectionBtnText": "cancel collection",
       "tips": [ "All policies has been off the shelves" ],
       "messages": [ "There are no releases available", "You have not created any releases.", "You haven't collected any releases yet. You will appear here after the release of your collection in the release market.", "Cancel Successful！" ],
-      "status": [ "offline", "online" ],
-      "statusText": "state"
+      "status": [ "All", "online", "offline" ],
+      "statusText": "State"
     }
   }
 }

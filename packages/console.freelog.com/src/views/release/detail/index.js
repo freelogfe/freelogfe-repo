@@ -325,7 +325,7 @@ export default {
 
       var message = ''
       if(this.checkedNodeId === '') {
-        message = '请先选择签约的节点'
+        message = this.$i18n.t('messages[0]')
       }else {
         var tmpArr = []
         if(this.release.selectedPolicies.length === 0) {
@@ -337,7 +337,7 @@ export default {
           }
         })
         if(tmpArr.length > 0) {
-          message = `${this.$i18n.t('release')}${tmpArr.join(',')}”${this.$i18n.t('messages[2]')}`
+          message = `${this.$i18n.t('release')}${tmpArr.join(',')}”${this.$i18n.t('messages[1]')}`
         }
       }
       

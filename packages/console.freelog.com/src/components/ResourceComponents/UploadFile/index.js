@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import path from 'path';
 
 export default {
     name: 'UploadFile',
@@ -142,10 +143,17 @@ export default {
          */
         async beforeUpload(file) {
             // console.log(file, '123412341234213423');
+            // console.log(this.fileType === 'image', 'this.fileType');
+            // console.log(!(file.type.startsWith('image')), 'file.type');
+            if (this.fileType === 'image' && !(file.type.startsWith('image'))) {
+                // console.log('##########');
+                this.errorText = '请上传图片格式';
+                throw new Error(this.errorText);
+            }
 
             if (file.size > 52428800) {
                 this.errorText = '资源最大不超过50M';
-                throw new Error();
+                throw new Error(this.errorText);
             }
 
             if (this.noRepeat) {
@@ -153,7 +161,7 @@ export default {
                 const res = await this.$axios.get(`/v1/resources/${hash}`);
                 if (res.data.data) {
                     this.errorText = this.$t('resourceDuplicated');
-                    throw new Error();
+                    throw new Error(this.errorText);
                 }
             }
 
@@ -181,6 +189,10 @@ export default {
          */
         onSuccess(response) {
             // console.log(response, 'responseresponseresponse');
+            if (response.ret !== 0 || response.errcode !== 0) {
+                this.deleteUploadedFile();
+                return this.$message.error(response.msg);
+            }
             this.percentage = 100;
             this.onFileInfoChange({
                 ...this.fileInfo,

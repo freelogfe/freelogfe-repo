@@ -18,7 +18,7 @@
             <li class="ls-item ls-create-resource">
                 <el-tooltip effect="dark" :content="$t('routes.createResource')" placement="right" :disabled="!isMini">
 <!--                    <router-link to="/resource/create" class="nav-link create-resource ls-nav-link">-->
-                    <router-link to="/resource/editor" class="nav-link create-resource ls-nav-link">
+                    <router-link to="/resource/editor" class="nav-link create-resource ls-nav-link" target="_blank">
                         <i class="el-icon-plus"></i>
                         <span>{{$t('routes.createResource')}}</span>
                     </router-link>
@@ -34,7 +34,7 @@
             </li>
             <li class="ls-item">
                 <el-tooltip effect="dark" :content="$t('routes.myResources')" placement="right" :disabled="!isMini">
-                    <router-link to="/resource/list" class="nav-link ls-nav-link">
+                    <router-link to="/release-management/resource/list" class="nav-link ls-nav-link">
                         <i class="el-icon-menu"></i>
                         <span>{{$t('routes.myResources')}}</span>
                     </router-link>
@@ -42,7 +42,7 @@
             </li>
             <li class="ls-item">
                 <el-tooltip effect="dark" :content="$t('routes.myReleases')" placement="right" :disabled="!isMini">
-                    <router-link to="/release/list" class="nav-link ls-nav-link">
+                    <router-link to="/release-management/release/list" class="nav-link ls-nav-link">
                         <i class="el-icon-fa-list"></i>
                         <span>{{$t('routes.myReleases')}}</span>
                     </router-link>
@@ -50,7 +50,7 @@
             </li>
             <li class="ls-item">
                 <el-tooltip effect="dark" :content="$t('routes.myCollections')" placement="right" :disabled="!isMini">
-                    <router-link to="/release/collections" class="nav-link ls-nav-link">
+                    <router-link to="/release-management/release/collections" class="nav-link ls-nav-link">
                         <i class="el-icon-files"></i>
                         <span>{{$t('routes.myCollections')}}</span>
                     </router-link>

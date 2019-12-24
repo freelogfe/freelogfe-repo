@@ -8,34 +8,56 @@
             :previewSrc="releaseInfo.previewImages || undefined"
             :title="releaseInfo.releaseName"
             :type="'release'"
-            :resourceType="releaseInfo.resourceType"
+            :resourceType="releaseInfo.resourceType | pageBuildFilter"
             :version="releaseInfo.version"
             :content="releaseInfo.intro"
         />
         <ModuleBlock>
 
             <BlockItem label="状态">
-                <div
-                    v-show="!isOnline"
-                    class="manager-release__state"
-                >
-                    <label>未上线</label>
-                    <a
-                        @click="onLineAndOffLine"
-                    >上线</a>
-                </div>
-                <div
-                    v-show="isOnline"
-                    class="manager-release__state"
-                >
-                    <label>已上线</label>
-                    <a
-                        @click="onLineAndOffLine"
-                    >下线</a>
-                </div>
+                <template v-if="releaseInfo.resourceType === 'page_build'">
+                    <div
+                        v-show="!isOnline"
+                        class="manager-release__state"
+                    >
+                        <label>未激活</label>
+                        <a
+                            @click="onLineAndOffLine"
+                        >激活</a>
+                    </div>
+                    <div
+                        v-show="isOnline"
+                        class="manager-release__state"
+                    >
+                        <label>已激活</label>
+                        <!--                    <a-->
+                        <!--                        @click="onLineAndOffLine"-->
+                        <!--                    >下线</a>-->
+                    </div>
+                </template>
+                <template v-else>
+                    <div
+                        v-show="!isOnline"
+                        class="manager-release__state"
+                    >
+                        <label>未上线</label>
+                        <a
+                            @click="onLineAndOffLine"
+                        >上线</a>
+                    </div>
+                    <div
+                        v-show="isOnline"
+                        class="manager-release__state"
+                    >
+                        <label>已上线</label>
+                        <a
+                            @click="onLineAndOffLine"
+                        >下线</a>
+                    </div>
+                </template>
             </BlockItem>
 
-            <BlockItem label="节点发行名称">
+            <BlockItem label="展品名称">
                 <ConfirmInput
                     :value="presentableName"
                     @confirmChange="confirmChange"
@@ -63,7 +85,7 @@
                 <div style="height: 5px;"></div>
                 <FreelogTags
                     v-model="userDefinedTags"
-                ></FreelogTags>
+                />
             </BlockItem>
 
             <BlockItem label="授权策略">
@@ -89,7 +111,7 @@
                             >
                                 <i
                                     class="el-icon-warning"
-                                ></i>
+                                />
                             </div>
                         </el-popover>
                     </div>
@@ -99,7 +121,7 @@
                         @add-policy="switchShowEditPolicy(true)"
                         :policyList="policies"
                         @update-policies="updatePolicies"
-                    ></PolicyList>
+                    />
                     <!--                        </div>-->
                 </template>
                 <!--                :policy="editTmpPolicy"-->
@@ -110,7 +132,7 @@
                     v-if="isShowEditPolicy"
                     @save="saveANewPolicy"
                     @cancel="switchShowEditPolicy(false)"
-                ></PolicyEditor>
+                />
             </BlockItem>
         </ModuleBlock>
 

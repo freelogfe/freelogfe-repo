@@ -10,7 +10,7 @@
                     style="background-color: #cdcdcd; border-radius: 2px; color: #fff; font-size: 12px; padding: 2px 9px;">{{$t('noOnline')}}</span>
             </div>
             <div style="font-size: 14px; color: #999;">
-                <span>{{type}}</span>
+                <span>{{type | pageBuildFilter}}</span>
                 <span v-if="!!version"> | v{{version}}</span>
                 <span> | {{date}}</span>
             </div>

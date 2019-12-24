@@ -20,7 +20,7 @@
                     <el-option
                         v-for="item in resourceTypes"
                         :key="item"
-                        :label="item"
+                        :label="item | pageBuildFilter"
                         :value="item">
                     </el-option>
 
@@ -57,7 +57,7 @@
                     v-model="resourceName"
                     :placeholder="$t('enterResourceName')"
                     class="mock-editor__name__input"
-                ></el-input>
+                />
 
                 <span
                     class="mock-editor__name__length"

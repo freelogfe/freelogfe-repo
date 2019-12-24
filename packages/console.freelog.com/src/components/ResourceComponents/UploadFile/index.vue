@@ -5,16 +5,17 @@
             style="background-color: #fafbfb; padding: 0 10px; display: flex; align-items: center; justify-content: space-between;">
             <div style="line-height: 46px; font-size: 14px; color: #333; display: flex; align-items: center;">
                 <!-- {{fileType}} -->
-                <i class="resource-default-preview" style="width: 20px; height: 20px;"></i>
+                <i class="resource-default-preview" style="width: 20px; height: 20px;"/>
                 <span style="padding-right: 70px; padding-left: 10px;">{{fileInfo.name}}</span>
                 <span>{{fileSize}}</span>
             </div>
             <a
                 @click="onFileInfoChange"
                 class="el-icon-circle-close"
-            ></a>
+            />
         </div>
 
+        <!--        :accept="accept"-->
         <el-upload
             v-show="!fileInfo.name"
             :action="uploadResourceFileAction"
@@ -51,7 +52,7 @@
                 >
                     <div style="display: flex; align-items: center;">
                         <!-- {{fileType}} -->
-                        <i class="resource-default-preview" style="width: 20px; height: 20px;"></i>
+                        <i class="resource-default-preview" style="width: 20px; height: 20px;"/>
                         <span style="padding-left: 10px;">{{fileInfo.name}}</span>
                     </div>
                     <span>{{fileSize}}</span>
@@ -64,7 +65,7 @@
                         color="#409eff"
                         :show-text="false"
                         style="flex-shrink: 1; width: 100%;"
-                    ></el-progress>
+                    />
                     <div
                         style="width: 130px;box-sizing: border-box;flex-shrink: 0;padding-left: 10px;color: #3f9cfd;font-size: 14px;font-weight: 600;"
                     >
@@ -77,7 +78,7 @@
                         <a
                             @click="deleteUploadedFile"
                             class="el-icon-circle-close"
-                        ></a>
+                        />
                     </span>
 
                         <div
@@ -87,7 +88,7 @@
                             <i
                                 style="font-size: 20px; color: #5cd217;"
                                 class="el-icon-circle-check"
-                            ></i>
+                            />
                             <span style="font-size: 13px; color: #333;">{{$t('uploadSuccess')}}</span>
 
                             <el-popover
@@ -118,7 +119,7 @@
                                 <a
                                     slot="reference"
                                     class="el-icon-circle-close"
-                                ></a>
+                                />
                             </el-popover>
                         </div>
                     </div>
@@ -138,7 +139,7 @@
                 <i
                     class="el-icon-warning"
                     style="color: #FFC000; font-size: 20px;"
-                ></i>
+                />
                 <span style="font-size: 14px; color: #333; font-weight: 600; padding-left: 10px;"> {{errorText}}</span>
             </div>
             <div style="height: 40px;"></div>

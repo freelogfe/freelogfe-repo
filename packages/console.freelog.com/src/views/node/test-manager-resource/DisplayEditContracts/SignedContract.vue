@@ -18,7 +18,7 @@
                 </div>
                 <el-dropdown v-if="unique">
                     <el-button size="mini">
-                        已启用<i class="el-icon-arrow-down el-icon--right"></i>
+                        已启用<i class="el-icon-arrow-down el-icon--right"/>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>当前授权方案中只有一个合约，不可停用</el-dropdown-item>
@@ -26,7 +26,7 @@
                 </el-dropdown>
                 <el-dropdown v-else @command="$emit('command')">
                     <el-button size="mini">
-                        {{disabled ? $t('paused') : $t('used')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                        {{disabled ? $t('paused') : $t('used')}}<i class="el-icon-arrow-down el-icon--right"/>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>{{disabled ? $t('use') : $t('pause')}}</el-dropdown-item>
@@ -48,7 +48,7 @@
                 class="contract-policy-content"
                 :contract.sync="contract"
                 :policyText="contract.contractClause.policyText"
-            ></ContractDetail>
+            />
             <div style="height: 30px;"></div>
         </div>
     </div>

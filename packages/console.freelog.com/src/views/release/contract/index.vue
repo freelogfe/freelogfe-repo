@@ -37,7 +37,7 @@
                 <span class="r-e-i-label">发行名称</span>{{targetData.label}}
               </div>
               <div class="r-e-info-row">
-                <span class="r-e-i-label">资源类型</span>{{targetData.resourceType}}
+                <span class="r-e-i-label">资源类型</span>{{targetData.resourceType | pageBuildFilter}}
               </div>
               <div class="r-e-info-row">
                 <span class="r-e-i-label">创建日期</span>{{contractDetail.createDate | fmtDate}}
@@ -137,7 +137,7 @@
             tmpTreeData[firstLevelNodeIndex] = this.getTreeNode(rtData[i], key + i)
           }
           this.releaseIdNameMap[releaseId] = releaseName
-          
+
           baseUpcastReleases.forEach((item) => {
             if(item.contracts && item.contracts.length > 0) {
               let tmpNode = this.getTreeNode(item, key + i)

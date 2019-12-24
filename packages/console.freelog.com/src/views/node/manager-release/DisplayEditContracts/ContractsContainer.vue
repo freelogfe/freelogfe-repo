@@ -4,7 +4,7 @@
         <div style="color: #999; font-size: 14px;">{{title}}</div>
         <div style="height: 10px;"></div>
 
-        <slot></slot>
+        <slot/>
     </div>
 </template>
 

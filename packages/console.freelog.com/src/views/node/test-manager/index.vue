@@ -1,8 +1,6 @@
 <template>
-    <div
-        class="test-management"
-        :style="styleObject"
-    >
+<!--    :style="styleObject"-->
+    <div class="test-management">
 
         <div class="test-management__aside">
 

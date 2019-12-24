@@ -11,9 +11,9 @@
         <el-table-column :label="$t('list.name')">
           <template slot-scope="scope">
             <div class="r-l-item-name-box" @click="goToReleaseDetail(scope.row)">
-                <img 
-                  class="r-l-item__img" 
-                  :class="{'resource-default-preview':!previewImage}" 
+                <img
+                  class="r-l-item__img"
+                  :class="{'resource-default-preview':!previewImage}"
                   :src="scope.row.previewImage" />
                 <div class="r-l-item-name" :title="scope.row.releaseName">{{scope.row.releaseName}}</div>
               </div>
@@ -23,15 +23,15 @@
           <template slot="header" slot-scope="scope">
             <el-dropdown class="r-l-types" @command="handleSelectType">
               <span class="el-dropdown-link">
-                {{$t('list.type')}} {{selectedType === 'all' ? '': ` ${selectedType}`}}<i class="el-icon-caret-bottom"></i>
+                {{$t('list.type')}} {{(selectedType === 'all' ? '': `${selectedType}`) | pageBuildFilter}}<i class="el-icon-caret-bottom"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="item in resourceTypes" :key="item.value" :command="item.value">{{item.label}}</el-dropdown-item>
+                <el-dropdown-item v-for="item in resourceTypes" :key="item.value" :command="item.value">{{item.label | pageBuildFilter}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
           <template slot-scope="scope">
-            <div class="r-l-item-type"> {{scope.row.resourceType}}</div>
+            <div class="r-l-item-type"> {{scope.row.resourceType | pageBuildFilter}}</div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('list.newVersion')" width="120">
@@ -41,7 +41,7 @@
         </el-table-column>
         <el-table-column :label="$t('list.policy')" width="160">
           <template slot-scope="scope">
-            <div v-if="scope.row.policies.length"> 
+            <div v-if="scope.row.policies.length">
               <el-popover placement="bottom-start" width="370" trigger="hover">
                 <div slot="reference">
                   <div class="r-l-item-policy-row1">
@@ -55,7 +55,7 @@
                 <f-policy-tabs :policies="scope.row.policies"></f-policy-tabs>
               </el-popover>
             </div>
-            <div class="r-l-item-no-policy" v-else>{{$t('list.noPolicies')}}</div> 
+            <div class="r-l-item-no-policy" v-else>{{$t('list.noPolicies')}}</div>
           </template>
         </el-table-column>
         <el-table-column prop="updateDate" :label="$t('list.updateDate')" width="180" v-if="type ==='myReleases' ">
@@ -77,9 +77,9 @@
                 {{$t('list.statusText')}} {{releaseStatusArray[selectedReleaseStatus].label}}<i class="el-icon-caret-bottom"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item 
-                  v-for="item in releaseStatusArray" 
-                  :key="item.value" 
+                <el-dropdown-item
+                  v-for="item in releaseStatusArray"
+                  :key="item.value"
                   :command="item.value">{{item.label}}
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -91,7 +91,7 @@
           <template slot-scope="scope">
             <div class="r-l-item-online" v-if="scope.row.isOnline">{{$t('list.status[1]')}}</div>
             <div class="r-l-item-offline" v-else>
-              {{$t('list.status[0]')}} 
+              {{$t('list.status[2]')}}
               <el-tooltip placement="top">
                 <div class="" slot="content">
                   <template v-if="scope.row.policies.length > 0"> {{$t('list.tips[0]')}}</template>
@@ -112,11 +112,12 @@
             </router-link>
             <el-button 
               v-if="type === 'myCollections'"
-              class="r-l-item-cancel-favor-btn" 
-              type="danger" 
-              size="mini" 
+              class="r-l-item-cancel-favor-btn"
+              size="mini"
               @click="cancelCollection(scope.row)">{{$t('list.cancelCollectionBtnText')}}</el-button>
-            <!-- <router-link :to="scope.row._toDetailLink" v-if="scope.row.isOnline">
+            <!-- -->
+            <!-- 
+            <router-link :to="scope.row._toDetailLink" v-if="scope.row.isOnline">
               <el-button class="r-l-item-detail-btn" size="mini">详情</el-button>
             </router-link> -->
           </template>
@@ -181,15 +182,18 @@
         return arr
       },
       releaseStatusArray() {
-        return RELEASE_STATUS.map((val, index) => {
-          return { label: val, value: index }
-        })
+        var status = typeof this.$i18n.t('list.status') === 'string' ? RELEASE_STATUS : this.$i18n.t('list.status')
+        const arr = []
+        for(let index in status) {
+          arr.push({ label: status[index], value: +index })
+        }
+        return arr
       }
     },
 
     watch: {
       selectedReleaseStatus() {
-        
+
       },
       query() {
         const $i18n = this.$i18n

@@ -13,19 +13,26 @@
                 class="style-page__header__input"
                 v-model="filterSearch"
             >
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                <i slot="prefix" class="el-input__icon el-icon-search"/>
                 <i
                     @click="filterSearch = ''"
                     v-show="filterSearch.length !== 0"
                     slot="suffix"
                     class="el-input__icon el-icon-circle-close"
-                ></i>
+                />
             </el-input>
         </div>
 
         <div style="height: 70px;"></div>
 
+        <div
+            v-if="tableData && tableData.length === 0"
+            style="display: flex; height: 400px; justify-content: center; align-items: center; color: #999; font-size: 22px;">
+            <div>您还没有为该节点设置主题，节点无法展示。 您可以添加theme类型的测试资源作为节点的主题。</div>
+        </div>
+
         <el-table
+            v-else
             :data="tableData"
             :empty-text="tableData === null ? '加载中...' : ''"
             class="style-page__table"
@@ -50,7 +57,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                label="相关条目|展示版本"
+                label="测试展品 | 展示版本"
                 min-width="25%"
             >
                 <template slot-scope="scope">
@@ -73,7 +80,23 @@
                         </label>
                         <span>{{scope.row.testResourceName}}</span>
                     </div>
-                    <div style="font-size: 12px; color: #888; padding-left: 50px;">{{scope.row.originInfo.version}}</div>
+                    <div v-if="scope.row.originInfo.type !== 'mock'" style="padding-left: 50px;">
+<!--                        {{scope.row.originInfo.version}}-->
+                        <el-select
+                            placeholder="请选择"
+                            :value="scope.row.originInfo.version"
+                            style="width: 110px; transform: scale(.714); transform-origin: 0;"
+                            size="mini"
+                            @change="$event => onVersionChange($event, scope.row)"
+                        >
+                            <el-option
+                                v-for="i in [...scope.row.originInfo.versions].reverse()"
+                                :key="i"
+                                :label="i"
+                                :value="i">
+                            </el-option>
+                        </el-select>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
@@ -107,7 +130,7 @@
             >
                 <template slot-scope="scope">
                     <div class="style-page__table__type">
-                        {{scope.row.resourceType}}
+                        {{scope.row.resourceType | pageBuildFilter}}
                     </div>
                 </template>
             </el-table-column>
@@ -179,15 +202,20 @@
                         />
 
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item :command="'编辑'">
+                            <el-dropdown-item :command="'edit'">
                                 编辑
                             </el-dropdown-item>
                             <el-dropdown-item
-                                v-if="scope.row.testResourceId !== activatedThemeId"
-                                :command="'isOnline'"
+                                :command="scope.row.testResourceId !== activatedThemeId ? 'isOnline' : ''"
                             >
-                                <span
-                                    style="color: #44a0ff;">激活</span>
+                                <div
+                                    v-if="scope.row.testResourceId !== activatedThemeId"
+                                    style="color: #44a0ff;"
+                                >激活</div>
+                                <div
+                                    v-if="scope.row.testResourceId === activatedThemeId"
+                                    style="color: #bfbfbf;"
+                                >已激活</div>
                             </el-dropdown-item>
                             <el-dropdown-item
                                 :command="'delete'"
@@ -226,4 +254,16 @@
 
 <style scoped lang="less">
     @import "index";
+</style>
+
+<style lang="less">
+    .style-page {
+        .style-page__table {
+            .el-input--mini {
+                font-size: 16px;
+            }
+        }
+
+    }
+
 </style>

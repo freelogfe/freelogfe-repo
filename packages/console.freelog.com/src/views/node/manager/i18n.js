@@ -3,7 +3,7 @@ export default {
         en: {
             copySuccess: 'Copy Success',
             nodeReleaseList: 'Node lists of release',
-            nodePageStyle: 'Node style of the page',
+            nodePageStyle: 'Theme',
             all: 'All',
             pending: 'Pending',
             table: {
@@ -36,6 +36,14 @@ export default {
                 noPolicy: 'Cannot be on the line : No authorization policy is available',
                 exceptions: 'Cannot be on the line : authorized chain of exceptions',
             },
+
+            gotoTest: 'Test node management',
+            presentableManagement: 'Presentable',
+            notAdded: 'You have not added any issue to the node',
+            notSetTheme: 'You have not set a theme for the node, the node cannot be shown. You can add a " theme " theme of the issue as a node of Type',
+            toMarket: 'To release the market',
+            addTheme: 'AddTheme',
+            loading: 'Loading',
         },
         'zh-CN': {
             copySuccess: '复制成功',
@@ -73,6 +81,14 @@ export default {
                 noPolicy: '无法上线：没有可用的授权策略',
                 exceptions: '无法上线：授权链异常',
             },
+
+            gotoTest: '进入测试节点管理',
+            presentableManagement: '展品管理',
+            notAdded: '您还没有添加任何发行到该节点',
+            notSetTheme: '您还没有为该节点设置主题，节点无法展示。 您可以添加“theme”类型的发行作为节点的主题',
+            toMarket: '前往发行市场',
+            addTheme: '添加主题',
+            loading: '加载中'
         },
     }
 };

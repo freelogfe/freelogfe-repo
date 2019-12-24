@@ -4,7 +4,7 @@
             v-for="j in rules"
             class="freelog"
             :class="getIconClass(j)"
-        ></i>
+        />
         <div v-if="rules.length === 0"></div>
     </div>
 </template>
@@ -58,6 +58,7 @@
 <style scoped lang="less">
     .rules-bar {
         color: #333;
+        display: inline-block;
 
         i {
             padding: 4px;
@@ -67,6 +68,6 @@
             border-top: 1px solid #b5b5b5;
             width: 16px;
         }
-        
+
     }
 </style>

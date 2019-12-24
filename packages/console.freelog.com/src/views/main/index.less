@@ -1,16 +1,32 @@
 @itemWidth: 220px;
 
 .index-main-container {
-  padding-top: 35px;
-  padding-left: 100px;
-  padding-right: 100px;
-  margin: auto;
+  .main-content-wrap {
+    padding-left: 100px;
+    padding-right: 100px;
+    margin: auto;
 
-  .query-input {
-    margin-bottom: 15px;
+    .query-input {
+      margin-bottom: 15px;
+    }
+
+    .resource-list {
+      margin-right: 90px;
+    }
   }
-
-  .resource-list {
-    margin-right: 90px;
+  .resource-types-bar {
+    margin-top: 20px; margin-bottom: 30px; text-align: center; 
+    .fl-search-input-wrap {
+      display: inline-block; margin-left: 10px;
+    }
+    .el-button {
+      padding: 4px 9px; font-size: 14px; color: #999999;
+      &.selected {
+        border-radius: 4px; 
+        background-color: #E8EDF3; color: #666;
+      }
+    }
+    .el-button + .el-button { margin-left: 4px; }
   }
 }
+

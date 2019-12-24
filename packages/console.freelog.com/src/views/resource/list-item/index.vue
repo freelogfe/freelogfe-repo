@@ -11,7 +11,7 @@
           <div class="res-intro-bd">
             <p>
               <span class="res-name" @click="gotoDetail(resource)">{{resource.aliasName}}</span>
-              <span class="res-type">#{{resource.resourceType}}</span>
+              <span class="res-type">#{{resource.resourceType | pageBuildFilter}}</span>
             </p>
             <p class="res-id">{{resource.resourceId}}</p>
           </div>
@@ -34,7 +34,7 @@
         <div class="simple-res-view" @click="gotoDetail(resource)">
           <div class="res-intro-bd">
             <span class="res-desc">{{resource.resourceName}}</span>
-            <span class="res-type">#{{resource.resourceType}}</span>
+            <span class="res-type">#{{resource.resourceType | pageBuildFilter}}</span>
           </div>
           <div class="res-intro-ft">
             <span class="update-time">{{$t('listResourceItem.lastUpdateText')}}{{resource.updateDate|fmtDate}}</span>

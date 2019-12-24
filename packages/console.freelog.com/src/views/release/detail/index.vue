@@ -33,7 +33,7 @@
             <i :class="[isCollectedRelease ? 'el-icon-star-on' : 'el-icon-star-off']" @click="collectReleaseHandler"></i>
           </div>
           <div class="r-d-w-info">
-            <span class="r-i-type">{{release.resourceType}}</span>
+            <span class="r-i-type">{{release.resourceType | pageBuildFilter}}</span>
             <span class="r-i-date">{{release.updateDate | fmtDate}}</span>
             <span class="r-i-id">{{$t('releaseID')}} {{release.releaseId}}</span>
           </div>
@@ -46,7 +46,12 @@
       <div class="r-d-w-main-content">
         <div class="r-d-w-node-list">
           <h3>{{$t('steps[0]')}}<a :title="$t('titles[0]')" class="rdw-w-create-node" href="/node/create" target="_blank" v-if="nodes.length"><i class="el-icon-plus"></i></a></h3>
-          <el-select class="r-d-node-select" v-model="checkedNodeId" :placeholder="$t('selectionPlaceholder')" v-if="nodes.length">
+          <el-select 
+            class="r-d-node-select" 
+            :class="{ 'highlight': checkedNodeId === '' }" 
+            :placeholder="$t('selectionPlaceholder')"
+            v-model="checkedNodeId" 
+            v-if="nodes.length">
             <el-option
               v-for="node in nodeSelections"
               :key="node.nodeId"
@@ -61,7 +66,7 @@
               </div>
             </el-alert>
           </div>
-        </div>  
+        </div>
         <div class="r-d-w-policy-box " :class="{'highlight': checkedNodeId!=''}" v-loading="isShowContentLoading">
           <h3>
             {{$t('steps[1]')}}
@@ -89,9 +94,9 @@
                       @exchange-item="exchangeSelectedRelease"></release-depend-item>
             </div>
             <div class="rdw-p-right-box">
-              <sign-policy-list 
+              <sign-policy-list
                   :release="selectedRelease"
-                  :policies="selectedRelease.policies" 
+                  :policies="selectedRelease.policies"
                   :contracts="nodeContracts"
                   :checkedNode="checkedNode"
                   @sign-new-policy="signNewPolicy"
@@ -103,9 +108,9 @@
           </div>
           <!-- <el-button class="rdw-p-compare-btn" v-if="selectedRelease.policies.length > 1" @click="compareDialogVisible = true">策略对比</el-button> -->
         </div>
-      </div>  
+      </div>
     </div>
-    
+
     <div class="r-d-w-main-content">
       <div class="r-d-w-description">
         <h2>{{$t('titles[3]')}}</h2>
@@ -123,7 +128,7 @@
       <policies-compare :selectedRelease="selectedRelease"></policies-compare>
     </el-dialog> -->
     <el-dialog :title="$t('titles[4]')" width="640px" :visible.sync="signDialogVisible" center>
-      <signed-confirm 
+      <signed-confirm
         :checkedNodeId="checkedNodeId"
         :checkedNodeName="checkedNode.nodeName"
         :release="release"
@@ -149,11 +154,13 @@
       overflow: hidden; padding: 0px;
     }
     .r-d-node-select {
-      .el-input__inner {
-        border:1px solid rgba(145,199,255,1);
+      &.highlight {
+        .el-input__inner {
+          border: 1px solid rgba(145, 199, 255, 1);
+        }
       }
     }
-    
+
   }
   .r-d-w-version {
     transform: scale(.7);
@@ -167,12 +174,12 @@
     height: 22px; line-height: 22px; padding: 0 10px; text-align: center;
     span { display: inline-block; transform: scale(.7); }
   }
-  
+
   .el-dialog__header {
     padding: 15px;
   }
 
-  
+
   .rdwr-s-r-dropdown-item {
     line-height: 26px;
 

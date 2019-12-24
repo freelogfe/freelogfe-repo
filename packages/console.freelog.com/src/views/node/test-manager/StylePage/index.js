@@ -2,6 +2,7 @@ import AddAndReplace from '../AddAndReplace/index.vue';
 import RulesBar from "../../components/RulesBar";
 // import {decompile} from "@freelog/nmr_translator";
 import RuleText from "../../components/rule-text";
+import {decompile} from "@freelog/nmr_translator";
 
 let searchInputDelay = null;
 
@@ -187,15 +188,15 @@ export default {
          */
         operationCommand(mark, row) {
             // console.log(mark, row, 'R$RRRRRRRR');
-            if (mark === '编辑') {
+            if (mark === 'edit') {
                 return window.open('/node/test-manager-resource/' + row.testResourceId);
             }
 
-            if (mark === 'isOnline') {
+            else if (mark === 'isOnline') {
                 return this.onLineAndOffLine(row);
             }
 
-            if (mark === 'delete') {
+            else if (mark === 'delete') {
                 // console.log(row, 'row');
                 this.deleteRule(row.testResourceName);
             }
@@ -264,6 +265,72 @@ export default {
             // this.handleTableData();
             this.pushRuleSuccess(res.data.data);
         },
+        async onVersionChange(val, row) {
+            // console.log(val, row);
+            const {nodeId} = this.$route.params;
+            const testRules = [...this.matchTestResult.testRules];
+            const oldRulesText = this.matchTestResult.ruleText;
+
+            let newRulesText;
+            const rule = testRules.find(i => i.presentableName === row.testResourceName);
+            if (rule) {
+                if (rule.operation === 'add') {
+                    rule.candidate.versionRange = val;
+                } else {
+                    rule.replaces.push({
+                        "replaced": {
+                            "name": row.originInfo.name,
+                            "versionRange": '*',
+                            "type": 'release',
+                        },
+                        "replacer": {
+                            "name": row.originInfo.name,
+                            "type": "release",
+                            versionRange: val,
+                        },
+                        "scopes": [],
+                    });
+                }
+                const ruleText = decompile([rule]);
+                newRulesText = oldRulesText.replace(rule.text, ruleText);
+            } else {
+                const ruleObj = {
+                    text: '',
+                    "tags": null,
+                    "replaces": [
+                        {
+                            "replaced": {
+                                "name": row.originInfo.name,
+                                "versionRange": '*',
+                                "type": 'release',
+                            },
+                            "replacer": {
+                                "name": row.originInfo.name,
+                                "type": "release",
+                                versionRange: val,
+                            },
+                            "scopes": [],
+                        }
+                    ],
+                    "online": null,
+                    "operation": "alter",
+                    "presentableName": row.testResourceName,
+                };
+                const ruleText = decompile([ruleObj]);
+                newRulesText = oldRulesText + '\n' + ruleText;
+
+            }
+
+            const res = await this.$axios.post(`/v1/testNodes`, {
+                nodeId: nodeId,
+                testRuleText: Buffer.from(newRulesText).toString('base64'),
+            });
+            if (res.data.errcode !== 0 || res.data.ret !== 0) {
+                return this.$message.error(JSON.stringify(res.data.data.errors));
+            }
+            this.$message.success('设置版本成功');
+            this.pushRuleSuccess(res.data.data);
+        }
     },
     watch: {
         selectedState() {

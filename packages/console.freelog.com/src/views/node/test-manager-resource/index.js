@@ -274,11 +274,7 @@ export default {
             if (res.data.errcode !== 0 || res.data.ret !== 0) {
                 return this.$message.error(JSON.stringify(res.data.data.errors));
             }
-            // this.$message.success('设置版本成功');
-            // // this.handleTableData();
-            // this.pushRuleSuccess(res.data.data);
             this.$message.success('设置版本成功');
-            // this.handleTableData();
             this.pushRuleSuccess(res.data.data);
         }
     },

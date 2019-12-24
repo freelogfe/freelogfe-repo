@@ -5,7 +5,7 @@
     </div>
     <div class="res-digest-info">
       <p class="res-name">{{release.releaseName}}</p>
-      <p class="res-author-name"><span>{{release.resourceType}}</span>{{release.username}}
+      <p class="res-author-name"><span>{{release.resourceType | pageBuildFilter}}</span>{{release.username}}
       </p>
     </div>
     <ul class="res-policies-list" v-if="schemes.length">

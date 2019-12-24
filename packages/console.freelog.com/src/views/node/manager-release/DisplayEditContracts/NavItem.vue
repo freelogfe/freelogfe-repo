@@ -8,15 +8,15 @@
             @click="gotoDetails"
             style="font-size: 12px;text-decoration: underline; color: #409eff; margin-left: 8px;">详情</a></div>
         <!--        <div style="height: 10px;"></div>-->
-        <div style="font-size: 12px; color: #999;">{{type}} | {{version}} | {{date}}</div>
+        <div style="font-size: 12px; color: #999;">{{type | pageBuildFilter}} | {{version}} | {{date}}</div>
         <div style="overflow: hidden;">
             <label v-for="item in tags"
                    style="background-color: #e9f4ff; border-radius: 2px; color: #409eff; padding: 3px 10px; border: 1px solid #a5d1ff; margin-right: 10px; margin-top: 5px; display: inline-block;">
                 {{item.policyName}}
                 <i v-if="item.status === 2"
-                   style="width: 8px; height: 8px; border-radius: 50%; background-color: #fbb726; display: inline-block;"></i>
+                   style="width: 8px; height: 8px; border-radius: 50%; background-color: #fbb726; display: inline-block;"/>
                 <i v-if="item.status === 4"
-                   style="width: 8px; height: 8px; border-radius: 50%; background-color: #39c500; display: inline-block;"></i>
+                   style="width: 8px; height: 8px; border-radius: 50%; background-color: #39c500; display: inline-block;"/>
             </label>
         </div>
     </a>

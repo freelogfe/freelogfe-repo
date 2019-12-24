@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <TabsHeader v-model="activeTab"></TabsHeader>
+        <TabsHeader v-model="activeTab"/>
 
         <div
             v-show="activeTab === 'contract'"
@@ -11,9 +11,11 @@
             <div style="width: 320px; flex-shrink: 0;">
                 <!-- 发行列表 -->
                 <div v-for="(item, index) in dataSource">
-                    <NavTitle v-if="index === 0">{{$t('currentRelease')}}</NavTitle>
-                    <NavTitle v-if="index === 1">{{$t('throwingRelease')}}</NavTitle>
-
+                    <template v-if="dataSource[0] && (dataSource[0].releaseId === currentRelease.id)">
+                        <NavTitle v-if="index === 0">{{$t('currentRelease')}}</NavTitle>
+                        <NavTitle v-if="index === 1">依赖发行</NavTitle>
+                    </template>
+                    <NavTitle v-else-if="index === 0">依赖发行</NavTitle>
                     <!--                    :isTip="true"-->
                     <NavItem
                         @click="activatedIndex = index"
@@ -24,7 +26,7 @@
                         :version="item.release && item.release.resourceVersions[0].version"
                         :date="item.release && item.release.updateDate.split('T')[0]"
                         :tags="item.children && item.children.filter(i => i.contract && !i.disabled).map(i => ({policyName: i.policy.policyName, status: i.contract.status}))"
-                    ></NavItem>
+                    />
                 </div>
                 <div style="height: 25px;"></div>
             </div>
@@ -62,14 +64,14 @@
                             <div v-if="index !== 0" style="height: 15px;"></div>
                             <!-- :unique="dataSource[activatedIndex].children.filter(i => i.contract && !i.disabled).length === 1 && !item.disabled" -->
                             <SignedContract
-                                :name="item.contract.contractName.split('/')[1]"
+                                :name="item.contract.contractName"
                                 :status="item.contract.status"
                                 :contractId="item.contract.contractId"
                                 :data="item.contract.createDate.split('T')[0]"
                                 :contract="item.contract"
                                 :disabled="!!item.disabled"
                                 @command="item.disabled ? signPolicy(item.policy.policyId): breakSignPolicy(item.policy.policyId)"
-                            ></SignedContract>
+                            />
                         </div>
                     </ContractsContainer>
 
@@ -84,7 +86,7 @@
                                 :policyName="item.policy.policyName"
                                 :policyText="item.policy.policyText"
                                 @add="signPolicy(item.policy.policyId, true)"
-                            ></UnsignedContract>
+                            />
                         </div>
                     </ContractsContainer>
                 </div>
@@ -96,7 +98,7 @@
             :release="{releaseName: this.presentableName}"
             :depReleasesDetailList="depReleasesDetailList"
             :contracts="contracts"
-        ></ReleaseEditorContract>
+        />
     </div>
 </template>
 

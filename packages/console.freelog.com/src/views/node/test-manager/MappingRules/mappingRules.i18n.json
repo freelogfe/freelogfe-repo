@@ -31,7 +31,10 @@
       "映射规则保存成功！", "映射规则删除成功!"
     ],
     "errors": [
-      "映射规则编译失败：存在语法错误！", "映射规则内容存在语法错误：", "校验失败，请检查更正后提交:", "校验成功，但规则中存在预执行错误:"
+      "映射规则编译失败：存在语法错误！", "映射规则内容存在语法错误：", "校验失败，请检查更正后提交:", "校验成功，但规则中存在预执行错误:", "语句", "错误"
+    ],
+    "matchResultsTexts": [
+      "替换执行结果", "替换指令", "匹配数量"
     ]
   },
   "en": {
@@ -66,7 +69,10 @@
       "The mapping rules are saved successfully!", "The mapping rule was deleted successfully!"
     ],
     "errors": [
-      "Mapping rule compilation failed: there is a syntax error！", "There is a syntax error in the mapping rule content: ", "Validation failed, please check and submit:", "Validation succeeded, but there were pre-execution errors in the rule:"
+      "Mapping rule compilation failed: there is a syntax error！", "There is a syntax error in the mapping rule content: ", "Validation failed, please check and submit:", "Validation succeeded, but there were pre-execution errors in the rule:", "statement", "error"
+    ],
+    "matchResultsTexts": [
+      "替换执行结果", "替换指令", "匹配数量"
     ]
   }
 }

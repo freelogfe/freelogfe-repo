@@ -131,12 +131,7 @@
     },
     watch: {
       nodes() {
-        if(this.nodes.length) {
-          this.nodes.forEach(node => {
-            this.nodeSiteMap[node.nodeId] = `${window.location.protocol}//${node.nodeDomain}.${window.FreelogApp.Env.mainDomain}`
-          })
-          this.checkedNodeId = this.nodes[0].nodeId
-        }
+        this.resolveNodes()
       },
       checkedNodeId() {
         this.paginationConfig.params.nodeId = this.checkedNodeId
@@ -144,8 +139,17 @@
     },
     mounted() {
       this.initView()
+      this.resolveNodes()
     },
     methods: {
+      resolveNodes() {
+        if(this.nodes.length) {
+          this.nodes.forEach(node => {
+            this.nodeSiteMap[node.nodeId] = `${window.location.protocol}//${node.nodeDomain}.${window.FreelogApp.Env.mainDomain}`
+          })
+          this.checkedNodeId = this.nodes[0].nodeId
+        }
+      },
       initView() {
         if(this.nodes && this.nodes.length) {
           this.checkedNodeId = this.nodes[0].nodeId

@@ -192,3 +192,34 @@ html body {
     margin-right: 5px;
   }
 }
+
+.main-c-tabs {
+  @tabH: 60px;
+  .el-tabs__header { 
+    height: @tabH; margin-bottom: 10px;
+    text-align: center; background-color: #fff;
+    .el-tabs__active-bar { 
+      background-color: #333;  color: #444;
+      &::before, &::after {
+        content: '';
+        position: absolute; top: 0; z-index: 10;
+        width: 28px; height: 2px; 
+        background-color: #333; 
+      }
+      &::before { left: 100%; }
+      &::after { right: 100%; }
+    }
+    .el-tabs__nav {
+      .el-tabs__item {
+        height: @tabH; line-height: @tabH; padding: 0 40px; 
+        font-weight: 400; font-size: 16px; color: #666;
+        &.is-active { font-weight: 600; color: #333; }
+      }
+    }
+    
+  }
+  .el-tabs__nav-wrap { 
+    display: inline-block; 
+    &:after { background-color: transparent; }
+  }
+}

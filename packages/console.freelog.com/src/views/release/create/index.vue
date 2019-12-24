@@ -11,7 +11,7 @@
             <img class="resource-default-preview" alt="" />
             <span>{{resourceDetail.aliasName}}</span>
             <div class="rcw-info">
-              {{resourceDetail.resourceType}} | {{resourceDetail.updateDate | fmtDate}}
+              {{resourceDetail.resourceType | pageBuildFilter}} | {{resourceDetail.updateDate | fmtDate}}
             </div>
           </h2>
           <p class="rcw-intro">
@@ -269,11 +269,11 @@
         img { display: block; width: 100%; height: 100%; }
       }
       .cont {
-        h2 { 
+        h2 {
           display: flex; align-items: center;
-          font-size: 16px; 
+          font-size: 16px;
           img { width: 40px; height: 30px; margin-right: 16px; }
-          span { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-right: 14px; } 
+          span { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-right: 14px; }
         }
       }
       .rcw-info {

@@ -23,15 +23,15 @@
           <template slot="header" slot-scope="scope">
             <el-dropdown class="r-l-types-select" @command="handleSelectType">
               <span class="el-dropdown-link">
-                {{$t('list.type')}} {{selectedType === 'all' ? '': ` ${selectedType}`}}<i class="el-icon-caret-bottom"></i>
+                {{$t('list.type')}} {{selectedType === 'all' ? '': `${selectedType}` | pageBuildFilter}}<i class="el-icon-caret-bottom"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="item in resourceTypes" :key="item.value" :command="item.value">{{item.label}}</el-dropdown-item>
+                <el-dropdown-item v-for="item in resourceTypes" :key="item.value" :command="item.value">{{item.label | pageBuildFilter}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
           <template slot-scope="scope">
-            <div class="r-l-item-type"> {{scope.row.resourceType}}</div>
+            <div class="r-l-item-type"> {{scope.row.resourceType | pageBuildFilter}}</div>
           </template>
         </el-table-column>
         <el-table-column :label="$t('list.history')" width="200">
@@ -73,7 +73,7 @@
             <div class="r-l-item-createDate">{{$t('list.createDate')}} {{scope.row.createDate | fmtDate }}</div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('list.operate')" width="240">
+        <el-table-column :label="$t('list.operate')" width="260">
           <template slot-scope="scope">
             <el-button class="r-l-item-release-btn" size="mini" @click="tapRelease(scope.row)">{{$t('list.releaseBtnText')}}</el-button>
             <router-link :to="scope.row._toDetailLink">
@@ -127,8 +127,8 @@
         resourceMapReleases: {},
         selectedType: qResourceType != null ? qResourceType : 'all',
         releaseStatus: [
-          { label: $i18n.t('list.releaseStatus[0]'), value: 0 }, 
-          { label: $i18n.t('list.releaseStatus[1]'), value: 1 }, 
+          { label: $i18n.t('list.releaseStatus[0]'), value: 0 },
+          { label: $i18n.t('list.releaseStatus[1]'), value: 1 },
           { label: $i18n.t('list.releaseStatus[2]'), value: 2 }
         ],
         selectedReleaseStatus: 2,
@@ -148,7 +148,7 @@
     },
 
     watch: {
-      
+
       query() {
         const [ NO_RIGHT_RESOURCE, NO_REACTED_RESOURCE ] = [ this.$i18n.t('list.messages[0]'), this.$i18n.t('list.messages[1]') ]
         if(this.query == '') {
@@ -240,7 +240,7 @@
       handleSelectReleaseStatus(command) {
         this.selectedReleaseStatus = command
         this.paginationConfig.params.isReleased = this.selectedReleaseStatus
-      } 
+      }
     }
   }
 </script>

@@ -94,6 +94,26 @@ const routerConfig = {
                         theme: 'gray'
                     },
                     component: Views.mainView
+                },
+                {
+                    path: '/main/node-examples',
+                    hidden: true,
+                    meta: {
+                        requiresAuth: false,
+                        title: i18n.t('resource.market'),
+                        theme: 'gray'
+                    },
+                    component: Views.mainView
+                },
+                {
+                    path: '/release-management/*',
+                    hidden: true,
+                    meta: {
+                        requiresAuth: false,
+                        title: i18n.t('release.management'),
+                        theme: 'gray'
+                    },
+                    component: Views.releaseManagementView
                 }
             ]
         },

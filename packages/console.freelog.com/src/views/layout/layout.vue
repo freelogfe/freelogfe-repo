@@ -1,7 +1,7 @@
 <template>
     <div :class="[sidebar.openSidebar?'': 'collapse-sidebar']">
         <fl-header/>
-        <fl-sidebar></fl-sidebar>
+<!--        <fl-sidebar/>-->
         <section class="main" :class="themeCls">
             <main class="content">
                 <transition name="content">

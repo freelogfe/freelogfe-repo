@@ -22,6 +22,7 @@ export default {
     sureText: 'sure',
     sureBtnText: 'sure',
     cancelBtnText: 'cancel',
+    allTypes: 'all'
   },
 
   header: {
@@ -75,6 +76,11 @@ export default {
     status: 'resource status',
     author: 'author',
     createDate: 'creation date'
+  },
+
+  release: {
+    myReleases: 'My releases',
+    management: 'Release management',
   },
 
   node: {

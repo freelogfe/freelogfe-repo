@@ -1,13 +1,8 @@
 <template>
-    <div
-        style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background-color: rgba(0,0,0,.5); z-index: 100; display: flex; align-items: center; justify-content: center;"
-    >
-        <div
-            style="width: 960px; height: 630px; background-color: #fff; border-radius: 10px; display: flex; flex-direction: column;">
-            <div
-                style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d8d8d8; flex-shrink: 0;"
-            >
-                <div style="display: flex; line-height: 55px; color: #333; font-size: 16px;">
+    <div class="dep-dialog">
+        <div class="dep-dialog__box">
+            <div class="dep-dialog__box__header">
+                <div class="dep-dialog__box__header__tabs">
                     <a
                         style="display: inline-block; padding: 0 5px; margin-left: 30px; color: #409eff; border-bottom: 1px solid #409eff;"
                         :style="{color: activeTab === 'search' ? '#409eff' : 'inherit', 'border-bottom': activeTab === 'search' ? '1px solid #409eff' : 'none'}"
@@ -76,6 +71,51 @@
     export {default} from './index.js';
 </script>
 
-<style scoped>
+<style scoped lang="less">
+    .dep-dialog {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, .5);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .dep-dialog__box {
+            width: 960px;
+            height: 630px;
+            background-color: #fff;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .dep-dialog__box__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid #d8d8d8;
+                flex-shrink: 0;
+
+                .dep-dialog__box__header__tabs {
+                    display: flex;
+                    line-height: 55px;
+                    color: #333;
+                    font-size: 16px;
+                    cursor: pointer;
+
+                    & > a {
+
+                    }
+                }
+
+                & > i {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
 
 </style>

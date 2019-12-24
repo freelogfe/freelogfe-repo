@@ -30,6 +30,14 @@ Vue.use(VueLazyload, {
   observer: true
 })
 
+Vue.filter('pageBuildFilter', function (value) {
+    if (!value) return '';
+    if (value === 'page_build') {
+        return 'theme';
+    }
+    return value;
+})
+
 Vue.config.devtools = true
 // Vue.config.productionTip = false
 new Vue({

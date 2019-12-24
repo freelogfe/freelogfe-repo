@@ -9,7 +9,7 @@
       {{data.resourceName}}
     </el-form-item>
     <el-form-item :label="$t('resource.type')">
-      {{data.resourceType}}
+      {{data.resourceType | pageBuildFilter}}
     </el-form-item>
     <el-form-item :label="$t('resource.version')" v-if="data.systemMeta && data.systemMeta.version">
       {{data.systemMeta.version}}

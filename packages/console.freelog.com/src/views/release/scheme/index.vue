@@ -143,12 +143,20 @@
               </div>
             </template>
             <template v-if="tmpNoSignedPolicies.length">
-              <h4 class="s-m-w-c-p-title"> {{isSelectedReleaesUpcast ? $t('tips[0]') : $t('tips[1]')}} </h4>
+              <h4 class="s-m-w-c-p-title"> 
+                {{isSelectedReleaesUpcast ? $t('tips[0]') : $t('tips[1]')}} 
+                <el-tooltip placement="right" effect="light">
+                  <i class="el-icon-info"></i>
+                  <div class="s-m-w-c-ubh-tip" slot="content">
+                    基础上抛是在发行的第一个版本的授权方案中被上抛的依赖。基础上抛贯穿发行的所有版本，发行中新版本上抛的依赖都不能超过基础上抛的范围。
+                  </div>
+                </el-tooltip>
+              </h4>
               <div
-                      class="s-m-w-c-policy"
-                      :class="{ 'offline': policy.status === 0 && !(contractsMap && contractsMap[policy.contractId]) }"
-                      v-for="(policy, index) in tmpNoSignedPolicies"
-                      :key="'p-' + index"
+                class="s-m-w-c-policy"
+                :class="{ 'offline': policy.status === 0 && !(contractsMap && contractsMap[policy.contractId]) }"
+                v-for="(policy, index) in tmpNoSignedPolicies"
+                :key="'p-' + index"
               >
                 <div class="smw-c-p-box">
                   <div class="p-name" :class="[type]" @click="selectPolicy(tmpNoSignedPolicies, policy, index)">

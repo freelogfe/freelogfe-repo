@@ -14,19 +14,19 @@
         </router-link>
       </p>
       <div class="r-info">
-        <span>{{release.resourceType}}</span>
+        <span>{{release.resourceType | pageBuildFilter}}</span>
         <span>{{release.latestVersion && release.latestVersion.version}}</span>
         <span>{{release.updateDate | fmtDate }}</span>
       </div>
       <div class="r-policies">
         <template v-if="!release.isUpcasted">
-          <div 
-            class="r-p-item" 
-            :class="{'disabled': p.contractId && p.isEnbledContract === false, 'isHasContract': !!p.contractId }" 
-            v-for="(p, index) in selectedPolicies" 
+          <div
+            class="r-p-item"
+            :class="{'disabled': p.contractId && p.isEnbledContract === false, 'isHasContract': !!p.contractId }"
+            v-for="(p, index) in selectedPolicies"
             :key="'s-policy-'+index"
           >
-            {{p.policyName}} 
+            {{p.policyName}}
             <span :class="['contract-status', 'status-' + contractsMap[p.contractId].status]" v-if="contractsMap && contractsMap[p.contractId]"></span>
           </div>
         </template>
@@ -55,7 +55,7 @@
       }
     },
     updated() {
-      this.selectedPolicies = this.release.selectedPolicies 
+      this.selectedPolicies = this.release.selectedPolicies
     },
     methods: {
       exchangeSelectedRelease(item) {
@@ -85,9 +85,9 @@
       i {
         position: absolute; left: 0; top: 54%; z-index: 1;
         transform: translateY(-50%); color: transparent;
-      } 
+      }
 
-      a { 
+      a {
         font-size: 12px; color: #91C7FF; text-decoration: underline;
       }
 
@@ -107,7 +107,7 @@
         i { color: #EA7171; font-weight: bold; }
       }
     }
-    
+
     .r-info {
       margin-bottom: 6px;
       font-size: 12px; color: #999;
@@ -120,7 +120,7 @@
     }
 
     .r-policies {
-      margin-right: 8px; 
+      margin-right: 8px;
       .r-p-item {
         display: inline-block;
         margin: 0 8px 8px 0; padding: 2px 10px; border: 1px solid #A5D1FF; border-radius: 2px;

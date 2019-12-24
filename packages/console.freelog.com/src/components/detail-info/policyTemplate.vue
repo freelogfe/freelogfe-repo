@@ -9,7 +9,7 @@
       {{data.name}}
     </el-form-item>
     <el-form-item :label="$t('policy.policyType')">
-      {{resolveType(data.templateType)}}
+      {{resolveType(data.templateType) | pageBuildFilter}}
     </el-form-item>
     <el-form-item :label="$t('policy.state')">
       {{resolveStatus(data.status)}}

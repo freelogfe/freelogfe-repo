@@ -37,7 +37,8 @@
                     :release="scope.data"
                     @add="addToReleaseHandler"></release-item>
           </template>
-          <div class="no-release-items" slot="empty">{{$t('search.noFavorReleases')}}</div>
+<!--          <div class="no-release-items" slot="empty">{{$t('search.noFavorReleases')}}</div>-->
+          <div class="no-release-items" slot="empty">暂无相同类型发行</div>
         </lazy-list-view>
       </el-tab-pane>
 
@@ -324,7 +325,7 @@
   .releases-search-wrapper {
     .el-tabs__content {
       overflow: auto;
-      min-height: 260px; height: 360px;  
+      min-height: 260px; height: 360px;
     }
     .search-input-area {
       margin: 20px 0;

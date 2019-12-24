@@ -2,7 +2,7 @@
   <div class="release-item">
     <div class="r-i-name">{{release.releaseName}}</div>
     <div class="r-i-row">
-      <span class="r-i-type">{{release.resourceType}}</span>
+      <span class="r-i-type">{{release.resourceType | pageBuildFilter}}</span>
       <span v-if="!!release.latestVersion" class="r-i-version">{{release.latestVersion && release.latestVersion.version}}</span>
       <span class="r-i-date">{{release.updateDate | fmtDate}}</span>
       <strong v-if="isHistoricalRelease">{{$t('search.historicVersion')}}</strong>

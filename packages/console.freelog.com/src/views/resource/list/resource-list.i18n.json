@@ -15,7 +15,7 @@
       "noReleases": "暂无发行",
       "releaseBtnText": "发行",
       "editBtnText": "编辑",
-      "downloadBtnText": "下载源文件",
+      "downloadBtnText": "导出资源文件",
       "releasesCount": [ "等", "个发行..." ],
       "messages": [ "没有符合条件的资源", "您还没有创建任何资源。" ],
       "releaseStatus": [ "未发行", "已发行", "全部" ]
@@ -37,7 +37,7 @@
       "noReleases": "No releases",
       "releaseBtnText": "Release",
       "editBtnText": "Edit",
-      "downloadBtnText": "Download resource file",
+      "downloadBtnText": "Export resource file",
       "releasesCount": [ "There are ", " releases..." ],
       "messages": [ "There are no resources available", "You have not created any resources." ],
       "releaseStatus": [ "Not release", "Relased", "All" ]

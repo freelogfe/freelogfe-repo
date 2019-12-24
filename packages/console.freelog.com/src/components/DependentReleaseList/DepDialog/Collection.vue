@@ -1,12 +1,25 @@
 <template>
     <div style="height: 100%;">
+
+        <!--        :endText="(data && data.length === 0) ? '没有符合条件的发行' : ''"-->
         <LazyLoadingBox
-            v-if="data.length > 0"
             :end="dataEnd"
+            v-if="noData === false"
+            :endText="(data && data.length === 0) ? $t('noConditions') : ''"
             @toBottom="toBottom"
         >
             <!-- :disabled="exists.includes(i.id)" -->
             <div style="padding: 0 90px;">
+
+                <div style="height: 40px;"></div>
+                <el-input
+                    v-model="input"
+                    :placeholder="$t('pleaseEnter')"
+                >
+                    <i slot="prefix" class="el-input__icon el-icon-search"/>
+                </el-input>
+                <div style="height: 30px;"></div>
+
                 <DepItem
                     v-for="i in data"
                     :name="i.name"
@@ -21,8 +34,10 @@
             </div>
         </LazyLoadingBox>
 
-        <div style="line-height: 300px; font-size: 16px; color: #333; text-align: center;"
-             v-if="data.length === 0">
+        <div
+            style="line-height: 300px; font-size: 16px; color: #333; text-align: center;"
+            v-if="noData === true"
+        >
             {{$t('noCollection')}}
         </div>
     </div>
@@ -38,10 +53,14 @@
         i18n: { // `i18n` 选项，为组件设置语言环境信息
             messages: {
                 en: {
-                    noCollection: 'You are not collecting any issue you in the market after the release of the collection will show up here'
+                    noCollection: 'You are not collecting any issue you in the market after the release of the collection will show up here',
+                    pleaseEnter: 'Please enter',
+                    noConditions: 'Does not meet the conditions of release',
                 },
                 'zh-CN': {
-                    noCollection: '您还没有收藏任何发行，您在发行市场收藏的发行之后将会出现在这里'
+                    noCollection: '您还没有收藏任何发行，您在发行市场收藏的发行之后将会出现在这里',
+                    pleaseEnter: '请输入内容',
+                    noConditions: '没有符合条件的发行',
                 },
             }
         },
@@ -66,15 +85,18 @@
         },
         data() {
             return {
+                input: '',
                 page: 1,
                 data: [],
                 dataEnd: false,
+                noData: null,
             };
         },
         methods: {
             async search() {
                 const params = {
                     page: this.page,
+                    keywords: this.input,
                     pageSize: 10,
                 };
                 const res = await this.$axios.get('/v1/collections/releases', {
@@ -93,12 +115,21 @@
                         type: i.resourceType,
                         version: i.latestVersion.version,
                         date: i.releaseUpdateDate.split('T')[0],
+                        versions: i.resourceVersions.map(i => i.version),
                         // disabled: false,
                     }))
                 ].filter(i => i.id !== this.currentID);
+                this.noData = (this.noData === null && this.data.length === 0);
             },
             toBottom() {
                 this.page++;
+                this.search();
+            },
+        },
+        watch: {
+            input() {
+                this.page = 1;
+                this.data = [];
                 this.search();
             },
         },

@@ -33,6 +33,7 @@ export default {
             meta: {
                 requiresAuth: true,
                 title: i18n.t('routes.createMockResource'),
+                // title: '模拟资源信息',
                 theme: 'gray',
                 hideFooter: true,
             },
@@ -44,7 +45,8 @@ export default {
             meta: {
                 requiresAuth: true,
                 // title: i18n.t('routes.createResource'),
-                title: i18n.t('routes.manageMockResource'),
+                // title: i18n.t('routes.manageMockResource'),
+                title: '模拟资源信息',
                 theme: 'gray',
                 hideFooter: true,
             },

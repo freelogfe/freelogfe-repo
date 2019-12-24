@@ -12,12 +12,12 @@
     <lazy-list-view :list="searchResources"
                     ref="searchView"
                     class="r-e-w-s-resource-list"
-                    :height="60" 
+                    :height="60"
                     :fetch="searchDataHandler">
       <template slot-scope="scope">
         <div class="r-e-w-s-r-item">
           <span class="r-e-w-s-r-name">{{scope.data.aliasName}}</span>
-          <span class="r-e-w-s-r-type">{{scope.data.resourceType}}</span>
+          <span class="r-e-w-s-r-type">{{scope.data.resourceType | pageBuildFilter}}</span>
           <span class="r-e-w-s-r-date">{{scope.data.createDate | fmtDate}}</span>
           <span class="r-e-w-s-r-relase" v-if="resourceMapReleases[scope.data.resourceId]">已有发行</span>
           <span class="r-e-w-s-r-select-btn" @click="selectResource(scope.data)">选择</span>
@@ -124,7 +124,7 @@ export default {
   .r-e-w-s-r-type, .r-e-w-s-r-date { font-size: 12px; color: #999; }
   .r-e-w-s-r-type{ width: 80px; }
   .r-e-w-s-r-date{ width: 72px; }
-  .r-e-w-s-r-relase{ 
+  .r-e-w-s-r-relase{
     padding: 0 5px; border-radius: 3px;
     font-size: 12px; background-color: #67C23A; color: #fff;
   }
