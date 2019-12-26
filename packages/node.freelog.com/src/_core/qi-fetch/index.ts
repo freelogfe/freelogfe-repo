@@ -9,6 +9,19 @@
 import { isAbsoluteURL, combineURLs, complementQueryString, deepMerge } from '../utils'
 import { transformRequests, transformResponses } from './transform'
 
+export interface QIFetchOpts {
+  url?: string
+  baseURL?: string
+  method?: string
+  body?: any
+  data?: plainObject
+  timeout?: number
+  headers?: plainObject
+  credentials?: "omit" | "same-origin" | "include"
+} 
+
+export type qiFetch = (url: string, opts?: QIFetchOpts) => Promise<any>
+
 const defaultQIFetchOpts: QIFetchOpts = {
   baseURL: '',
   credentials: 'include',
@@ -18,9 +31,9 @@ const defaultQIFetchOpts: QIFetchOpts = {
   }
 }
 
-export default function createQIFetch(opts: QIFetchOpts) {
+export default function createQIFetch(opts: QIFetchOpts): qiFetch {
   const defaultOpts = deepMerge(defaultQIFetchOpts, opts)
-  return function (url: string, options: QIFetchOpts) {
+  return function (url: string, options?: QIFetchOpts): Promise<any> {
     if(typeof url === 'object') {
       options = Object.assign(options, url)
     }else {

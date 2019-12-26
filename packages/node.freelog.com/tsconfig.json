@@ -8,9 +8,9 @@
     "removeComments": true
   },
   "include": [
-    "./src/core/**/*"
+    "./src/_core/**/*"
   ],
   "exclude": [
     "node_modules"
-]
+  ]
 }

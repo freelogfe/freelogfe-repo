@@ -64,14 +64,14 @@ export function combineURLs(baseURL: string, relativeURL: string): string {
 }
 
 export function complementQueryString(url: string, data: plainObject): string {
-  const qsStr = Object.keys(data)
+  const qsStr: string = Object.keys(data)
     .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`)
     .join('&')
   url += (url.indexOf('?') > -1 ? '&' : '?') + qsStr
   return url
 }
 
-export function deepMerge (...args: plainObject[]): plainObject {
+export function deepMerge (...args: Array<plainObject>): plainObject {
   var leng = args.length
   var result: plainObject = {}
   if(leng > 0) {
@@ -97,7 +97,7 @@ export function deepMerge (...args: plainObject[]): plainObject {
   return result
 }
 
-export function toArray(list, start = 0) {
+export function toArray(list: Array<any>, start = 0): Array<any> {
   let i = list.length - start
   const ret = new Array(i)
   while (i--) {

@@ -1,4 +1,5 @@
 import * as util from "../utils"
+import { QIFetchOpts } from './index'
 
 function setContentTypeIfUnset(headers: plainObject, value: string): void {
   if (!headers['content-type'] && !headers['Content-Type']) {
@@ -6,7 +7,10 @@ function setContentTypeIfUnset(headers: plainObject, value: string): void {
   }
 }
 
-export const transformRequests: Array<(options: QIFetchOpts) => QIFetchOpts> = [
+type transformRequestFn = (options: QIFetchOpts) => QIFetchOpts
+type transformResponseFn = (resp: Response) => Response
+
+export const transformRequests: Array<transformRequestFn> = [
   function transformBody(options) {
     var body = options.body
     const headers = options.headers
@@ -29,5 +33,5 @@ export const transformRequests: Array<(options: QIFetchOpts) => QIFetchOpts> = [
   }
 ]
 
-export const transformResponses: Array<(resp: Response) => Response> = []
+export const transformResponses: Array<transformResponseFn> = []
 

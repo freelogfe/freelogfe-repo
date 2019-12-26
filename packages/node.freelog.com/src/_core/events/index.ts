@@ -1,5 +1,3 @@
-import {throwError} from '../exceptions/throwError'
-import {EXCEPTION_CODE} from '../exceptions/names'
 import { toArray } from '../utils'
 
 export default class EventCenter {
@@ -65,7 +63,7 @@ export default class EventCenter {
         try {
           handler(...args)
         } catch (e) {
-          throwError(`${info}:${e.toString()}` ,EXCEPTION_CODE)
+          console.error(info, e)
         }
       })
     }
