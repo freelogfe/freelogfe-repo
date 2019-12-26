@@ -1,33 +1,59 @@
-/**
- * mock 池
- */
-import Views from '@/views'
-import i18n from '../lib/i18n'
+
+import Views from '@/views';
+import i18n from '../lib/i18n';
 
 export default {
-    name: 'mock',
-    path: 'mock',
+    name: 'alpha-test',
+    path: 'alpha-test',
     meta: {
         requiresAuth: true,
         title: i18n.t('routes.resourceSystem'),
         hideFooter: true,
     },
     component: Views.container,
-    redirect: '/mock/display',
+    redirect: '/alpha-test/input',
     children: [
         {
-            path: 'display',
+            path: 'input',
             meta: {
                 requiresAuth: true,
-                // title: i18n.t('routes.resourcePolicyTplList'),
-                // title: i18n.t('routes.resourcePolicyTplList'),
                 title: i18n.t('routes.mockResourcePool'),
-                type: 'resource',
+                type: '',
                 hideFooter: true,
             },
-            component: Views.mockDisplay
+            component: Views.alphaTestInput
         },
         {
+            path: 'input',
+            meta: {
+                requiresAuth: true,
+                title: i18n.t('routes.mockResourcePool'),
+                type: '',
+                hideFooter: true,
+            },
+            component: Views.alphaTestInput
+        },
+        {
+            path: 'apply',
+            meta: {
+                requiresAuth: true,
+                title: i18n.t('routes.mockResourcePool'),
+                type: '',
+                hideFooter: true,
+            },
+            component: Views.alphaTestApply
+        },
+        {
+            path: 'success',
+            meta: {
+                requiresAuth: true,
+                title: i18n.t('routes.mockResourcePool'),
+                type: '',
+                hideFooter: true,
+            },
+            component: Views.alphaTestSuccess
+        },
+        /*{
             path: 'create/:bucketName',
             hidden: true,
             meta: {
@@ -60,6 +86,6 @@ export default {
                 hideFooter: true,
             },
             component: Views.mockEditor,
-        },
+        },*/
     ]
 }

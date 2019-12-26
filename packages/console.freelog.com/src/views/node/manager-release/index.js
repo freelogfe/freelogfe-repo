@@ -11,6 +11,7 @@ import ConfirmInput from "../test-manager-resource/ConfirmInput";
 import ModuleBlock from "../test-manager-resource/ModuleBlock";
 import BlockItem from "../test-manager-resource/BlockItem";
 import OverviewHeader from "../test-manager-resource/OverviewHeader";
+import BreadCrumb from '@/components/BreadCrumb/index.vue';
 
 export default {
     name: 'manager-release',
@@ -28,10 +29,11 @@ export default {
         ContractManager,
         DisplayEditContracts,
         ReleaseEditorContract,
+        BreadCrumb,
     },
     data() {
         return {
-
+            nodeId: '',
             // 是否是初始状态
             initState: true,
             // 发行相关信息
@@ -115,6 +117,7 @@ export default {
             const result = res.data.data;
             setTimeout(() => this.initState = false);
 
+            this.nodeId = result.nodeId;
             const time = new Date(result.createDate);
             // console.log(time, 'tTWERFTTTTTTT');
             // console.log(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), time.getMinutes(), '@AFDSASDF@#RASEZCX');

@@ -3,7 +3,15 @@
   <section class="my-resources">
     <div class="m-r-header clearfix">
       <div class="right-tool-bar-wrap">
-        <search-input @search="searchHandler" showInputImmediately></search-input>
+        <el-input class="search-input" size="medium" ref="input" v-model="searchInputStr"
+          :class="{ 'focus': isInputFocus }"
+          :style="{width: '300px'}"
+          @focus="focusHandler"
+          @blur="blurHandler"
+          @keyup.enter.native="searchHandler(searchInputStr)">
+          <i class="freelog fl-icon-content" :slot="isInputFocus ? 'suffix' : 'prefix'" @click="searchHandler(searchInputStr)"></i>
+        </el-input>
+        <!-- <search-input @search="searchHandler" showInputImmediately></search-input> -->
       </div>
       <router-link to="/resource/editor">
         <el-button size="medium" type="primary" class="m-r-create-btn">{{$t('createBtnText')}}</el-button>
@@ -43,6 +51,8 @@ export default {
       resourceList: [],
       RESOURCE_STATUS,
       queryInput: '',
+			searchInputStr: '',
+			isInputFocus: false,
       isShowReleaseSearchDialog: false,
       targetReleaseResource: null,
     }
@@ -57,6 +67,12 @@ export default {
 
   },
   methods: {
+		focusHandler() {
+			this.isInputFocus = true
+		},
+		blurHandler() {
+			this.isInputFocus = false
+		},
     searchHandler(str) {
       this.queryInput = str
       // this.$message.warning('todo')
@@ -84,13 +100,12 @@ export default {
     width: @main-content-width-1190;
     margin: auto;
     padding-top: 30px;
-    padding-left: 50px;
     .el-dialog__header{ padding: 0; }
   }
   .m-r-header {
     margin-bottom: 28px; text-align: right;
     .m-r-create-btn {
-      width:120px; margin-left: 20px; border-radius: 2px;
+      width:120px; margin-left: 18px; border-radius: 2px;
     }
     .right-tool-bar-wrap {
       display: inline-block;

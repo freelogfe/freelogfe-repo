@@ -7,6 +7,7 @@ import ResourceViews from '@/views/resource'
 import NodeViews from '@/views/node'
 import ReleaseViews from '@/views/release'
 import MockViews from '@/views/mock';
+import alphaTestViews from '@/views/alpha-test';
 import ToolsViews from '@/views/tools';
 // import GroupViews from '@/views/group'
 
@@ -49,6 +50,7 @@ export default {
     userView,
     ...ResourceViews,
     ...MockViews,
+    ...alphaTestViews,
     ...NodeViews,
     // ...GroupViews,
     ...PolicyTplViews,

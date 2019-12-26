@@ -1,15 +1,25 @@
 <template>
-    <div :class="[sidebar.openSidebar?'': 'collapse-sidebar']">
+<!--    <div :class="[sidebar.openSidebar?'': 'collapse-sidebar']">-->
+    <div>
         <fl-header/>
-<!--        <fl-sidebar/>-->
+        <!--        <fl-sidebar/>-->
         <section class="main" :class="themeCls">
+            <div style="height: 60px;"/>
             <main class="content">
+                <div
+                    style="margin: 0 auto; width: 1190px;"
+                    v-show="!!$route.meta.breadCrumb"
+                >
+                    <BreadCrumb
+                        :list="$route.meta.breadCrumb || []"
+                    />
+                </div>
                 <transition name="content">
-                    <router-view class="main-view"></router-view>
+                    <router-view class="main-view"/>
                 </transition>
             </main>
         </section>
-        <fl-footer class="footer-wrap"/>
+        <fl-footer class="footer-wrap" :class="themeCls" />
     </div>
 </template>
 
@@ -18,7 +28,8 @@
     import Sidebar from './Sidebar/index.vue'
     import Header from './Header/index.vue'
     import Footer from './Footer/index.vue'
-    import Breadcrumb from './breadcrumb/index.vue'
+    // import Breadcrumb from './breadcrumb/index.vue'
+    import BreadCrumb from '@/components/BreadCrumb/index.vue';
 
     export default {
         name: 'fl-layout',
@@ -46,7 +57,8 @@
             'fl-header': Header,
             'fl-sidebar': Sidebar,
             'fl-footer': Footer,
-            'fl-breadcrumb': Breadcrumb
+            // 'fl-breadcrumb': Breadcrumb
+            BreadCrumb,
         }
     }
 </script>
@@ -55,7 +67,9 @@
     @import "../../styles/mixin.less";
 
     .main {
-        min-height: 100%;
+        min-height: 100vh; padding-bottom: 100px;
+        display: flex;
+        flex-direction: column;
     }
 
     .white-theme {
@@ -71,10 +85,12 @@
     }
 
     .content {
-        margin-top: @header-height;
+        // margin-top: @header-height;
     }
 
     .content {
+        /*flex-shrink: 1;*/
+        /*min-height: 100vh;*/
         transition: all .5s;
     }
 

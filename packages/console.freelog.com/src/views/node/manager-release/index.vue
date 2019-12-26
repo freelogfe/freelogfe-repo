@@ -1,5 +1,17 @@
 <template>
     <div class="manager-release">
+
+        <div
+            style="margin: 0 auto; width: 1190px;"
+        >
+            <BreadCrumb
+                :list="[
+                    {text: '节点管理', to: `/node/manager/${nodeId}`},
+                    {text: '展品信息'}
+                ]"
+            />
+        </div>
+
         <div style="height: 30px;"></div>
 
         <OverviewHeader

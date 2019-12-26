@@ -65,21 +65,21 @@ export default {
         }),
     },
     mounted() {
-        this.initBucketsByAPI();
+        this.handleMockData();
     },
     methods: {
         /**
          * 通过 服务端 API 获取 buckets 数据，并初始化 buckets
          * @returns {Promise<void>}
          */
-        async initBucketsByAPI(bool) {
+        // async initBucketsByAPI(bool) {
             // const {data} = await axios.get('/v1/resources/mocks/buckets');
             // console.log(data, 'datadatadatadatadatadatadatadatadatadatadatadatadatadatadatadata');
             // this.bucketsList = data.data;
             // if (bool) {
             //     this.activeBucketIndex = data.data.length - 1
             // }
-        },
+        // },
         async createBucketSuccess(bucket) {
             // console.log('######');
             this.$message.success(this.$t('successfullyCreated'));

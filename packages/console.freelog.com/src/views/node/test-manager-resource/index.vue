@@ -1,5 +1,15 @@
 <template>
     <div style="width: 1190px; margin: 0 auto;">
+        <div
+            style="margin: 0 auto; width: 1190px;"
+        >
+            <BreadCrumb
+                :list="[
+                    {text: '测试节点管理', to: `/node/test-manager/${nodeId}`},
+                    {text: '测试展品信息'}
+                ]"
+            />
+        </div>
         <div style="height: 30px;"></div>
 
         <!--            :datetime="'2018-10-10 12:00'"-->

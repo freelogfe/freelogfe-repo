@@ -11,6 +11,7 @@ import Views from '@/views/index'
 import nodeRoute from './node'
 import resourceRoute from './resource'
 import mockRoute from './mock'
+import alphaTestRoute from './alpha-test'
 import releaseRoute from './release'
 import batchOperationRoute from './batch-operation'
 import i18n from '../lib/i18n'
@@ -46,6 +47,7 @@ const routerConfig = {
                 nodeRoute,
                 releaseRoute,
                 mockRoute,
+                alphaTestRoute,
                 batchOperationRoute,
                 {
                     path: 'about',
@@ -101,7 +103,8 @@ const routerConfig = {
                     meta: {
                         requiresAuth: false,
                         title: i18n.t('resource.market'),
-                        theme: 'gray'
+                        theme: 'gray',
+                        hideFooter: true,
                     },
                     component: Views.mainView
                 },
@@ -111,7 +114,8 @@ const routerConfig = {
                     meta: {
                         requiresAuth: false,
                         title: i18n.t('release.management'),
-                        theme: 'gray'
+                        theme: 'white',
+                        hideFooter: true,
                     },
                     component: Views.releaseManagementView
                 }

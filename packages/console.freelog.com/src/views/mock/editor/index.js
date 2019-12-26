@@ -3,6 +3,7 @@ import SmallTitle from '@/components/ResourceComponents/SmallTitle.vue';
 import DepList from '@/components/ResourceComponents/DepList.vue';
 import HeaderAlert from '@/components/ResourceComponents/HeaderAlert.vue';
 import UploadFile from '@/components/ResourceComponents/UploadFile/index.vue';
+import BreadCrumb from '@/components/BreadCrumb/index.vue';
 // import UploadCover from '@/components/ResourceComponents/UploadCover/index.vue';
 import ReleaseSearch from '@/views/release/search/index.vue';
 import RichEditor from '@/components/RichEditor/index.vue';
@@ -26,10 +27,13 @@ export default {
         MetaInfoInput,
         HeaderAlert,
         DependentReleaseList,
+        BreadCrumb
     },
 
     data() {
         return {
+            bucketName: '',
+
             isUpdateResource: !!this.$route.params.mockResourceId,
             // 资源类型选项
             resourceTypes: ['json', 'widget', 'image', 'audio', 'markdown', 'page_build', 'reveal_slide', 'license', 'video', 'catalog'],
@@ -88,6 +92,7 @@ export default {
             const res = await this.$axios.get(`/v1/resources/mocks/${mockResourceId}`);
             // console.log(res.data.data, 'res.data.datares.data.data');
             const result = res.data.data;
+            this.bucketName = result.bucketName;
             this.resourceType = result.resourceType;
             this.uploadFileInfo = {
                 fileID: '',

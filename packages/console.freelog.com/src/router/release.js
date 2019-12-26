@@ -19,7 +19,16 @@ export default {
         hideFooter: true,
         title: i18n.t('routes.createRelease'),
         type: 'release',
-        theme: 'white'
+        theme: 'white',
+          breadCrumb: [
+              {
+                  to: '/release-management/release/list',
+                  text: '我的发行',
+              },
+              {
+                  text: i18n.t('routes.createRelease'),
+              },
+          ]
       },
       component: Views.releaseCreator,
     },
@@ -54,7 +63,16 @@ export default {
         // title: i18n.t('routes.releaseManager'),
         title: '发行信息',
         type: 'release',
-        theme: 'white'
+        theme: 'white',
+          breadCrumb: [
+              {
+                  to: '/release-management/release/list',
+                  text: '我的发行',
+              },
+              {
+                  text: '发行信息',
+              },
+          ]
       },
       component: Views.releaseEditor
     },
@@ -74,7 +92,8 @@ export default {
       meta: {
         requiresAuth: true,
         title: i18n.t('routes.myReleases'),
-        type: 'release'
+        type: 'release',
+        theme: 'white'
       },
       component: Views.releaseList
     },
@@ -83,7 +102,8 @@ export default {
       meta: {
         requiresAuth: true,
         title: i18n.t('routes.myCollections'),
-        type: 'release'
+        type: 'release',
+        theme: 'white'
       },
       component: Views.releaseCollections
     },

@@ -121,7 +121,8 @@
                         <router-link
                             to="/node/create"
                             class="round-button"
-                        >创建节点</router-link>
+                        >创建节点
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -267,8 +268,9 @@
                         color: #999;
                         font-size: 12px;
                         line-height: 20px;
-                        padding: 0 6px;
+                        padding: 0 10px;
                         font-weight: 600;
+                        border-radius: 10px;
                     }
 
                     &:hover {
@@ -279,6 +281,11 @@
                         & > a {
                             background-color: #555;
                             color: #ddd;
+
+                            &:hover {
+                                background-color: #61afff;
+                                color: #fff;
+                            }
                         }
                     }
 

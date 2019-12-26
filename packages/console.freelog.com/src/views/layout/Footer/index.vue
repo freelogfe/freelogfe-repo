@@ -17,10 +17,9 @@ export default Footer
 
 <style scoped lang="less">
   .app-footer {
-    margin-top: 80px;
-    margin-bottom: 50px;
-    text-align: center;
-    padding: 10px 0;
+    border-top: 1px solid #E5E5E5;
+    line-height: 80px; text-align: center; background-color: #FAFBFB;
+    &.gray-theme { background-color: #fff; }
   }
 
   a {
@@ -30,7 +29,8 @@ export default Footer
   .freelog-info {
     li {
       display: inline-block;
-      margin: 0 20px;
+      margin: 0 20px; 
+      font-size: 14px;
     }
   }
 </style>

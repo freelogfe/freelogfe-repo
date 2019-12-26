@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="release-management">
 			<el-tabs class="main-c-tabs" v-model="activeTabName" @tab-click="exchangeActiveTabName">
 				<el-tab-pane v-for="tab in tabs" :key="tab.path" :label="tab.label" :name="tab.name">
 					<component :is="tab.component"></component>
@@ -98,5 +98,37 @@
             margin-bottom: 20px;
             box-shadow: rgba(0, 0, 0, .2) 0 2px 2px 0;
 		}
-    }
+	}
+	.release-management {
+		.main-c-tabs {
+			.el-tabs__header {
+				background-color: #FAFBFB;
+			}
+		}
+		.my-resources, .my-releases, .my-collections {
+			.search-input {
+				.el-input__inner {
+					border-color: transparent; background-color: rgba(0, 0, 0, .03);
+				}
+				.el-input__prefix {
+					left: 8px; line-height: 36px;
+				}
+				&.focus {
+					.el-input__inner {
+						// background-color: #fff;
+					}
+					.el-input__suffix {
+						right: 8px; line-height: 36px;
+					}
+				}
+			}
+		}
+		.el-table__header {
+			th {
+				.cell {
+					color: #666;
+				}
+			}
+		}
+	}
 </style>

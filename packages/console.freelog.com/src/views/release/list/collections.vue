@@ -3,7 +3,15 @@
   <section class="my-collections">
     <div class="m-c-header clearfix">
       <div class="right-tool-bar-wrap">
-        <search-input @search="searchHandler" showInputImmediately></search-input>
+        <el-input class="search-input" size="medium" ref="input" v-model="searchInputStr"
+          :class="{ 'focus': isInputFocus }"
+          :style="{width: '300px'}"
+          @focus="focusHandler"
+          @blur="blurHandler"
+          @keyup.enter.native="searchHandler(searchInputStr)">
+          <i class="freelog fl-icon-content" :slot="isInputFocus ? 'suffix' : 'prefix'" @click="searchHandler(searchInputStr)"></i>
+        </el-input>
+        <!-- <search-input @search="searchHandler" showInputImmediately></search-input> -->
       </div>
       <router-link :to="releasesMarketLink">
         <el-button size="medium" type="warning" class="m-c-go-to-market">{{$t('goToMarket')}}</el-button>
@@ -23,7 +31,9 @@ export default {
     return {
       resourceList: [],
       queryInput: '',
-      releasesMarketLink: '/'
+      releasesMarketLink: '/',
+			searchInputStr: '',
+			isInputFocus: false,
     }
   },
   components: {
@@ -32,6 +42,12 @@ export default {
   },
 
   methods: {
+		focusHandler() {
+			this.isInputFocus = true
+		},
+		blurHandler() {
+			this.isInputFocus = false
+		},
     searchHandler(str) {
       this.queryInput = str
     },
@@ -48,12 +64,11 @@ export default {
     width: @main-content-width-1190;
     margin: auto;
     padding-top: 30px;
-    padding-left: 50px;
   }
   .m-c-header {
     margin-bottom: 28px; text-align: right;
     .m-c-go-to-market {
-      width: 120px; margin-left: 20px; border-radius: 2px; border-color: #F6BE25;
+      width: 120px; margin-left: 18px; border-radius: 2px; border-color: #F6BE25;
       background-color: #F6BE25; color: #fff;
     }
     .right-tool-bar-wrap {
@@ -65,4 +80,8 @@ export default {
       width: @main-content-width-990;
     }
   }
+</style>
+
+<style lang="less">
+
 </style>

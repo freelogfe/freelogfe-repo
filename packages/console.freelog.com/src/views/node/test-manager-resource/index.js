@@ -6,6 +6,7 @@ import FreelogTags from '@/components/Tags/index.vue';
 import ContentBlock from './ContentBlock.vue';
 import DisplayEditContracts from './DisplayEditContracts/index.vue';
 import {decompile} from "@freelog/nmr_translator";
+import BreadCrumb from '@/components/BreadCrumb/index.vue';
 
 export default {
     name: 'index',
@@ -17,6 +18,7 @@ export default {
         FreelogTags,
         DisplayEditContracts,
         ContentBlock,
+        BreadCrumb,
     },
     data() {
         return {

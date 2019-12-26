@@ -73,7 +73,7 @@
             <div class="r-l-item-createDate">{{$t('list.createDate')}} {{scope.row.createDate | fmtDate }}</div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('list.operate')" width="260">
+        <el-table-column :label="$t('list.operate')" width="230">
           <template slot-scope="scope">
             <el-button class="r-l-item-release-btn" size="mini" @click="tapRelease(scope.row)">{{$t('list.releaseBtnText')}}</el-button>
             <router-link :to="scope.row._toDetailLink">

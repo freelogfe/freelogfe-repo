@@ -232,7 +232,7 @@
   }
 
   #release-create {
-    padding-left: 50px;
+    /*padding-left: 50px;*/
 
     .r-c-w-cont {
       width: @main-content-width-1190;

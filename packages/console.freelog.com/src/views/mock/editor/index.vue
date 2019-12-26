@@ -1,6 +1,25 @@
 <template>
     <div class="mock-editor">
 
+        <div
+            style="margin: 0 auto; width: 1190px;"
+        >
+            <BreadCrumb
+                v-if="!!$route.params.bucketName"
+                :list="[
+                    {text: '模拟资源池', to: `/mock/display?activatedBucketName=${$route.params.bucketName}`},
+                    {text: '创建模拟资源'}
+                ]"
+            />
+            <BreadCrumb
+                v-else
+                :list="[
+                    {text: '模拟资源池', to: `/mock/display?activatedBucketName=${bucketName}`},
+                    {text: '模拟资源信息'}
+                ]"
+            />
+        </div>
+
         <HeaderAlert/>
 
         <BlockBody :tilte="$t('resourceUpload')">
@@ -99,7 +118,7 @@
                 class="mock-editor__meta__button"
                 size="medium"
                 @click="showMetaInput"
-            ><i class="el-icon-plus"></i> {{$t('addMeta')}}
+            ><i class="el-icon-plus"/> {{$t('addMeta')}}
             </el-button>
         </div>
 
