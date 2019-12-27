@@ -20,15 +20,15 @@ const _fetch: qiFetchFn = createQIFetch({
  * @param {Object} params 
  */
 export interface pagingGetPresentablesParams {
-  nodeId: string
-  keywords: string
-  tags: string
-  resourceType: string
-  page: number
-  pageSize: number
-  isOnline: number
+  nodeId?: string
+  keywords?: string
+  tags?: string
+  resourceType?: string
+  page?: number
+  pageSize?: number
+  isOnline?: number
 }
-export async function pagingGetPresentables(params?: pagingGetPresentablesParams): Promise<any> {
+export async function pagingGetPresentables(params: pagingGetPresentablesParams = {}): Promise<any> {
   return _fetch('/v1/presentables/authList', { data: params })
     .then(resp => resp.json())
     .then(res => {

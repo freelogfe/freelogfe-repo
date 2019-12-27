@@ -39,6 +39,9 @@ export default function createQIFetch(opts: QIFetchOpts): qiFetchFn {
     }else {
       options.url = url
     }
+    if (options.data == null) {
+      options.data = {} 
+    }
     return qiFetch(deepMerge(defaultOpts, options) as QIFetchOpts)
   }
 }

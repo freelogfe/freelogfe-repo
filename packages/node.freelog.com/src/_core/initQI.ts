@@ -1,4 +1,5 @@
 import createQIFetch, { QIFetchOpts, qiFetchFn } from './qi-fetch/index'
+import { getQIoringin } from './initEnv'
 import { resolveSubDependDataUrl, resolveSubDependInfoUrl, resolvePresentableDataUrl } from './api/resolveUrl'
 import {
   pagingGetPresentablesParams,
@@ -39,7 +40,7 @@ export interface QI {
 
 export default function initQI(): QI {
   const fetch: qiFetchFn = createQIFetch({
-    baseURL: window.FreelogApp.Env.qiOrigin,
+    baseURL: getQIoringin(),
   })
 
   return {

@@ -1,10 +1,29 @@
 import { SHOW_AUTH_DIALOG, NOTIFY_NODE } from '../pb-event-names'
-export function handleAuthError(options, callback) {
-  const response = options.response
+
+interface authErrorPresentableInfo {
+  presentableInfo: plainObject
+}
+
+interface authErrorData {
+  isAuth: boolean
+  authCode: number
+  errors: Array<any>
+  data: authErrorPresentableInfo
+  'freelog-sub-dependencies': string
+  'freelog-entity-nid': string
+}
+
+interface handleAuthErrorOpts {
+  response: authErrorData
+  [key: string]: any
+}
+type handleAuthCallback = (...args: Array<any>) => any
+export function handleAuthError(options: handleAuthErrorOpts, callback: handleAuthCallback): void {
+  const response: authErrorData = options.response
 
   let presentableInfo
   if (response.data) {
-    presentableInfo = response.data.presentableInfo || (response.data.data && response.data.data.presentableInfo)
+    presentableInfo = response.data.presentableInfo || {}
   }
 
   if (response && response.authCode && presentableInfo) {
