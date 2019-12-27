@@ -1,4 +1,4 @@
-import './global.d'
+
 import EventCenter from './events/index'
 import * as pbEventNames from './events/pb-event-names'
 import { setStyle } from './dom'
@@ -34,15 +34,16 @@ function initGlobalApi(): void {
     once: EventCenter.prototype.once.bind(eventInstance),
     trigger: EventCenter.prototype.emit.bind(eventInstance),
     off(event: string, fn?: () => any): EventCenter {
+      const names: plainObject = pbEventNames
       if(arguments.length === 0) {
         for(let name in eventInstance._events) {
-          if(!pbEventNames[name]) {
+          if(!names[name]) {
             Reflect.deleteProperty(eventInstance._events, name)
           }
         }
         return eventInstance
       }
-      if(arguments.length === 1 && pbEventNames[event]) {
+      if(arguments.length === 1 && names[event]) {
         console.info(`This event({event}) can't be offed`)
         return eventInstance
       }

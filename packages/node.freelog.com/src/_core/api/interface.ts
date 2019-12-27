@@ -1,4 +1,4 @@
-import createQIFetch, { qiFetch } from '../qi-fetch/index'
+import createQIFetch, { qiFetchFn } from '../qi-fetch/index'
 import { getQIoringin, getNodeType } from '../initEnv'
 import { resolveSubDependDataUrl, resolveSubDependInfoUrl } from './resolveUrl'
 import { injectCodeResource } from '../helpers'
@@ -9,7 +9,7 @@ const authInfo = window.__auth_info__ || {}
 const nodeId: string = authInfo.__auth_node_id__ || ''
 const nodeType: string = getNodeType()
 
-const _fetch: qiFetch = createQIFetch({
+const _fetch: qiFetchFn = createQIFetch({
   baseURL: getQIoringin(),
   timeout: 1000,
   data: { nodeId, nodeType }
@@ -33,7 +33,7 @@ export async function pagingGetPresentables(params?: pagingGetPresentablesParams
     .then(resp => resp.json())
     .then(res => {
       if(res.errcode === 0 && res.data.dataList) {
-        res.data.dataList = res.data.dataList.map(p => {
+        res.data.dataList = res.data.dataList.map((p: plainObject) => {
           const authResult = p.authResult  
           const fSubDependencies = authResult[HEADERS_FREELOG_SUB_DEPENDENCIES]
           p.authResult.subReleases = resolveSubDependencies(fSubDependencies)
@@ -109,7 +109,7 @@ export async function batchGetPresentables(params?: batchGetPresentablesParams):
     .then(resp => resp.json())
     .then(res => {
       if(res.errcode === 0 && res.data.dataList) {
-        res.data.dataList = res.data.dataList.map(p => {
+        res.data.dataList = res.data.dataList.map((p: plainObject) => {
           const authResult = p.authResult  
           const fSubDependencies: string = authResult[HEADERS_FREELOG_SUB_DEPENDENCIES]
           p.authResult.subReleases = resolveSubDependencies(fSubDependencies)

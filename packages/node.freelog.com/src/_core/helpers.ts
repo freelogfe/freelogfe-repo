@@ -5,7 +5,7 @@ export function combineURLs(baseURL: string, relativeURL: string): string {
     : baseURL
 }
 
-export function complementQueryString(url: string, data: string): string {
+export function complementQueryString(url: string, data: plainObject): string {
   const qsStr = Object.keys(data)
     .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`)
     .join('&')

@@ -53,11 +53,10 @@ export default class EventCenter {
     return self
   }
 
-  emit(event: string): this {
+  emit(event: string, ...args: Array<any>): this {
     let cbs = this._events[event]
     if (cbs) {
       cbs = cbs.length > 1 ? toArray(cbs) : cbs
-      const args = toArray(arguments, 1)
       const info = `event handler for "${event}"`
       cbs.forEach((handler: (...rest: any []) => void) => {
         try {

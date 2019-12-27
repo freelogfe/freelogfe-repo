@@ -14,7 +14,7 @@ export function resolvePresentableDataUrl(presentableId: string): string {
   return resolveUrl(`/v1/presentable/${presentableId}/data`)
 }
 
-function resolveUrl(path: string, params = {}): string {
+function resolveUrl(path: string, params?: plainObject): string {
   const { nodeType, qiOrigin } = window.FreelogApp.Env
   params = Object.assign({ nodeType }, params)
   var queryStringArr = []

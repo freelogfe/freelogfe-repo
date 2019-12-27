@@ -20,7 +20,7 @@ export interface QIFetchOpts {
   credentials?: "omit" | "same-origin" | "include"
 } 
 
-export type qiFetch = (url: string, opts?: QIFetchOpts) => Promise<any>
+export type qiFetchFn = (url: string, opts?: QIFetchOpts) => Promise<any>
 
 const defaultQIFetchOpts: QIFetchOpts = {
   baseURL: '',
@@ -31,9 +31,9 @@ const defaultQIFetchOpts: QIFetchOpts = {
   }
 }
 
-export default function createQIFetch(opts: QIFetchOpts): qiFetch {
+export default function createQIFetch(opts: QIFetchOpts): qiFetchFn {
   const defaultOpts = deepMerge(defaultQIFetchOpts, opts)
-  return function (url: string, options?: QIFetchOpts): Promise<any> {
+  return function (url: string, options: QIFetchOpts = {}): Promise<any> {
     if(typeof url === 'object') {
       options = Object.assign(options, url)
     }else {
@@ -43,7 +43,7 @@ export default function createQIFetch(opts: QIFetchOpts): qiFetch {
   }
 }
 
-function qiFetch(opts: QIFetchOpts): Promise<any> {
+async function qiFetch(opts: QIFetchOpts): Promise<any> {
   opts.method = opts.method ? opts.method.toLowerCase() : 'get'
   opts.headers = opts.headers || {}
 

@@ -1,4 +1,4 @@
-import createQIFetch, { QIFetchOpts, qiFetch } from './qi-fetch/index'
+import createQIFetch, { QIFetchOpts, qiFetchFn } from './qi-fetch/index'
 import { resolveSubDependDataUrl, resolveSubDependInfoUrl, resolvePresentableDataUrl } from './api/resolveUrl'
 import {
   pagingGetPresentablesParams,
@@ -16,21 +16,21 @@ import {
 type fetchFn = (url: string, options: QIFetchOpts) => Promise <any>
 export interface QI {
   create(opts: QIFetchOpts): any
-  get: fetchFn
-  delete: fetchFn
-  options: fetchFn
-  post: fetchFn
-  put: fetchFn
-  fetch: fetchFn
+  get: qiFetchFn
+  delete: qiFetchFn
+  options: qiFetchFn
+  post: qiFetchFn
+  put: qiFetchFn
+  fetch: qiFetchFn
   resolveSubDependDataUrl(presentableId: string, subDependId: string, entityNid: string): string
   resolveSubDependInfoUrl(presentableId: string, subDependId: string, entityNid: string): string
   resolvePresentableDataUrl(presentableId: string): string
   // getUserInfo(url: string): any
   // checkUserIsLogin(url: string): Promise <any>
   pagingGetPresentables(params: pagingGetPresentablesParams): Promise <any>
-  getPresentable(params: string): Promise <any>
-  getPresentableAuth(params: string): Promise <any>
-  getPresentableData(params: string): Promise <Response>
+  getPresentable(presentableId: string): Promise <any>
+  getPresentableAuth(presentableId: string): Promise <any>
+  getPresentableData(presentableId: string): Promise <Response>
   batchGetPresentables(params: batchGetPresentablesParams): Promise <any>
   getPresnetableSubDependData(presentableId: string, subDependId: string, entityNid: string): Promise <Response>
   getPresnetableSubDependInfo(presentableId: string, subDependId: string, entityNid: string): Promise <any>
@@ -38,7 +38,7 @@ export interface QI {
 }
 
 export default function initQI(): QI {
-  const fetch = createQIFetch({
+  const fetch: qiFetchFn = createQIFetch({
     baseURL: window.FreelogApp.Env.qiOrigin,
   })
 

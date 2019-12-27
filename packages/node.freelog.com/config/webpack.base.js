@@ -8,7 +8,7 @@ const srcDir = path.resolve(__dirname, '../src')
 
 module.exports = {
   entry: {
-    'pagebuild-core': path.resolve(__dirname, '../src/core/index.js'),
+    'pagebuild-core': path.resolve(__dirname, '../src/_core/index.ts'),
     'pagebuild-app': path.resolve(__dirname, '../src/views/index.js')
   },
 

@@ -61,6 +61,7 @@ function loadWidgets(): Promise<any> {
             }
             case 'css': {
               promises.push(createCssLink(url))
+              break
             }
             default: { }
           }

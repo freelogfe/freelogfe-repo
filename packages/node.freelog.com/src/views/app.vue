@@ -25,21 +25,21 @@
   import { FLogin } from '@freelog/freelog-ui-login'
   import { ContractSigningDialog } from '@freelog/freelog-ui-contract'
   import { noop } from '../core/utils/util'
-  import { TOGGLE_TOOL_BAR, GO_TO_LOGIN, HANDLE_INVALID_AUTH, SHOW_AUTH_DIALOG } from '../core/events/names'
+  import { TOGGLE_TOOL_BAR, GO_TO_LOGIN, HANDLE_INVALID_AUTH, SHOW_AUTH_DIALOG } from '../_core/events/pb-event-names.ts'
 
   // import ToolBar from '@/components/ToolBar/index.vue'
-  var authCallback = noop
+  var authCallback = function() {}
   export default {
     data() {
       return {
         isShowToolBar: false,
         isShowPbException: false,
-        pbExceptionMsg: '完成签约授权',
         isLogin: false,
         isShowDialog: false,
+        loginDialogVisible: false,
+        pbExceptionMsg: '完成签约授权',
         scAuthPresentableList: [],
         activePresentableIndex: 0,
-        loginDialogVisible: false
       }
     },
     components: {
@@ -124,7 +124,7 @@
         this.loginDialogVisible = true
       },
 
-      showAuthDialog({presentableList, activePresentableId, callback = noop}) {
+      showAuthDialog({presentableList, activePresentableId, callback}) {
         
         if (typeof callback === 'function'){
           authCallback = callback
