@@ -32,12 +32,12 @@
             </a>
         </div>
 
-        <div class="header-tools__col">
+        <div class="header-tools__col" style="padding-right: 10px;">
             <ToolSearch @onConfirm="onSearch"/>
         </div>
 
-        <div class="header-tools__col">
-            <a class="header-tool__avatar">
+        <div class="header-tools__col" style="padding-left: 0;">
+            <a class="header-tool__avatar" style="padding-left: 20px;">
                 <img
                     :src="userInfo && userInfo.headImage"
                     alt=""

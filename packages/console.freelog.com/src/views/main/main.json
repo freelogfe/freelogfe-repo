@@ -1,0 +1,16 @@
+{
+  "zh-CN": {
+    "releaseSearchPlaceholder": "搜索自定义类型",
+    "releaseEmptyIntro": "暂无详细描述...",
+    "pbTags": [ "全部" ],
+    "pbDemo": "Demo预览",
+    "pbUsageBtns": [ "收起", "查看使用方法" ]
+  },
+  "en": {
+    "releaseSearchPlaceholder": "搜索自定义类型",
+    "releaseEmptyIntro": "暂无详细描述...",
+    "pbTags": [ "全部" ],
+    "pbDemo": "Demo预览",
+    "pbUsageBtns": [ "收起", "查看使用方法" ]
+  }
+}

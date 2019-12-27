@@ -1,7 +1,8 @@
+<i18n src="./main.json"></i18n>
 <template>
   <div class="f-pb-presentaion">
     <div class="f-pb-p-tags-box" v-if="pbTags.length">
-      <el-button type="text" size="small" :class="{'selected': selectedTag.length === 0}" @click="emptySelectedTag">全部</el-button>
+      <el-button type="text" size="small" :class="{'selected': selectedTag.length === 0}" @click="emptySelectedTag">{{$t('pbTags[0]')}}</el-button>
       <el-button
         size="small"
         type="text" 
@@ -27,7 +28,7 @@
             </el-tag>
           </div>
           <div class="f-pb-i-intro">
-            {{pb.releaseInfo && pb.releaseInfo.intro !== '' ? pb.releaseInfo.intro : '暂无详细描述...'}}
+            {{pb.releaseInfo && pb.releaseInfo.intro !== '' ? pb.releaseInfo.intro : $t('releaseEmptyIntro')}}
           </div>
           <div class="f-pb-p-i-btn-group">
             <el-button type="primary" size="mini" class="f-pb-p-i-btn-auth" v-if="pb.pbReleaseDetailPageUrl">
@@ -35,11 +36,11 @@
             </el-button>
           </div>
           <div class="f-pb-p-i-btn-demo" :class="{'disabled': !pb.demoSite}" @click="tapDemoPreviewBtn(pb.demoSite)">
-            {{pb.demoSite}}
-            <a :href="pb.demoSite" target="_blank"><i class="el-icon-caret-right"></i> Demo预览</a>
+            <span v-show="pb.demoSite">{{pb.demoSite}}</span>
+            <a :href="pb.demoSite" target="_blank"><i class="el-icon-caret-right"></i>{{$t('pbDemo')}}</a>
           </div>
           <div class="f-pb-p-usage-btn" @click="tapViewUsageBtn(index)">
-            {{pb.mdBoxVisible ? '收起' : '查看使用方法'}} 
+            {{pb.mdBoxVisible ? $t('pbUsageBtns[0]') : $t('pbUsageBtns[1]') }} 
             <i class="el-icon-caret-bottom" :class="{'rotate180': pb.mdBoxVisible}"></i>
           </div>
         </div>
@@ -306,7 +307,7 @@ export default {
     background-color: #FAFBFB;
   }
 
-  @imgWidth: 180px; @imgHeight: 152px;
+  @imgWidth: 140px; @imgHeight: 105px;
 
   .f-pb-p-img {
     float: left;
@@ -320,8 +321,8 @@ export default {
     .f-pb-p-i-tags {
       margin-top: 20px;
       .el-tag { 
-        margin-right: 8px; margin-bottom: 10px; border-color: #EFEFEF; border-radius: 2px;
-        background-color: #EFEFEF; color: #666;
+        height: 20px; margin-right: 8px; margin-bottom: 10px; padding: 0 5px; border-color: #EFEFEF; border-radius: 2px;
+        line-height: 20px; font-size: 12px; background-color: #EFEFEF; color: #666;
       }
     }
     .f-pb-i-intro {
@@ -332,9 +333,10 @@ export default {
     .f-pb-p-i-btn-demo { 
       position: absolute; bottom: 0;
       font-size: 14px; color: #666;
-      a { margin-left: 30px; color: #E7AF0E; }
+      span { margin-right: 30px; }
+      a { color: #E7AF0E; }
       .el-icon-caret-right {
-        font-size: 18px; transform: translateY(2px);
+        font-size: 18px; transform: translateY(1px);
       }
       &.disabled { opacity: .5; pointer-events: none; cursor: not-allowed; }
     }
