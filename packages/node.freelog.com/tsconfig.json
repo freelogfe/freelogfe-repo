@@ -1,5 +1,4 @@
 { 
-  "compileOnSave": true,
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -8,12 +7,14 @@
     "noFallthroughCasesInSwitch": true,
     "outDir": "./built",
     "removeComments": true,
-    "target": "ES5",
+    "target": "ES5"
   },
   "include": [
     "./src/_core/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "dist",
+    "node_modules*",
+    "test"
   ]
 }

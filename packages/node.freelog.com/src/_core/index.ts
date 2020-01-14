@@ -68,5 +68,3 @@ function initLoading(): loading {
     }
   }
 }
-
-

@@ -71,3 +71,4 @@ function loadWidgets(): Promise<any> {
   
   return Promise.all(promises)
 }
+
