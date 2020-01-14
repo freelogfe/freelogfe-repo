@@ -12,7 +12,7 @@ import {
   getPresnetableSubDependData,
   getPresnetableSubDependInfo,
   requireSubDepend,
-} from './api/interface'
+} from './api'
 
 type fetchFn = (url: string, options: QIFetchOpts) => Promise <any>
 export interface QI {

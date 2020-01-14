@@ -1,6 +1,6 @@
 import { createScript, createCssLink } from './helpers'
 import { resolveSubDependDataUrl } from './api/resolveUrl'
-import { subDependency } from './api/interface'
+import { subDependency } from './api'
 
 interface authInfo {
   __auth_user_id__: number;
@@ -71,7 +71,3 @@ function loadWidgets(): Promise<any> {
   
   return Promise.all(promises)
 }
-
-
-
-
