@@ -4,6 +4,10 @@
         :style="{backgroundColor: editable ? '#fff': ''}"
         @click="onClick"
     >
+        <i
+            @mousedown="onConfirm"
+            class="freelog fl-icon-content"
+        />
         <input
             v-show="editable"
             v-model="value"
@@ -11,10 +15,6 @@
             ref="input"
             @keydown.enter="onConfirm"
             @click="$event.stopPropagation()"
-        />
-        <i
-            @mousedown="onConfirm"
-            class="freelog fl-icon-content"
         />
     </label>
 </template>

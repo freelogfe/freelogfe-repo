@@ -5,7 +5,7 @@
         >
             <BreadCrumb
                 :list="[
-                    {text: '测试节点管理', to: `/node/test-manager/${nodeId}`},
+                    {text: originInfo.resourceType === 'page_build' ? '主题管理' : '展品管理', to: `/node/test-manager/${nodeId}`},
                     {text: '测试展品信息'}
                 ]"
             />

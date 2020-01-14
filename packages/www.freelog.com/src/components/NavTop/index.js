@@ -1,41 +1,75 @@
-import { mapGetters } from 'vuex'
-import { logout } from '@freelog/freelog-ui-login'
+import {mapGetters} from 'vuex'
+import { logout, LOGIN_PATH } from '@freelog/freelog-ui-login'
+
+import HeaderTools from './HeaderTools/index.vue';
 
 export default {
-  name: 'nav-top-bar',
+  name: 'fl-header',
+
   data() {
-    return {}
+    return {
+      isSideBarOpen: true,
+      domainPostfix: /\.test/.test(window.location.host) ? '.testfreelog.com' : '.freelog.com',
+      avatarUrl: '',
+      loginLink: LOGIN_PATH
+    }
   },
-  computed: mapGetters({
-    userInfo: 'session'
-  }),
+  computed: {
+    ...mapGetters({
+      sidebar: 'sidebar',
+      session: 'session',
+      nodes: 'nodes'
+    }),
+    pageTitle() {
+      return (this.$route.meta && this.$route.meta.title) || ''
+    }
+  },
+
+  components: {
+      HeaderTools,
+  },
+
+  created() {
+
+  },
   mounted() {
-    this.syncUserSession()
+    if (this.session && this.session.user && this.session.user.userId) {
+      this.initData()
+    } else {
+      this.$store.dispatch('getCurrentUserInfo').then(userInfo => {
+        if (!userInfo) {
+          this.$store.dispatch('getCurrentUser').then(() => {
+            this.initData()
+          })
+        } else {
+          this.initData()
+        }
+      })
+    }
   },
+
   methods: {
+    initData() {
+      // this.$store.dispatch('loadNodes')
+      if (this.session.user && this.session.user.headImage) {
+        this.avatarUrl = `${this.session.user.headImage}?x-oss-process=style/head-image`
+      }
+    },
+    errorImageHandler() {
+      this.avatarUrl = '' //失败展示昵称
+    },
     syncUserSession() {
       this.$store.dispatch('checkUserSession')
         .then((valid) => {
-          if (!valid && this.userInfo && this.userInfo.userId) {
-            this.$store.dispatch('loadCurrentUserInfo').then(() => {
+          if (!valid) {
+            this.$store.dispatch('getCurrentUser').then(() => {
               window.location.reload()
             })
           }
         })
     },
-    logoutHandler() {
-      logout().then(() => {
-        this.$store.dispatch('userLogout')
-      })
+    logout() {
+      logout().catch(this.$error.showErrorMessage)
     },
-    handleNavTopCommand(command) {
-      switch (command) {
-        case 'gotoAccountSetting':
-          window.location.href = '/profile'
-          break
-        default:
-          break
-      }
-    }
   }
 }

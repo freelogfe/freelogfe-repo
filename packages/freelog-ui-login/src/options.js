@@ -1,5 +1,6 @@
 const options = {
-    Vue: null,
+	Vue: null,
+	i18n: null,
 	// axios 实例
 	axiosInstance: null,
 	// 是否添加响应拦截器
@@ -21,11 +22,15 @@ const options = {
 export default options
 
 export function checkOptions(options) {
-	const { Vue, axiosInstance, isRegisterRouter, router, isAuthenticationBeforeRoute } = options
+	const { Vue, i18n, axiosInstance, isRegisterRouter, router, isAuthenticationBeforeRoute } = options
 	const errMsg = []
 
 	if (!Vue) {
 		errMsg.push('缺少必要参数：Vue！')
+	}
+
+	if (!i18n) {
+		errMsg.push('缺少必要参数：i18n！')
 	}
 
 	const axios = axiosInstance || Vue.axios

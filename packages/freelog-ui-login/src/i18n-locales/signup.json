@@ -1,12 +1,13 @@
 {
   "en": {
     "signup": {
+      "title": "Freelog registered user",
       "loadingText": "Logining...",
       "head": "Registered user",
       "loginName": "Account",
       "loginNamePlaceholder": "Please enter your mobile number or email address",
       "username": "username",
-      "usernamePlaceholder": "Please enter a user username",
+      "usernamePlaceholder": "Please enter a user username (1-30 letters, numbers and '-')",
       "password": "Set password",
       "passwordPlaceholder": "Password (6-16 letters, numbers and symbols)",
       "checkPassword": "Confirm password",
@@ -33,12 +34,13 @@
   },
   "zh-CN": {
     "signup": {
+      "title": "Freelog 注册用户",
       "loadingText": "正在登录中...",
       "head": "注册用户",
       "loginName": "账号",
       "loginNamePlaceholder": "请输入手机号或邮箱",
       "username": "用户名称",
-      "usernamePlaceholder": "请输入用户名称",
+      "usernamePlaceholder": "请输入用户名称(1-30位字母、'-'、数字)",
       "password": "设置密码",
       "passwordPlaceholder": "密码(6-16位字母、数字和符号)",
       "checkPassword": "确认密码",
@@ -60,7 +62,10 @@
       "defaultErrorMsg": "出现异常，请稍后再试",
       "identifyError": "用户名或密码错误",
       "serverError": "服务器内部异常，请稍后再试",
-      "appError": "应用异常，请稍后再试"
+      "appError": "应用异常，请稍后再试",
+      "validateErrors": {
+        "username": "用户名称格式有误"
+      }
     }
   }
 }

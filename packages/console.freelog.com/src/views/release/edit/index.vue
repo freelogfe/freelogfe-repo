@@ -68,7 +68,7 @@
             width="640px"
             :visible.sync="resourceDialogVisible"
     >
-      <resource-search @select-resource="addNewVersion"></resource-search>
+      <resource-search :searchResourceType="release.resourceType" @select-resource="addNewVersion"></resource-search>
     </el-dialog>
   </div>
 </template>

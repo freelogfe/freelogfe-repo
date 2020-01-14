@@ -11,7 +11,7 @@ import App from './app.vue'
 import i18n from '@/i18n/index'
 
 Vue.use(contractUIPlugin)
-initLogin({ Vue, isRegisterRouter: false })
+initLogin({ Vue, isRegisterRouter: false, i18n })
 
 Vue.config.devtools = true
 new Vue({

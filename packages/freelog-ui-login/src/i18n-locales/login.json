@@ -1,7 +1,8 @@
 {
   "en": {
     "login": {
-      "title": "Login",
+      "title": "Freelog Login",
+      "head": "Login",
       "usernamePlaceholder": "Please enter user name",
       "passwordPlaceholder": "Please enter your password",
       "rememberUser": "remember me",
@@ -31,7 +32,8 @@
   },
   "zh-CN": {
     "login": {
-      "title": "用户登录",
+      "title": "Freelog 用户登录",
+      "head": "用户登录",
       "usernamePlaceholder": "请输入用户名",
       "passwordPlaceholder": "请输入密码",
       "rememberUser": "记住我",

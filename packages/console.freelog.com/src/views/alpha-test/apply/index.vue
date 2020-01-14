@@ -4,11 +4,11 @@
         <div style="font-size: 22px; font-weight: 600; color: #000; text-align: center;">当前功能仅对内测用户开放</div>
         <div style="height: 45px;"/>
         <ContentBlock title="用户名">
-            <div style="font-size: 14px; font-weight: 600; color: #000;">YANGHONGTIAN</div>
+            <div style="font-size: 14px; font-weight: 600; color: #000;">{{userInfo && userInfo.username}}</div>
         </ContentBlock>
         <div style="height: 30px;"/>
         <ContentBlock title="申请结果通知方式">
-            <div style="font-size: 14px; font-weight: 600; color: #000;">13487639088</div>
+            <div style="font-size: 14px; font-weight: 600; color: #000;">{{userInfo && (userInfo.mobile || userInfo.email)}}</div>
         </ContentBlock>
         <div style="height: 30px;"/>
         <ContentBlock
@@ -62,17 +62,19 @@
                 type="textarea"
                 placeholder=""
                 resize="none"
-                v-model="textarea2"/>
+                v-model="description"/>
         </ContentBlock>
         <div style="height: 60px;"/>
         <div style="display: flex; justify-content: center;">
             <el-button
                 style="border-radius: 2px;"
                 type="primary"
+                :disabled="!career || !province || !city || !description"
+                @click="submit"
             >提交申请
             </el-button>
         </div>
-        <div style="height: 40px;"/>
+        <!--        <div style="height: 40px;"/>-->
     </div>
 </template>
 
@@ -90,6 +92,32 @@
                 career: '',
                 province: '',
                 city: '',
+                description: '',
+                userInfo: null,
+            }
+        },
+        mounted() {
+            this.initData();
+        },
+        methods: {
+            async initData() {
+                const {data} = await this.$axios.get('/v1/userinfos/current');
+
+                this.userInfo = data.data;
+            },
+            async submit() {
+                const {data} = await this.$axios.post('/v1/testQualifications/beta/apply', {
+                    province: this.province,
+                    city: this.city,
+                    occupation: this.career,
+                    description: this.description,
+                });
+
+                if (data.ret !== 0 || data.errcode !== 0) {
+                    return this.$message.error(data.msg);
+                }
+
+                this.$router.replace('/alpha-test/success');
             }
         },
         computed: {

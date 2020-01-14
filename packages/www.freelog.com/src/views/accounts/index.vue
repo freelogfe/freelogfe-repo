@@ -44,7 +44,7 @@
                     <i class="recording-icon" slot="reference"></i>
                   </el-popover>
                 </div>
-                <div>
+                <div class="acc-digest-info-box">
                   <div class="acc-digest-info"><label>{{$t(`accounts.index.name`)}}</label><span class="account-detail-content">{{account.accountName}}</span>
                   </div>
                   <div class="acc-digest-info"><label>{{$t(`accounts.index.id`)}}</label><span class="account-detail-content">{{account.accountId}}</span>
@@ -64,7 +64,10 @@
             </div>
             <div class="no-account-wrap" v-else>
               {{$t(`accounts.index.types[${index}].noAccountWarning`)}}
-              <el-button type="text" @click="gotoCreateAccountHandler(account)">{{$t('accounts.index.create')}}</el-button>
+              <el-button type="text" @click="gotoCreateAccountHandler(account)">
+                {{$t('accounts.index.create')}}
+                <i class="freelog fl-icon-add"></i>
+              </el-button>
             </div>
           </div>
         </li>

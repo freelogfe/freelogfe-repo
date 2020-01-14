@@ -1,6 +1,6 @@
 <i18n src="./main.json"></i18n>
 <template>
-  <div class="f-pb-presentaion">
+  <div class="f-pb-presentaion" v-loading="loading" element-loading-background="#fafbfb">
     <div class="f-pb-p-tags-box" v-if="pbTags.length">
       <el-button type="text" size="small" :class="{'selected': selectedTag.length === 0}" @click="emptySelectedTag">{{$t('pbTags[0]')}}</el-button>
       <el-button
@@ -30,18 +30,18 @@
           <div class="f-pb-i-intro">
             {{pb.releaseInfo && pb.releaseInfo.intro !== '' ? pb.releaseInfo.intro : $t('releaseEmptyIntro')}}
           </div>
-          <div class="f-pb-p-i-btn-group">
-            <el-button type="primary" size="mini" class="f-pb-p-i-btn-auth" v-if="pb.pbReleaseDetailPageUrl">
-              <a :href="pb.pbReleaseDetailPageUrl" target="_blank">获取授权</a>
-            </el-button>
-          </div>
-          <div class="f-pb-p-i-btn-demo" :class="{'disabled': !pb.demoSite}" @click="tapDemoPreviewBtn(pb.demoSite)">
-            <span v-show="pb.demoSite">{{pb.demoSite}}</span>
+          <div class="f-pb-p-i-btn-group"></div>
+          <div class="f-pb-p-i-demo-btn" :class="{'disabled': !pb.demoSite}" @click="tapDemoPreviewBtn(pb.demoSite)">
             <a :href="pb.demoSite" target="_blank"><i class="el-icon-caret-right"></i>{{$t('pbDemo')}}</a>
           </div>
-          <div class="f-pb-p-usage-btn" @click="tapViewUsageBtn(index)">
-            {{pb.mdBoxVisible ? $t('pbUsageBtns[0]') : $t('pbUsageBtns[1]') }} 
-            <i class="el-icon-caret-bottom" :class="{'rotate180': pb.mdBoxVisible}"></i>
+          <div class="f-pb-p-i-footer">
+            <el-button type="text" size="mini" class="f-pb-p-i-auth-btn" v-if="pb.pbReleaseDetailPageUrl">
+              <a :href="pb.pbReleaseDetailPageUrl" target="_blank">马上使用该主题</a>
+            </el-button>
+            <div class="f-pb-p-usage-btn" @click="tapViewUsageBtn(index)">
+              {{pb.mdBoxVisible ? $t('pbUsageBtns[0]') : $t('pbUsageBtns[1]') }} 
+              <i class="el-icon-caret-bottom" :class="{'rotate180': pb.mdBoxVisible}"></i>
+            </div>
           </div>
         </div>
         <div class="f-pb-p-usage">
@@ -70,7 +70,8 @@ export default {
       pbDemoPreviewSiteMap: null,
       pbTagsSet: new Set(),
       pbTags: [],
-      selectedTag: []
+      selectedTag: [],
+      loading: true
     }
   },
   computed: {
@@ -107,16 +108,17 @@ export default {
     }
   },
   created() {
-    this.fetchPbMarkdownList()
-    this.fetchDemoPreviewSiteData()
+    
   },
   mounted() {
-    
+    this.fetchPbMarkdownList()
+    this.fetchDemoPreviewSiteData()
   },
   methods: {
     fetchPbMarkdownList() {
       const tag = 'pb-md'
       const refPbUsagePrefix = 'pbUsage'
+      this.loading = true
       return this.$axios.get('/v1/presentables/authList', {
           params: { 
             nodeId: this.pbDemosNodeId,
@@ -156,6 +158,7 @@ export default {
           }
         })
         .catch(e => console.log(e))
+        .finally(() => (this.loading = false))
       
     },
     renderPbMarkdown(presentable) {
@@ -288,7 +291,7 @@ export default {
 <style lang="less">
 @import '../../styles/variables.less';
 .f-pb-presentaion {
-  width: @main-content-width-1190; margin: auto; 
+  width: @main-content-width-1190; min-height: 60vh; margin: auto; 
   .f-pb-p-tags-box {
     margin: 10px 20px 0; padding-bottom: 25px; border-bottom: 1px solid #E3E3E3; text-align: center;
     .el-button {
@@ -311,7 +314,7 @@ export default {
 
   .f-pb-p-img {
     float: left;
-    width: @imgWidth; height: @imgHeight; border: 1px solid #d8d8d8;
+    width: @imgWidth; height: @imgHeight; border: 1px solid #e3e3e3;
   }
 
   .f-pb-p-info {
@@ -321,7 +324,7 @@ export default {
     .f-pb-p-i-tags {
       margin-top: 20px;
       .el-tag { 
-        height: 20px; margin-right: 8px; margin-bottom: 10px; padding: 0 5px; border-color: #EFEFEF; border-radius: 2px;
+        height: 20px; margin-right: 10px; margin-bottom: 10px; padding: 0 5px; border-color: #EFEFEF; border-radius: 2px;
         line-height: 20px; font-size: 12px; background-color: #EFEFEF; color: #666;
       }
     }
@@ -330,19 +333,42 @@ export default {
       overflow: hidden;
       font-size: 14px; color: #333;
     }
-    .f-pb-p-i-btn-demo { 
-      position: absolute; bottom: 0;
-      font-size: 14px; color: #666;
+    .f-pb-p-i-demo-btn { 
+      position: absolute; top: 0; right: 0; z-index: 10; 
+      padding: 4px 16px 4px 13px; border: 1px solid #B8D6F6; border-radius: 20px;
+      font-size: 14px; color: #666; cursor: pointer;
       span { margin-right: 30px; }
-      a { color: #E7AF0E; }
+      a { color: #409EFF; }
       .el-icon-caret-right {
         font-size: 18px; transform: translateY(1px);
       }
       &.disabled { opacity: .5; pointer-events: none; cursor: not-allowed; }
+      &:hover {
+        border-color: #409EFF; background-color: #409EFF;
+        a { color: #fff; }
+      }
+    }
+    .f-pb-p-i-footer {
+      text-align: right;
+      .f-pb-p-i-auth-btn, .f-pb-p-usage-btn {
+        display: inline-block; margin-left: 27px; cursor: pointer;
+        font-size: 14px; color: #999;
+        &:hover { font-weight: 500; color: #409EFF; }
+        a { 
+          font-weight: 400; color: #999; 
+          &:hover { font-weight: 500; color: #409EFF; }
+        }
+        .el-icon-caret-bottom {
+          transition: all .2s;
+          &.rotate180 {
+            transform: rotate(180deg); 
+          }
+        }
+      }
     }
     .f-pb-p-i-btn-group {
       position: absolute; top: 0; right: 0;
-      .f-pb-p-i-btn-auth { border-radius: 2px; }
+      .f-pb-p-i-auth-btn { border-radius: 2px; }
       a { color: #fff; }
     }
   }
@@ -363,18 +389,7 @@ export default {
       }
     }
   } 
-  .f-pb-p-usage-btn {
-    position: absolute; right: 0; bottom: 0; cursor: pointer;
-    font-size: 14px; 
-    color: #666; text-align: center;
-    &:hover { color: #409EFF; }
-    .el-icon-caret-bottom {
-      transition: all .2s;
-      &.rotate180 {
-        transform: rotate(180deg); 
-      }
-    }
-  }
+  
 
   @media screen and (max-width: 768px){
     .f-pb-p-tags-box {
@@ -403,7 +418,7 @@ export default {
           .f-pb-i-intro { font-size: 12px; }
           .f-pb-p-i-btn-group {
             top: 10px; right: 0;
-            .f-pb-p-i-btn-auth { display: none; }
+            .f-pb-p-i-auth-btn { display: none; }
           }
         }
         .f-pb-p-usage { 
@@ -417,6 +432,7 @@ export default {
     }
   }
 }
+
 @media screen and (max-width: 1250px) {
   .f-pb-presentaion {
     width: @main-content-width-990;

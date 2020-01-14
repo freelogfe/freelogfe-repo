@@ -2,7 +2,7 @@
   "name": "@freelog/freelog-common-lib",
   "version": "0.1.0",
   "description": "",
-  "main": "lib/index.de8d2685e5b9b476c172.js",
+  "main": "lib/index.5deb0ef6e0ab30e40197.js",
   "scripts": {
     "build": "rm -rf ./lib/** && webpack --config ./config/webpack.base.js && node resetPkgJson.js",
     "build:test": "npm run build -- --env=test",

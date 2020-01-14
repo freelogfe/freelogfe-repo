@@ -1,0 +1,101 @@
+@import "../../styles/mixin.less";
+
+.my-contracts-wrap {
+  background-color: white;
+  .search-input-wrap {
+    .el-select .el-input .el-input__inner {
+      //border: none;
+      text-align: center;
+    }
+  }
+
+  .my-contracts-tabs-bar {
+    @tabItemWidth: 126px;
+    overflow: hidden; margin-bottom: 62px;
+    .tabs-bar {
+      display: inline-block;
+      width: @tabItemWidth * 2; height: 40px; border: 1px solid #409EFF; border-radius: 2px; 
+      line-height: 40px; font-size: 13px; font-weight: 600; background-color: #fff; color: #409EFF;
+      .tab-item {
+        float: left; 
+        width: @tabItemWidth; text-align: center;
+        &.active { 
+          background-color: #409EFF; color: #fff 
+        }
+      }
+    }
+    .search-input { 
+      float: right;
+      .el-input__inner {
+        line-height: 40px; height: 40px; border-radius: 2px;
+        border-color: transparent; background-color: #f1f1f2;
+      }
+      .el-input__prefix, .el-input__suffix {
+        line-height: 40px; color: #8E8E93;
+        .fl-icon-content { font-size: 14px; }
+      }
+      .el-input__prefix { left: 8px; }
+      .el-input__suffix { right: 8px; }
+      &.focus {
+        // .el-input__inner {
+        //   background-color: #fff;
+        // }
+      }
+    }
+  }
+
+  .my-contracts-list {
+    color: #222222;
+    font-size: 14px;
+    
+    .node-domain {
+      .text-ellipsis;
+    }
+    .contract-row {
+      font-size: 14px; color: #222222;
+    }
+    .contract-name {
+      .text-ellipsis;
+      font-size: 14px; font-weight: 600; color: #000;
+    }
+    .contract-type, .contract-id {
+      font-size: 12px; color: #bfbfbf;
+    }
+
+    .contract-status {
+      position: relative;
+      height: 16px; margin-right: 5px; padding-left: 15px; 
+      line-height: 18px; vertical-align: middle; font-size: 14px;
+      transform: scale(.85); color: #333;
+
+      &::after {
+        content: '';
+        position: absolute; top: 50%; left: 0; z-index: 10; transform: translateY(-50%);
+        width: 10px; height: 10px; border-radius: 5px;
+      }
+
+      &.status-1,
+      &.status-2 {
+        &::after { background-color: #F5A623; }
+      }
+
+      &.status-4 {
+        &::after { background-color: #7ED321; }
+      }
+
+      &.status-3,
+      &.status-5,
+      &.status-6 {
+        &::after { background-color: #E36161; }
+      }
+    }
+
+    .item-updateDate {
+      span { font-size: 12px; color: #BFBFBF; }
+    }
+    .view-btn {
+      border-color: #EAEAEA;
+      font-size: 12px; font-weight: 600; color: #333;
+    }
+  }
+}

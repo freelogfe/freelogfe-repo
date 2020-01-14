@@ -8,8 +8,17 @@ const LangMap = {
   en: 'en'
 }
 
-var language = window.localStorage.getItem('locale')
+const cookieLocale = document.cookie.split(';').map(i => i.trim()).find(i => i.startsWith('locale='));
 
+let localeCookie = '';
+
+if (cookieLocale){
+  localeCookie = cookieLocale.replace('locale=', '');
+}
+
+// path=/; domain=testfreelog.com
+var language = localeCookie || window.localStorage.getItem('locale');
+// console.log(language, 'LLLLLLLLLL');
 if (!Object.values(LangMap).includes(language)) {
   if (/^zh(\-\w+)?/.test(win.navigator.language)) {
     language = LangMap.cn

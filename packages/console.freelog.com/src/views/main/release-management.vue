@@ -101,7 +101,7 @@
 	}
 	.release-management {
 		.main-c-tabs {
-			.el-tabs__header {
+			& > .el-tabs__header {
 				background-color: #FAFBFB;
 			}
 		}

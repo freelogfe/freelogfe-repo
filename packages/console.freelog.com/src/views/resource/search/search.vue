@@ -32,6 +32,12 @@
 import LazyListView from '@/components/LazyListView/index.vue'
 export default {
   name: 'resource-search',
+  props: {
+    searchResourceType: {
+      type: String,
+      default: ''
+    } 
+  },
   components: {
     LazyListView
   },
@@ -65,16 +71,18 @@ export default {
       //   return Promise.resolve({ canLoadMore: false })
       // }
       // this.isFirstSearch = false
+      let params = Object.assign({
+        keywords: encodeURIComponent(this.searchInput),
+        page,
+        pageSize,
+        isSelf: 1,
+        projection: this.resourceProjection
+      }, this.searchScope)
+      if (this.searchResourceType !== '') {
+        params = Object.assign(params, { resourceType: this.searchResourceType })
+      }
       // 空输入时，即查询所有属于我的资源
-      return this.$services.ResourceService.get({
-        params: Object.assign({
-          keywords: encodeURIComponent(this.searchInput),
-          page,
-          pageSize,
-          isSelf: 1,
-          projection: this.resourceProjection
-        }, this.searchScope)
-      }).then((res) => {
+      return this.$services.ResourceService.get({ params }).then((res) => {
         const data = res.getData() || {}
         if (res.data.errcode === 0) {
           this.searchResources = this.searchResources.concat(data.dataList)

@@ -2,7 +2,7 @@
 import Router from 'vue-router'
 import { Vue } from '@freelog/freelog-common-lib'
 import UserLayout from '@/views/layout/user.vue'
-import MyResourcesView from '@/views/resources/index.vue'
+import MyContractsView from '@/views/contracts/index.vue'
 import MyAccountsView from '@/views/accounts/index.vue'
 import MyProfileView from '@/views/profile/index.vue'
 import MyCollectionsView from '@/views/collections/index.vue'
@@ -14,8 +14,10 @@ import AccountWithdrawView from '@/views/accounts/withdraw.vue'
 import AccountTransferView from '@/views/accounts/transfer.vue'
 import AccountListManagerView from '@/views/accounts/list.vue'
 import AddPayAccountView from '@/views/accounts/add-pay-account.vue'
-import ResourceContractDetailView from '@/views/resources/detail.vue'
+import ResourceContractDetailView from '@/views/contracts/detail.vue'
 import ErrorView from '@/views/error/index.vue'
+
+import i18n from '../lib/i18n'
 
 Vue.use(Router)
 const scrollBehavior = (to, from, savedPosition) => {
@@ -45,43 +47,40 @@ const routerConfig = {
     },
     {
       path: '/user',
-      meta: {
-        title: '我的账户'
-      },
       component: UserLayout,
       children: [{
         path: 'accounts',
         meta: {
-          title: '我的账户',
+          title: i18n.t('titles.accounts'),
           theme: 'transparent'
         },
         component: MyAccountsView
       }, {
         path: 'create',
-        name: 'accountCreate',
+        name: 'createAccount',
         meta: {
-          title: '创建账户'
+          title: i18n.t('titles.createAccount')
         },
         component: AccountCreateView
       }, {
         path: 'recharge',
-        name: 'accountRecharge',
+        name: 'rechangeAccount',
         meta: {
-          title: '账户充值'
+          title: i18n.t('titles.rechangeAccount')
         },
         component: AccountRechargeView
       }, {
         path: 'records',
         name: 'accountRecords',
         meta: {
-          title: '账户交易记录'
+          title: i18n.t('titles.accountRecords')
         },
         component: AccountTransactionRecordsView
       }, {
         path: 'accounts-manager',
         name: 'accountsManager',
         meta: {
-          title: '账号管理'
+          title: i18n.t('titles.accountsManager')
         },
         component: AccountListManagerView
         // AddPayAccountView
@@ -89,7 +88,7 @@ const routerConfig = {
         path: 'accounts/add',
         name: 'addPayAccount',
         meta: {
-          title: '添加支付账号'
+          title: i18n.t('titles.addPayAccount')
         },
         component: AddPayAccountView
         // AddPayAccountView
@@ -97,14 +96,14 @@ const routerConfig = {
         path: 'reset',
         name: 'accountReset',
         meta: {
-          title: '账户充值密码'
+          title: i18n.t('titles.accountReset')
         },
         component: AccountResetPayPasswordView
       }, {
         path: 'withdraw',
         name: 'accountWithdraw',
         meta: {
-          title: '账户提现'
+          title: i18n.t('titles.accountWithdraw')
         },
         component: AccountWithdrawView
       },
@@ -112,26 +111,36 @@ const routerConfig = {
         path: 'transfer',
         name: 'accountTransfer',
         meta: {
-          title: '账户转账'
+          title: i18n.t('titles.accountTransfer')
         },
         component: AccountTransferView
       },
       {
         path: 'profile',
-        meta: { title: '我的账号' },
+        name: 'profile',
+        meta: { title: i18n.t('titles.profile') },
         component: MyProfileView
       }, {
         path: 'collections',
-        meta: { title: '我的关注' },
+        name: 'collections',
+        meta: { title: i18n.t('titles.collections') },
         component: MyCollectionsView
       }, {
         path: 'contracts',
-        meta: { title: '我的资源' },
-        component: MyResourcesView
+        name: 'contracts-management',
+        meta: { title: i18n.t('titles.contract.management') },
+        component: MyContractsView
       },
       {
         path: 'contracts/detail',
-        meta: { title: '资源详情' },
+        name: 'contract-detail',
+        meta: { 
+          title: i18n.t('titles.contract.detail'), 
+          hideAside: true,
+          breadcrumbs: [
+            { path: '/user/contracts', title: i18n.t('titles.contract.management'), },
+          ]
+        },
         component: ResourceContractDetailView
       }]
     },

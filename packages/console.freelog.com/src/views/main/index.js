@@ -19,7 +19,7 @@ export default {
 				name: 'node-examples',
 				path: '/main/node-examples',
 			}],
-			activeTabName: '',
+			activeTabName: 'market',
 			searchInputStr: '',
 			isInputFocus: false
 		}

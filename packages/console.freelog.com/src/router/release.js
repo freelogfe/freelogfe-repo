@@ -20,15 +20,15 @@ export default {
         title: i18n.t('routes.createRelease'),
         type: 'release',
         theme: 'white',
-          breadCrumb: [
-              {
-                  to: '/release-management/release/list',
-                  text: '我的发行',
-              },
-              {
-                  text: i18n.t('routes.createRelease'),
-              },
-          ]
+        breadCrumb: [
+            {
+                to: '/release-management/release/list',
+                text: '我的发行',
+            },
+            {
+                text: i18n.t('routes.createRelease'),
+            },
+        ]
       },
       component: Views.releaseCreator,
     },

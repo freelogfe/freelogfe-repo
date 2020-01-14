@@ -73,10 +73,10 @@
         return this.contract.contractClause && this.contract.contractClause.currentFsmState || 'none'
       },
       beautifulPolityText() {
-        return beautifyPolicy(this.policyText || '')
+        return beautifyPolicy(this.contract.contractClause.policyText || '')
       },
       contractDetail() {
-        return highlightPolicy(this.policyText || '')
+        return highlightPolicy(this.contract.contractClause.policyText || '')
       },
     },
     methods: {

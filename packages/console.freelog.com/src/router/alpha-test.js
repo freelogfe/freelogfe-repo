@@ -11,17 +11,17 @@ export default {
         hideFooter: true,
     },
     component: Views.container,
-    redirect: '/alpha-test/input',
+    redirect: '/alpha-test/result',
     children: [
         {
-            path: 'input',
+            path: 'result',
             meta: {
                 requiresAuth: true,
                 title: i18n.t('routes.mockResourcePool'),
                 type: '',
                 hideFooter: true,
             },
-            component: Views.alphaTestInput
+            component: Views.alphaTestResult
         },
         {
             path: 'input',

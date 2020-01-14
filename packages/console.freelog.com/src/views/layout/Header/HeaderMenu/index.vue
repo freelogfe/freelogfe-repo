@@ -102,7 +102,7 @@
                             <span>{{node.nodeName}}</span>
                             <router-link
                                 :to="`/node/test-manager/${node.nodeId}`"
-                            >测试节点
+                            >进入测试节点
                             </router-link>
                         </router-link>
                     </div>

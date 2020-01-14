@@ -11,14 +11,23 @@
             <div style="height: 50px;"/>
             <div style="color: #000; font-size: 14px;">我们会尽快审核您的申请，审核结果会通过您的注册邮箱或者手机号发送给你，敬请留意。</div>
             <div style="height: 70px;"/>
-            <el-button type="primary">返回个人中心</el-button>
+            <el-button
+                type="primary"
+                @click="gotoUserCenter"
+            >进入个人中心
+            </el-button>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "index"
+        name: "index",
+        methods: {
+            gotoUserCenter() {
+                window.location.href = window.location.origin.replace('//console.', '//www.') + '/user/profile';
+            }
+        }
     }
 </script>
 

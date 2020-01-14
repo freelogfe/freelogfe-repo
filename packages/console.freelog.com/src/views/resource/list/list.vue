@@ -76,7 +76,7 @@
         <el-table-column :label="$t('list.operate')" width="230">
           <template slot-scope="scope">
             <el-button class="r-l-item-release-btn" size="mini" @click="tapRelease(scope.row)">{{$t('list.releaseBtnText')}}</el-button>
-            <router-link :to="scope.row._toDetailLink">
+            <router-link :to="scope.row._toDetailLink" target="_blank">
               <el-button class="r-l-item-detail-btn" size="mini">{{$t('list.editBtnText')}}</el-button>
             </router-link>
             <a :href="scope.row._downloadLink" :download="scope.row.aliasName">

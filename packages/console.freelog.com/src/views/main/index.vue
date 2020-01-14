@@ -2,14 +2,14 @@
     <section class="index-main-container">
 
 		<el-tabs class="main-c-tabs" v-model="activeTabName" @tab-click="exchangeActiveTabName">
-			<el-tab-pane label="发行市场" :name="tabs[0].name">
+			<el-tab-pane label="发行市场" :name="tabs[0].name" lazy>
 				<div class="resource-types-bar">
-					<el-button 
+					<el-button
 						type="text"
 						:class="{ 'selected': selectedType === item.value }"
-						v-for="item in resourceTypes" 
+						v-for="item in resourceTypes"
 						:key="item.value"
-						@click="exchangeSelectedResourceType(item.value)">{{item.label}}</el-button>
+						@click="exchangeSelectedResourceType(item.value)">{{item.label | pageBuildFilter}}</el-button>
 						<!-- prefix-icon -->
 					<el-input class="search-input" size="medium" ref="input" v-model="searchInputStr" placeholder="搜索自定义类型"
 						:class="{ 'focus': isInputFocus }"
@@ -42,11 +42,11 @@
 					</lazy-list-view>
 				</div>
 			</el-tab-pane>
-			<el-tab-pane label="示例节点" :name="tabs[1].name">
+			<el-tab-pane label="示例节点" :name="tabs[1].name" lazy>
 				<node-example></node-example>
 			</el-tab-pane>
   		</el-tabs>
-			
+
     </section>
 </template>
 
@@ -62,7 +62,7 @@
 
 <style lang="less">
     .index-main-container {
-		
+
         .fl-lazy-list-view.resource-list {
             > ul {
                 display: flex;
@@ -105,6 +105,6 @@
 						}
 					}
 				}
-				
+
     }
 </style>

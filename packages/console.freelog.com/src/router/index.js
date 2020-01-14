@@ -15,6 +15,7 @@ import alphaTestRoute from './alpha-test'
 import releaseRoute from './release'
 import batchOperationRoute from './batch-operation'
 import i18n from '../lib/i18n'
+import {getUserInfoFromLocalStorage} from "../lib/utils";
 
 Vue.use(Router)
 
@@ -102,7 +103,8 @@ const routerConfig = {
                     hidden: true,
                     meta: {
                         requiresAuth: false,
-                        title: i18n.t('resource.market'),
+                        // title: i18n.t('resource.market'),
+                        title: '示例节点',
                         theme: 'gray',
                         hideFooter: true,
                     },
@@ -151,3 +153,27 @@ export function registerNotFoundRouete() {
 }
 
 export default router
+
+router.beforeEach((to, from, next) => {
+    // ...
+    // console.log(to, from, 'to, from');
+
+    if (to.path === '/login' || to.path === '/signup') {
+        return next();
+    }
+
+    if (!to.path.startsWith('/alpha-test') && (getUserInfoFromLocalStorage() || {userType: 0}).userType !== 1) {
+        return next({
+            path: '/alpha-test',
+            replace: true,
+        });
+    }
+
+    if (to.path.startsWith('/alpha-test') && (getUserInfoFromLocalStorage() || {userType: 0}).userType === 1) {
+        return next({
+            path: '/',
+            replace: true,
+        });
+    }
+    next();
+});

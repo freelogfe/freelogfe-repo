@@ -17,10 +17,27 @@ export default {
     sureBtnText: 'sure',
     cancelBtnText: 'cancel',
   },
-  userAsideNav: {
-    title: ['My focus','My contract','My account','Information & Account']
+  titles: {
+    collections: 'my collections',
+    accounts: 'wallet',
+    profile: 'Information & Account',
+    createAccount: 'Create an account',
+    rechangeAccount: 'Account recharge',
+    accountsManager: 'Account management',
+    addPayAccount: 'Add payment account',
+    accountWithdraw: 'Account withdraw',
+    accountTransfer: 'Account transfer',
+    accountRecords: 'Account transaction history',
+    accountReset: 'Account recharge password',
+    contract: {
+      detail: 'contract detail',
+      management: 'contract management'
+    },
   },
-  navTop: ['exit','My freelog'],
+  userAsideNav: {
+    title: ['wallet','My contract','Information & Account']
+  },
+  navTop: ['enter console','logout',],
   pagination: {
     emptyText: 'No data',
     start: 'First Page',
@@ -38,14 +55,31 @@ export default {
     userTabTitle: 'Personal center',
     contractTabTitle: 'Contract management',
   },
-  resources: {
-    searchType: {
-      placeholder: 'please choose',
-      label: ['Node','Resource','Resource Type']
-    },
-    tableColumn: ['Resource|Status|Type','Node','Signing time'],
+  company: {
+    name: 'freelog',
+    copyright: 'all rights reserved'
+  },
+  aboutView: {
+    about: 'About'
+  },
+  helpView: {
+    title: 'Help Center'
+  },
+  contracts: {
+    status: [ 'To be executed', 'Authorization is OK', 'Contract Termination', 'Unknown status' ],
+    inputPlaceholder: 'Contract ID / Contract Name',
+    partyOne: 'Party one',
+    partyTwo: 'Party two',
+    content: 'Contract content',
+    relevancy: 'Relevancy contract',
+    tableColumn: ['Contract', 'Party two','Party one', 'Contract Status', 'Contract Time', 'Contract detail'],
+    id: 'Contract ID',
+    signTime: 'Contract Time',
+    updateTime: 'Update Time',
+    statusText: 'Contract Status',
+    viewBtn: 'view',
     detail: {
-      title: 'Resource details'
+      title: 'Contract detail'
     },
   },
   profile: {
@@ -68,7 +102,7 @@ export default {
     ],
     addrName: ['Ethereum address','Bank account'],
     index: {
-      create: 'to create+',
+      create: 'to create',
       name: 'Account name',
       id: 'Account ID',
       node: 'Node',

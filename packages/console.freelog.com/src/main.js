@@ -19,7 +19,7 @@ sync(store, router, {moduleName: 'route'})
 
 initEnv()
 /* eslint-disable no-new */
-initLogin({ Vue, router })
+initLogin({ Vue, router, i18n })
 // 404页面路由是通配符的路由，须放在最后
 registerNotFoundRouete()
 

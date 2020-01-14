@@ -23,7 +23,7 @@
     "@freelog/freelog-policy-lang": "0.1.0",
     "@freelog/freelog-ui-contract": "0.0.14",
     "@freelog/freelog-ui-login": "0.1.0",
-    "@freelog/nmr_translator": "^4.2.7",
+    "@freelog/nmr_translator": "^4.2.8",
     "codemirror": "^5.42.2",
     "core-js": "^2.6.5",
     "cropperjs": "^1.5.1",

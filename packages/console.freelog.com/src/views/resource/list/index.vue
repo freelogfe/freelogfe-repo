@@ -13,7 +13,7 @@
         </el-input>
         <!-- <search-input @search="searchHandler" showInputImmediately></search-input> -->
       </div>
-      <router-link to="/resource/editor">
+      <router-link to="/resource/editor" target="_blank">
         <el-button size="medium" type="primary" class="m-r-create-btn">{{$t('createBtnText')}}</el-button>
       </router-link>
     </div>
@@ -82,12 +82,16 @@ export default {
       this.targetReleaseResource = resource
     },
     releaseSearchHandler(release) {
-      this.$router.push(`/release/add?releaseId=${release.releaseId}&resourceId=${this.targetReleaseResource.resourceId}`)
+      this.isShowReleaseSearchDialog = false
+      window.open(`/release/add?releaseId=${release.releaseId}&resourceId=${this.targetReleaseResource.resourceId}`)
+      // this.$router.push(`/release/add?releaseId=${release.releaseId}&resourceId=${this.targetReleaseResource.resourceId}`)
     },
     // 创建一个全新的发行
     createNewRelease() {
       // 跳转 发行中间页
-      this.$router.push(`/release/create?resourceId=${this.targetReleaseResource.resourceId}`)
+      this.isShowReleaseSearchDialog = false
+      window.open(`/release/create?resourceId=${this.targetReleaseResource.resourceId}`)
+      // this.$router.push(`/release/create?resourceId=${this.targetReleaseResource.resourceId}`)
     },
   }
 }

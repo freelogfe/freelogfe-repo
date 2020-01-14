@@ -7,16 +7,12 @@ export default {
       activeNavName: 'my-profile',
       navs: [
         {
-          name: 'my-collections',
-          link: 'collections'
+          name: 'my-accounts',
+          link: 'accounts'
         },
         {
           name: 'my-contracts',
           link: 'contracts'
-        },
-        {
-          name: 'my-accounts',
-          link: 'accounts'
         },
         {
           name: 'my-profile',

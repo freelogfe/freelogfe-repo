@@ -195,7 +195,7 @@ html body {
 
 .main-c-tabs {
   @tabH: 60px;
-  .el-tabs__header { 
+  & > .el-tabs__header { 
     height: @tabH; margin-bottom: 10px;
     text-align: center; background-color: #fff;
     .el-tabs__active-bar { 
@@ -217,9 +217,9 @@ html body {
       }
     }
     
-  }
-  .el-tabs__nav-wrap { 
-    display: inline-block; 
-    &:after { background-color: transparent; }
+    .el-tabs__nav-wrap { 
+      display: inline-block; 
+      &:after { background-color: transparent; }
+    }
   }
 }

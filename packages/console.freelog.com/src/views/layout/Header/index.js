@@ -4,6 +4,7 @@ import { logout, LOGIN_PATH } from '@freelog/freelog-ui-login'
 
 import HeaderMenu from './HeaderMenu/index.vue';
 import HeaderTools from './HeaderTools/index.vue';
+import {getUserInfoFromLocalStorage} from "../../../lib/utils";
 
 export default {
   name: 'fl-header',
@@ -13,7 +14,9 @@ export default {
       isSideBarOpen: true,
       domainPostfix: /\.test/.test(window.location.host) ? '.testfreelog.com' : '.freelog.com',
       avatarUrl: '',
-      loginLink: LOGIN_PATH
+      loginLink: LOGIN_PATH,
+        // userType: JSON.parse(window.localStorage.getItem('user_session')).userType,
+        userType: (getUserInfoFromLocalStorage() || {userType: 0}).userType,
     }
   },
   computed: {

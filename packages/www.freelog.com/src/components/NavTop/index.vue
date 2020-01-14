@@ -1,31 +1,22 @@
 <template>
-  <div class="nav-top-wrapper" v-if="userInfo">
-    <div class="nav-top-container">
-      <ul class="nav-top-right">
-        <li class="nav-top-item">
-          <!--{{userInfo.nickname}}-->
-          <!--<el-dropdown @command="handleNavTopCommand">-->
-                      <!--<span class="el-dropdown-link">-->
-                        <!--{{userInfo.nickname}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-                      <!--</span>-->
-            <!--<el-dropdown-menu slot="dropdown">-->
-              <!--<el-dropdown-item command="gotoAccountSetting">账户设置</el-dropdown-item>-->
-            <!--</el-dropdown-menu>-->
-          <!--</el-dropdown>-->
-        </li>
-        <li class="nav-top-item" @click="logoutHandler">{{$t('navTop[0]')}}</li>
-        <li class="nav-top-item"><a href="/">{{$t('navTop[1]')}}</a></li>
-      </ul>
-    </div>
-  </div>
+    <header class="nav-header">
+        <div class="brand">
+            <router-link to="/" class="">
+                <i class="freelog fl-icon-logo-freelog" />
+            </router-link>
+        </div>
+        <HeaderTools/>
+    </header>
 </template>
 
 <script>
-import NavTopBar from './index'
+    import Header from './index'
 
-export default NavTopBar
+    export default Header
 </script>
 
-<style lang="less" scoped>
-  @import "index.less";
+<style scoped lang="less">
+    @import "index.less";
 </style>
+
+

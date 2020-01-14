@@ -1,5 +1,5 @@
 <template>
-    <div class="bread-crumb" v-if="true">
+    <div class="bread-crumb" >
         <template v-for="i in [...list].slice(0, list.length - 1)">
             <router-link
                 :to="i.to"

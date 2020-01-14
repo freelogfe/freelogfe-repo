@@ -6,7 +6,7 @@
         >
             <BreadCrumb
                 :list="[
-                    {text: '节点管理', to: `/node/manager/${nodeId}`},
+                    {text: releaseInfo.resourceType === 'page_build' ? '主题管理' : '展品管理', to: `/node/manager/${nodeId}`},
                     {text: '展品信息'}
                 ]"
             />

@@ -1,14 +1,16 @@
+.app-wrapper { 
+  margin: auto; position: relative;
+}
 
 .app-container {
-  width: 1190px;
-  margin: 70px auto 0;
-  min-height: 80vh;
+  box-sizing: border-box; position: relative;
+  min-height: 100vh; padding: 60px 0 120px 280px;
+  &.noPaddingLeft { padding-left: 0; }
+  & > div { width: 100%; }
 }
 
 .main-app-content {
-  width: 920px;
-  margin-left: 10px;
-  padding: 0;
+  padding: 35px 60px 0;
   background-color: white;
   &.transparent {
     background-color: transparent;

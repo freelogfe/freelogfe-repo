@@ -17,10 +17,27 @@ export default {
     sureBtnText: '确 定',
     cancelBtnText: '取 消',
   },
-  userAsideNav: {
-    title: ['我的关注','我的合同','我的账户','资料与账号']
+  titles: {
+    collections: '我的关注',
+    accounts: '钱包',
+    profile: '资料与账号',
+    createAccount: '创建账户',
+    rechangeAccount: '账户充值',
+    accountsManager: '账号管理',
+    addPayAccount: '添加支付账号',
+    accountWithdraw: '账户提现',
+    accountTransfer: '账户转账',
+    accountRecords: '账户交易记录',
+    accountReset: '账户充值密码',
+    contract: {
+      detail: '合约详情',
+      management: '合约管理'
+    },
   },
-  navTop: ['退出','我的freelog'],
+  userAsideNav: {
+    title: ['钱包','合约管理','资料与账号']
+  },
+  navTop: ['进入console','登出',],
   pagination: {
     emptyText: '暂无数据',
     start: '首页',
@@ -36,16 +53,37 @@ export default {
   },
   toolbar: {
     userTabTitle: '个人中心',
-    contractTabTitle: '合同管理',
+    contractTabTitle: '合约管理',
   },
-  resources: {
+  company: {
+    name: 'freelog',
+    copyright: '版权所有'
+  },
+  aboutView: {
+    about: '关于'
+  },
+  helpView: {
+    title: '帮助中心'
+  },
+  contracts: {
+    status: [ '待执行', '授权正常', '合约终止', '未知状态' ],
     searchType: {
       placeholder: '请选择',
       label: ['节点','资源','资源类型']
     },
-    tableColumn: ['资源|状态|类型','节点','签约时间'],
+    inputPlaceholder: '合约ID / 合约名称',
+    partyOne: '授权方',
+    partyTwo: '被授权方',
+    content: '合约内容',
+    relevancy: '关联合约',
+    tableColumn: ['合约', '被授权方','授权方', '合约状态', '签约时间', '合约详情'],
+    id: '合约ID',
+    signTime: '签约时间',
+    updateTime: '更新时间',
+    statusText: '合约状态',
+    viewBtn: '查看',
     detail: {
-      title: '资源详情'
+      title: '合约详情'
     },
   },
   profile: {
@@ -54,9 +92,11 @@ export default {
     editAvatar: '编辑头像',
     userName: '用户姓名',
     userNickname: '用户昵称',
-    email: '邮箱',
-    phoneNumber: '手机号',
-    noPhoneNumber: '未设置手机号'
+    email: '邮箱账号',
+    noMail: '未设置邮箱账号',
+    phoneNumber: '手机账号',
+    noPhoneNumber: '未设置手机号',
+    password: '登陆密码',
   },
   accounts: {
     currencyAccounts: [
@@ -68,7 +108,7 @@ export default {
     ],
     addrName: ['以太坊地址','银行账号'],
     index: {
-      create: '去创建+',
+      create: '去创建',
       name: '账户名',
       id: '账户ID',
       node: '节点',
@@ -182,7 +222,7 @@ export default {
     contractStatus: {
       inactive: '不可用',
       active: '可用',
-      termination: '合同终止',
+      termination: '合约终止',
       unknown: '未知状态'
     }
   },
@@ -193,7 +233,7 @@ export default {
       msg: '参数有误'
     },
     notifyNode: {
-      msg: '节点资源合同未生效，已通知节点'
+      msg: '节点资源合约未生效，已通知节点'
     },
   },
 }

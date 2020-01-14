@@ -17,13 +17,12 @@
     color: #222222;
     .account-type-name {
       padding: 0 5px;
-      color: #333333;
-      font-weight: bold;
-      font-size: 14px;
+      color: #666;
+      font-size: 12px;
       .account-addrs-btn {
         float: right;
-        padding: 0;
-        margin-top: 3px;
+        margin-top: 3px; padding: 0;
+        font-size: 14px; font-weight: 400; color: #4396F0;
       }
     }
 
@@ -51,7 +50,9 @@
 
     .no-account-wrap {
       .center;
-      width: 100%;
+      width: 100%; 
+      font-size: 14px; font-weight: 500;
+      .fl-icon-add { font-size: 14px; }
     }
 
     .account-info {
@@ -73,23 +74,20 @@
           color: #999999;
         }
       }
-
+      .acc-digest-info-box { display: flex; }
       .acc-digest-info {
-        display: inline-block;
+        display: inherit;
         &:first-child {
-          margin-right: 20px;
+          margin-right: 30px;
         }
         label {
           color: #999999;
           margin-right: 10px;
         }
         .account-detail-content {
-          font-weight: bold;
           max-width: 200px;
-          overflow: hidden;
-          display: inline-block;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+          font-size: 14px; font-weight: 500;
           vertical-align: middle;
         }
       }

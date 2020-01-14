@@ -17,7 +17,7 @@ Vue.use(plugins)
 Vue.config.devtools = true
 
 initEnv()
-initLogin({ Vue, router })
+initLogin({ Vue, router, i18n })
 // 404页面路由是通配符的路由，须放在最后
 registerNotFoundRouete()
 var app = new Vue({

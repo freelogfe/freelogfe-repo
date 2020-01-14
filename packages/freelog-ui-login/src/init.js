@@ -14,6 +14,10 @@ import defualtOptions, { checkOptions } from './options'
 import initCode, { runAuthenticationHandler, checkLoginStatus } from './core'
 import { goToLoginPage } from './login'
 
+import loginLocales from './i18n-locales/login.json'
+import signupLocales from './i18n-locales/signup.json'
+import resetPasswordLocales from './i18n-locales/reset-password.json'
+
 var isNeedCheckLoginStatus = true
 export default function init(options) {
 	options = Object.assign({}, defualtOptions, options)
@@ -51,20 +55,30 @@ function registerComponent(options) {
 }
 
 function registerRouter(options) {
+	const locale = options.i18n.locale
 	options.router.addRoutes([{
 		path: LOGIN_PATH,
 		component: LoginPage,
-		meta: { requiresAuth: false }
+		meta: { 
+			requiresAuth: false,
+			title: loginLocales[locale]['login']['title']
+		}
 	},
 	{
 		path: SIGN_PATH,
 		component: SignupPage,
-		meta: { requiresAuth: false }
+		meta: { 
+			requiresAuth: false,
+			title: signupLocales[locale]['signup']['title']
+		}
 	},
 	{
 		path: RESET_PASSWORD_PATH,
 		component: RsetPasswordPage,
-		meta: { requiresAuth: false }
+		meta: { 
+			requiresAuth: false,
+			title: resetPasswordLocales[locale]['resetPassword']['title']
+		}
 	}])
 
 	if (options.isAuthenticationBeforeRoute) {

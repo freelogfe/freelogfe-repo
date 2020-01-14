@@ -1,5 +1,5 @@
 <template>
-  <el-aside width="260px" class="user-aside-nav-wrap" v-if="user">
+  <el-aside width="280px" class="user-aside-nav-wrap" v-if="user">
     <div class="user-portrait">
       <div class="center">
         <a href="javascript:;" @click="gotoMyProfile">
@@ -8,7 +8,8 @@
                alt="">
           <span v-else>{{$t('common.avatarPlaceholder')}}</span>
         </a>
-        <p class="user-name">{{user.nickname}}</p>
+        <p class="user-name">{{user.username}}</p>
+        <p class="user-mobile">{{user.mobile}}</p>
       </div>
     </div>
 

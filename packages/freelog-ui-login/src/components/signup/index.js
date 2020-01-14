@@ -1,6 +1,7 @@
 import {isSafeUrl} from '../../utils'
 import { LOGIN_PATH } from '../../constant'
 import {validateLoginName, EMAIL_REG, PHONE_REG} from '../login/validator'
+import {validateUsername, USERNAME_REG} from './validator'
 
 export default {
   name: 'f-signup',
@@ -33,7 +34,8 @@ export default {
         {validator: validateLoginName.bind(this), trigger: 'blur'}
       ],
       username: [
-        {required: true, message: this.$t('signup.usernamePlaceholder'), trigger: 'blur'}
+        {required: true, message: this.$t('signup.usernamePlaceholder'), trigger: 'blur'},
+        {validator: validateUsername.bind(this), trigger: 'blur'}
       ],
       password: [
         {required: true, message: this.$t('signup.passwordInputTip'), trigger: 'blur'},

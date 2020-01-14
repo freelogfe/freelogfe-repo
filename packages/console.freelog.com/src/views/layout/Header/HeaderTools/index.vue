@@ -1,48 +1,53 @@
 <template>
     <div class="header-tools">
-        <div class="header-tools__col">
-            <a>
-                <div class="header-tool__create">
-                    <i class="freelog fl-icon-add"/>
-                </div>
-                <div class="header-tools__dropdown">
-                    <div class="header-tools__menu">
-                        <router-link
-                            to="/resource/editor"
-                            class="header-tools__menu__item"
-                            target="_blank"
-                        >创建资源
-                        </router-link>
-                        <a
-                            class="header-tools__menu__item"
-                            @click="resourceDialogVisible=true"
-                        >创建发行</a>
-                        <!--                        <router-link to="/" class="header-tools__menu__item">-->
-                        <!--                            创建mock-->
-                        <!--                        </router-link>-->
-                        <router-link
-                            to="/node/create"
-                            class="header-tools__menu__item"
-                            target="_blank"
-                        >创建节点
-                        </router-link>
+        <template v-if="userType === 1">
+            <div class="header-tools__col">
+                <a>
+                    <div class="header-tool__create">
+                        <i class="freelog fl-icon-add"/>
                     </div>
+                    <div class="header-tools__dropdown">
+                        <div class="header-tools__menu">
+                            <router-link
+                                to="/resource/editor"
+                                class="header-tools__menu__item"
+                                target="_blank"
+                            >创建资源
+                            </router-link>
+                            <a
+                                class="header-tools__menu__item"
+                                @click="resourceDialogVisible=true"
+                            >创建发行</a>
+                            <!--                        <router-link to="/" class="header-tools__menu__item">-->
+                            <!--                            创建mock-->
+                            <!--                        </router-link>-->
+                            <router-link
+                                to="/node/create"
+                                class="header-tools__menu__item"
+                                target="_blank"
+                            >创建节点
+                            </router-link>
+                        </div>
 
-                </div>
-            </a>
-        </div>
+                    </div>
+                </a>
+            </div>
 
-        <div class="header-tools__col" style="padding-right: 10px;">
-            <ToolSearch @onConfirm="onSearch"/>
-        </div>
+            <div class="header-tools__col" style="padding-right: 10px;">
+                <ToolSearch @onConfirm="onSearch"/>
+            </div>
+        </template>
 
         <div class="header-tools__col" style="padding-left: 0;">
             <a class="header-tool__avatar" style="padding-left: 20px;">
-                <img
-                    :src="userInfo && userInfo.headImage"
-                    alt=""
-                />
 
+                <div class="header-tool__avatar__display">
+                    <img
+                        :src="userInfo && userInfo.headImage"
+                        alt=""
+                    />
+                    <label v-if="userType === 1">内测</label>
+                </div>
                 <div
                     v-if="!!userInfo"
                     class="header-tools__dropdown"
@@ -53,6 +58,7 @@
                         <img
                             :src="userInfo && userInfo.headImage"
                             style="height: 60px; width: 60px; border-radius: 50%;"
+                            alt=""
                         />
                         <div style="height: 10px;"/>
                         <div style="color: #999; font-size: 16px; font-weight: 600;">{{userInfo && userInfo.username}}
@@ -61,10 +67,11 @@
                         <div style="">{{userInfo && userInfo.mobile}}</div>
                     </div>
                     <a @click="gotoUserProfile">个人中心</a>
-                    <router-link
-                        :to="'/login'"
-                    >登出
-                    </router-link>
+                    <a @click="logout">登出</a>
+                    <!--                    <router-link-->
+                    <!--                        :to="'/login'"-->
+                    <!--                    >登出-->
+                    <!--                    </router-link>-->
                 </div>
             </a>
         </div>
@@ -109,6 +116,7 @@
 <script>
     import ToolSearch from './ToolSearch';
     import ResourceSearch from '@/views/resource/search/search.vue'
+    import {getUserInfoFromLocalStorage} from "../../../../lib/utils";
 
     export default {
         name: "index",
@@ -120,6 +128,7 @@
             return {
                 resourceDialogVisible: false,
                 userInfo: null,
+                userType: (getUserInfoFromLocalStorage() || {userType: 0}).userType,
             };
         },
         mounted() {
@@ -133,8 +142,8 @@
             async handleUserInfo() {
                 const {data} = await this.$axios.get('/v1/userinfos/current');
 
-                // console.log(data, 'DDDDDDD');
                 this.userInfo = data.data;
+                window.localStorage.setItem('user_session', JSON.stringify(data.data));
             },
             gotoUserProfile() {
                 window.location.href = window.location.origin.replace('//console.', '//www.') + '/user/profile';
@@ -148,6 +157,7 @@
                 this.$confirm(this.$t('header.langSwitchQuestion', {lang: langMap[lang]}))
                     .then(() => {
                         window.localStorage.setItem('locale', lang);
+                        document.cookie = 'locale=' + lang + '; path=/; domain=testfreelog.com';
                         this.$i18n.locale = lang;
                         window.location.reload();
                     }).catch(() => {
@@ -158,6 +168,16 @@
                 // this.$router.
                 window.open(`/release/create?resourceId=${resource.resourceId}`);
             },
+            async logout() {
+                const {data} = await this.$axios.get('/v1/passport/logout');
+                console.log(data, 'DDDDDDDDD');
+                if (data.ret !== 0 || data.errcode !== 0) {
+                    return this.$message.error(data.msg);
+                }
+                window.localStorage.removeItem('user_session');
+                // if (data)
+                this.$router.push('/login');
+            }
         }
     }
 </script>
@@ -272,17 +292,38 @@
     }
 
     .header-tool__avatar {
-        width: 32px;
+        /*width: 32px;*/
         display: block;
 
-        & > img {
-            background: rgba(142, 142, 147, 0.4);
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: block;
-            border: none;
+        .header-tool__avatar__display {
+            display: flex;
+            align-items: center;
+
+            & > img {
+                background: rgba(142, 142, 147, 0.4);
+                border-radius: 50%;
+                width: 32px;
+                height: 32px;
+                display: block;
+                border: none;
+            }
+
+            & > label {
+                margin-left: 10px;
+                /*display: none;*/
+                background-color: #409eff;
+                color: #fff;
+                width: 36px;
+                line-height: 20px;
+                height: 20px;
+                text-align: center;
+
+                border-radius: 10px;
+                font-size: 12px;
+                font-weight: 600;
+            }
         }
+
 
         a {
             padding: 0 20px;

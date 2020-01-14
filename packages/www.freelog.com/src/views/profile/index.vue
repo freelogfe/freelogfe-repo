@@ -1,32 +1,58 @@
 <template>
   <div class="my-profile-view" v-if="session">
-    <el-form label-width="0"
-             label-position="left">
-      <el-form-item class="profile-info-item" :class="[avatarCls]" :label="$t('profile.userAvatar')">
-        <el-button type="text" class="user-avatar-btn" @click="showImageCropUploader=true">
-          <img v-show="session.avatarUrl" class="user-avatar" :src="session.avatarUrl" @error="imgErrorHandler"
-               :alt="$t('profile.userAvatar')">
-          <span v-if="!session.avatarUrl">{{$t('profile.editAvatar')}}</span>
-          <div class="edit-avatar-part">{{$t('profile.editAvatar')}}</div>
-        </el-button>
-        <crop-image v-model="showImageCropUploader"
-                    :avatarUrl="session.avatarUrl"
-                    :upload-success="uploadSuccessHandler"></crop-image>
-      </el-form-item>
-      <el-form-item class="profile-info-item" :label="$t('profile.userName')">
-        {{session.userName?session.userName: $t('profile.noUserAvatar')}}
-      </el-form-item>
-      <el-form-item class="profile-info-item" :label="$t('profile.userNickname')">
-        {{session.nickname}}
-        <!--<el-input size="small" type="password" v-model="password" style="width: 200px;"></el-input>-->
-      </el-form-item>
-      <el-form-item class="profile-info-item" :label="$t('profile.email')">
-        {{session.email}}
-      </el-form-item>
-      <el-form-item class="profile-info-item" :label="$t('profile.phoneNumber')">
-        {{session.mobile?session.mobile: $t('profile.noPhoneNumber')}}
-      </el-form-item>
-    </el-form>
+    <h2>个人资料</h2>
+    <div class="my-profile-info">
+      <div class="my-profile-row" :class="[avatarCls]">
+        <label>{{$t('profile.userAvatar')}}</label>
+        <div class="my-profile-row__content">
+          <el-button type="text" class="user-avatar-btn" @click="showImageCropUploader=true">
+            <img v-show="session.avatarUrl" class="user-avatar" :src="session.avatarUrl" @error="imgErrorHandler"
+                :alt="$t('profile.userAvatar')">
+            <span v-if="!session.avatarUrl">{{$t('profile.editAvatar')}}</span>
+            <div class="edit-avatar-part">{{$t('profile.editAvatar')}}</div>
+          </el-button>
+          <crop-image v-model="showImageCropUploader"
+                      :avatarUrl="session.avatarUrl"
+                      :upload-success="uploadSuccessHandler"></crop-image>
+        </div>
+      </div>
+      <div class="my-profile-row">
+        <label>{{$t('profile.userName')}}</label>
+        <div class="my-profile-row__content">
+          {{session.userName ? session.userName : $t('profile.noUserAvatar')}}
+        </div>
+      </div>
+    </div>
+    <h2>账号安全</h2>
+    <div class="my-profile-account">
+      <div class="my-profile-row">
+        <label>{{$t('profile.email')}}</label>
+        <div class="my-profile-row__content">
+          <span>{{session.email ? session.email : $t('profile.noMail')}}</span>
+          <el-tooltip effect="dark" content="功能稍后开放" placement="left">
+            <el-button type="primary" disabled>绑定邮箱</el-button>
+          </el-tooltip>
+        </div>
+      </div>
+      <div class="my-profile-row">
+        <label>{{$t('profile.phoneNumber')}}</label>
+        <div class="my-profile-row__content">
+          <span>{{session.mobile ? session.mobile : $t('profile.noPhoneNumber')}}</span>
+          <el-tooltip effect="dark" content="功能稍后开放" placement="left">
+            <el-button type="primary" disabled>更换手机</el-button>
+          </el-tooltip>
+        </div>
+      </div>
+      <div class="my-profile-row">
+        <label>{{$t('profile.password')}}</label>
+        <div class="my-profile-row__content">
+          <span>*****</span>
+          <el-tooltip effect="dark" content="功能稍后开放" placement="left">
+            <el-button type="primary" disabled>更换密码</el-button>
+          </el-tooltip>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -77,27 +103,50 @@ export default {
 
 <style lang="less" scoped type="text/less">
   .my-profile-view {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
+    // display: flex; justify-content: center; align-items: center;
+    min-width: 480px; max-width: 900px; margin: auto;
+
+    h2 { 
+      padding: 5px 0; border-bottom: 1px solid #D8D8D8;
+      font-size: 16px; font-weight: 600; color: #000; }
+
+    .my-profile-info {
+      padding: 20px 0 80px 0;
+    }
+
+    .my-profile-account {
+      padding: 20px 0;
+      .my-profile-row__content {
+        .el-button--primary { float: right; }
+      }
+    }
+
+    .my-profile-account, .my-profile-info {
+      .my-profile-row {
+        display: flex; align-items: center;
+        padding: 18px 0;
+        label { margin-right: 70px; font-size: 14px; color: #999; }
+        .my-profile-row__content {
+          flex: 1;
+          line-height: 40px; font-size: 14px; font-weight: 600; color: #333;
+        }
+      }
+    }
+
     .not-found-img {
       .user-avatar-btn span {
-        width: 82px;
-        height: 82px;
-        line-height: 82px;
         display: inline-block;
-        border: 1px solid #EEEEEE;
-        border-radius: 50%;
+        width: 80px; height: 80px; border: 1px solid #EEEEEE; border-radius: 50%;
+        line-height: 80px;
       }
     }
     .user-avatar-btn {
-      position: relative;
+      position: relative; padding: 0;
 
       .edit-avatar-part {
-        position: absolute; top: 13px; left: 0;
-        width: 83px; height: 83px; border-radius: 50%;
-        line-height: 83px; background-color: #333333; color: white;
+        position: absolute; top: 1px; left: 1px;
+        width: 81px; height: 81px; border-radius: 50%;
+        line-height: 81px; background-color: #333333; color: white;
         transition: all .3s; transform: scale(0); opacity: 0;
       }
 
@@ -106,20 +155,13 @@ export default {
       }
     }
     .user-avatar {
-      border-radius: 50%;
-      width: 83px;
-      height: 83px;
-      margin-right: 20px;
-      border: 1px solid #EEEEEE;
+      width: 81px; height: 81px; margin-right: 20px;
+      border: 1px solid #EEEEEE; border-radius: 50%;
     }
     .profile-info-item {
-      border-bottom: 1px solid #ededed;
-      width: 400px;
+      display: flex; align-items: center;
+      width: 400px; margin-bottom: 5px; padding: 0 20px; border-bottom: 1px solid #ededed;
       color: #999;
-      margin-bottom: 5px;
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
     }
   }
 </style>

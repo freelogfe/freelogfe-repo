@@ -35,7 +35,7 @@
       </el-form-item>
       <el-form-item prop="authCode" :label="$t('signup.verifyCode')">
         <el-input v-model="model.authCode"
-                  style="width: 60%"
+                  style="width: 170px"
                   :placeholder="$t('signup.verifyCodePlaceholder')"></el-input>
         <div class="check-code-wrap">
           <el-button class="vcode-btn"

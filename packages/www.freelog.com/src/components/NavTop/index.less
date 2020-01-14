@@ -1,44 +1,35 @@
-.nav-top-wrapper {
-  height: 36px;
-  background: #3d474a;
-  color: #fff;
+//@import '../../../styles/mixin.less';
+
+.nav-header {
+  //.clearfix;
+  background-color: #333;
+  //color: black;
   position: fixed;
+  display: flex;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 1000;
+  border-bottom: 1px solid #E6E6E6;
+  height: 60px;
+  justify-content: space-between;
+  padding: 0 60px;
 
-  .nav-top-container {
-    width: 990px;
-    margin: auto;
-  }
+  .brand {
+    //float: left;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    //margin-left: 50px;
+    color: #333333;
 
-  .nav-top-right {
-    float: right;
-  }
-  .nav-top-item {
-    float: left;
-    padding: 0 7px;
-    line-height: 36px;
-    height: 36px;
-    cursor: pointer;
-    color: white;
-    &:hover {
-      color: #409EFF
+    i {
+        color: white;
+        font-size: 36px;
+        //background-color: black;
+        //padding: 4px 12px;
+        font-style: normal;
+        line-height: 60px;
     }
-    a {
-      color: white;
-      &:hover {
-        color: #409EFF
-      }
-    }
-  }
-
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
   }
 }

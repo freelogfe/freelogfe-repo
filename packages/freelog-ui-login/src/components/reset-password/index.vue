@@ -8,7 +8,7 @@
       <el-alert v-if="error" :title="error.title" type="warning" :description="error.message" show-icon/>
     </header>
     <el-form class="login-form" auto-complete="off" :model="model" :rules="rules" ref="formRef" label-width="60px">
-      <h2 class="heading">{{$t('resetPassword.title')}}</h2>
+      <h2 class="heading">{{$t('resetPassword.head')}}</h2>
       <el-form-item prop="loginName" :label="$t('resetPassword.loginName')">
         <el-input type="text" v-model="model.loginName" :placeholder="$t('resetPassword.loginNamePlaceholder')"></el-input>
       </el-form-item>

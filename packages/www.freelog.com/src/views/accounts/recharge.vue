@@ -30,7 +30,7 @@
                   </el-button>
                 </el-option>
               </el-select>
-              <div v-if="selectedCard">{{$t('accounts.recharge.curentText')}}{{addrName}}{{$t('accounts.recharge.balanceText')}} <span style="color: #607A97">
+              <div v-if="selectedCard">{{$t('accounts.recharge.currentText')}}{{addrName}}{{$t('accounts.recharge.balanceText')}} <span style="color: #607A97">
                 {{selectedCard.balance|humanizeCurrency(currencyInfo.abbr)}}{{currencyInfo.abbr}}</span>
               </div>
             </div>

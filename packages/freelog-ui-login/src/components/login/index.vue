@@ -5,7 +5,7 @@
       <!--<h1 class="brand">-->
       <!--<router-link to="/" tabindex="-1">freelog.com</router-link>-->
       <!--</h1>-->
-      <h2 class="heading" :class="{ 'show-error': error }">{{$t('login.title')}}</h2>
+      <h2 class="heading" :class="{ 'show-error': error }">{{$t('login.head')}}</h2>
       <i class="el-icon-close" v-if="showClose" @click="tapCloseBtn"></i>
       <el-alert type="warning" :title="error.title" :description="error.message" show-icon v-if="error" />
     </header>

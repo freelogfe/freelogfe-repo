@@ -14,8 +14,7 @@ export default {
 
 <style lang="less" scoped>
 .reset-password {
-  margin-top: 160px;
-  text-align: center;
+  margin: 120px auto 0; text-align: center;
   .login-section {
     display: inline-block;
   }
