@@ -160,8 +160,8 @@
         this.resolvedReleases = resolvedReleases
       },
       cancelCreateRelease() {
-        this.$router.go(-1)
-        // this.$router.push(`/resource/detail/${this.resourceDetail.resourceId}`)
+        // this.$router.go(-1)
+        this.$router.push(`/resource/editor/${this.resourceDetail.resourceId}`)
       },
       getFormData() {
         const data = {
