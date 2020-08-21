@@ -1,18 +1,37 @@
 import React, {ChangeEvent, ChangeEventHandler} from 'react';
 import styles from './index.less';
 import {Layout, Dropdown, Affix} from 'antd';
-import {DownOutlined} from '@ant-design/icons';
 import FMenu from '@/components/FMenu';
-import avatarSrc from '../../assets/avatar.png';
+// import avatarSrc from '../../assets/avatar.png';
 import {FCircleButton} from '@/components/FButton';
 import FInput from '@/components/FInput';
-import router from 'umi/router';
+import {router, withRouter} from 'umi';
 import {connect, Dispatch} from 'dva';
-import {ConnectState, GlobalSearchingModelState} from '@/models/connect';
+import {
+  ConnectState,
+  GlobalModelState,
+  GlobalSearchingModelState,
+  // RouterHistoriesModelState,
+  UserModelState
+} from '@/models/connect';
+import {RouteComponentProps} from "react-router";
+import FLayoutFooter from "@/layouts/FLayoutFooter";
+import {setLocale} from 'umi-plugin-react/locale';
+import {FTitleText, FContentText} from '@/components/FText';
+import {i18nMessage} from "@/utils/i18n";
+// import {
+//   formatDate,
+//   formatTime,
+//   formatRelative,
+//   formatNumber,
+//   formatPlural,
+//   formatMessage,
+//   formatHTMLMessage
+// } from 'umi-plugin-react/locale';
 
 const discoverOptions = [
   {
-    text: '发现市场',
+    text: '发现资源',
     value: '1'
   },
   {
@@ -44,20 +63,24 @@ const creatorOptions = [
 ];
 
 
-interface FLayoutProps {
+interface FLayoutProps extends RouteComponentProps {
   children: React.ReactNode | React.ReactNodeArray;
   dispatch: Dispatch;
-  global: GlobalSearchingModelState;
+  globalSearching: GlobalSearchingModelState;
+  // routerHistories: GlobalModelState['routerHistories'];
+  user: UserModelState,
+  global: GlobalModelState;
 }
 
-function FLayout({children, dispatch, global}: FLayoutProps) {
+function FLayout({children, global, dispatch, globalSearching, user, ...props}: FLayoutProps) {
+  // console.log(props, 'propspropspropsLayout');
 
   function onDiscoverClick(value: string) {
     // console.log(params, 'paramsparams');
-    if (value === '1') {
+    if (value === '1' && global.routerHistories[global.routerHistories.length - 1].pathname !== '/market') {
       return router.push('/market');
     }
-    if (value === '2') {
+    if (value === '2' && global.routerHistories[global.routerHistories.length - 1].pathname !== '/example') {
       return router.push('/example');
     }
   }
@@ -86,7 +109,7 @@ function FLayout({children, dispatch, global}: FLayoutProps) {
       <Layout.Header className={styles.header}>
         <div className={styles.headerLeft}>
           <a
-            onClick={() => router.push('/market')}
+            onClick={() => onDiscoverClick('1')}
             className={['freelog', 'fl-icon-logo-freelog', styles.logo].join(' ')}
           />
           <div className={styles.MenuBar}>
@@ -94,22 +117,25 @@ function FLayout({children, dispatch, global}: FLayoutProps) {
               onClick={onDiscoverClick}
               options={discoverOptions}
             />}>
-              <a onClick={() => onDiscoverClick('1')} className={styles.Menu}>发现</a>
+              <a onClick={() => onDiscoverClick('1')} className={styles.Menu}>
+                {i18nMessage('explorer')}
+              </a>
             </Dropdown>
-            <a className={styles.Menu}>存储空间</a>
+            <a className={styles.Menu}>{i18nMessage('storage')}</a>
             <Dropdown overlay={<FMenu
               onClick={onClickResource}
               options={resourcesOptions}
             />}>
-              <a onClick={() => onClickResource('1')} className={styles.Menu}>资源管理</a>
+              <a onClick={() => onClickResource('1')}
+                 className={styles.Menu}>{i18nMessage('resource_manage')}</a>
             </Dropdown>
-            <a className={styles.Menu}>节点管理</a>
-            <a className={styles.Menu}>合约管理</a>
+            <a className={styles.Menu}>{i18nMessage('node_manage')}</a>
+            <a className={styles.Menu}>{i18nMessage('contract_manage')}</a>
           </div>
         </div>
         <div className={styles.headerRight}>
           <FInput
-            value={global.input}
+            value={globalSearching.input}
             className={styles.FInput}
             // placeholder="Search in Freelog"
             size="small"
@@ -126,14 +152,28 @@ function FLayout({children, dispatch, global}: FLayoutProps) {
             options={creatorOptions}
           />}
           >
-            <a className={styles.create}>
+            <a className={styles.create} onClick={() => onCreateClick('1')}>
               <FCircleButton/>
             </a>
           </Dropdown>
 
-          <a className={styles.avatar}>
-            <img src={avatarSrc} alt={'avatar'}/>
-          </a>
+          <Dropdown overlay={<div className={styles.userPanel}>
+            <div className={styles.userPanelHeader}>
+              <img src={user.info?.headImage} alt="headImage"/>
+              <div style={{height: 10}}/>
+              <FTitleText type="h4" text={user.info?.username}/>
+              <div style={{height: 8}}/>
+              <FContentText text={user.info?.mobile || user.info?.email}/>
+            </div>
+            <div className={styles.userPanelMenu}>
+              <a>个人中心</a>
+              <a>登出</a>
+            </div>
+          </div>}>
+            <a className={styles.avatar}>
+              <img src={user.info?.headImage} alt={'avatar'}/>
+            </a>
+          </Dropdown>
         </div>
       </Layout.Header>
 
@@ -141,10 +181,20 @@ function FLayout({children, dispatch, global}: FLayoutProps) {
 
       <div style={{height: 100}}/>
 
+      {
+        global.route?.meta?.footer && (<FLayoutFooter/>)
+      }
+
     </Layout>
   );
 }
 
-export default connect(({globalSearching}: ConnectState) => ({
-  global: globalSearching,
-}))(FLayout);
+export default withRouter(connect(({globalSearching, user, global}: ConnectState) => ({
+  globalSearching: globalSearching,
+  routerHistories: global.routerHistories,
+  user: user,
+  global: global,
+}))(FLayout));
+
+// parse()
+// router.

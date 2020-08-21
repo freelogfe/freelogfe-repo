@@ -2,15 +2,16 @@ import * as React from 'react';
 import styles from './index.less';
 import {CloseOutlined} from '@ant-design/icons';
 import {Input, Form} from 'antd';
+import {i18nMessage} from "@/utils/i18n";
 
 interface FLabelEditor {
-  value?: string[];
-  onChange?: (value: string[]) => void;
+  values?: string[];
+  onChange?: (values: string[]) => void;
 }
 
 let inputElement: any = null;
 
-export default function ({value = [], onChange}: FLabelEditor) {
+export default function ({values = [], onChange}: FLabelEditor) {
 
   const [input, onChangeInput] = React.useState<string>('');
   const [errorText, onChangeErrorText] = React.useState<string>('');
@@ -28,12 +29,12 @@ export default function ({value = [], onChange}: FLabelEditor) {
     if (!v) {
       return;
     }
-    if (value?.includes(v)) {
+    if (values?.includes(v)) {
       onChangeErrorText('有重复');
       return;
     }
     onChangeInput('');
-    return onChange && onChange([...value, e.target.value]);
+    return onChange && onChange([...values, e.target.value]);
   }
 
   function onChangeInputText(e: any) {
@@ -43,12 +44,12 @@ export default function ({value = [], onChange}: FLabelEditor) {
 
   function onRemove(index: number) {
     onChangeErrorText('');
-    return onChange && onChange(value?.filter((i, j) => j !== index));
+    return onChange && onChange(values?.filter((i, j) => j !== index));
   }
 
   return (<div className={styles.styles}>
     {
-      value.map((i: string, j: number) => (<label key={i} className={styles.label}>
+      values.map((i: string, j: number) => (<label key={i} className={styles.label}>
         <span>{i}</span>
         <a onClick={() => onRemove(j)}><CloseOutlined/></a>
       </label>))
@@ -56,7 +57,7 @@ export default function ({value = [], onChange}: FLabelEditor) {
     <div className={styles.InputWrap}>
       <Input
         className={styles.Input + ' ' + (errorText && styles.InputError)}
-        placeholder={'回车添加标签，esc取消'}
+        placeholder={i18nMessage('hint_add_resource_tag')}
         ref={(i) => inputElement = i}
         value={input}
         onChange={onChangeInputText}

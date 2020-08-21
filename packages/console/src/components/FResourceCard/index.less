@@ -68,7 +68,7 @@
 }
 
 .Divider {
-
+  background-color: white;
   margin: 0 6px;
   @media (min-width: 1700px) {
     margin: 0 10px;
@@ -89,8 +89,21 @@
   justify-content: space-between;
   align-items: center;
 
+  & > div {
+    flex-shrink: 1;
+    height: 23px;
+    overflow: hidden;
+  }
+
   & > a {
+    flex-shrink: 0;
     color: #666666;
     font-size: 12px;
   }
+}
+
+.Status {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }

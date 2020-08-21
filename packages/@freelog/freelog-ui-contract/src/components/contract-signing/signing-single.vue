@@ -20,7 +20,7 @@
 <script>
   import resourceContract from './signing-box.vue'
   import { getContractState, } from './common.js'
-  import getUserInfo from '@freelog/freelog-ui-login/src/shared/getUserInfo'
+  import contractMixins from '../../mixins.js'
   import en from '@freelog/freelog-i18n/ui-contract/en'
   import zhCN from '@freelog/freelog-i18n/ui-contract/zh-CN'
 
@@ -45,6 +45,7 @@
         required: true
       }
     },
+    mixins: [ contractMixins ],
     data() {
       return {
         isRenderResoureContract: false,
@@ -59,21 +60,18 @@
       presentableName() {
         return this.presentable.presentableName
       },
-      userId() {
-        var userInfo = getUserInfo()
-        return userInfo && userInfo.userId
-      },
     },
     methods: {
-      reInitialData() {
+      async reInitialData() {
         this.isRenderResoureContract = false
         this.getContracts()
         this.$forceUpdate()
       },
       // 获取该资源的所有合同
-      getContracts() {
+      async getContracts() {
+        const userId = await this.getUserId()
         const { presentableId } = this.presentable
-        return this.$axios.get(`/v1/contracts/list?targetIds=${presentableId}&partyTwo=${this.userId}&contractType=3`)
+        return this.$axios.get(`/v1/contracts/list?targetIds=${presentableId}&partyTwo=${userId}&contractType=3`)
           .then(res => {
             if(res.data.errcode === 0) {
               return res.data.data

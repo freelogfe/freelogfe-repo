@@ -78,15 +78,17 @@ export default {
         }
       }
     },
-    hideAuthDialog({ isUpdatedContract }) {
+    async hideAuthDialog(data) {
       this.isShowDialog = false
-      if (isUpdatedContract) {
-        this.refreshAuthPresentList()
-          .then((data) => authCallback(data))
-          .catch((e) => {
-            this.$message.error(e)
-            authCallback(null)
-          })
+      if (data.isUpdatedContract) {
+        try {
+          const data = await this.refreshAuthPresentList()
+          authCallback(data)
+        } catch(e) {
+          console.log('[hideAuthDialog]:', e)
+          this.$message.error(e)
+          authCallback(null)
+        }
       }
     },
     refreshAuthPresentList() {
@@ -98,24 +100,13 @@ export default {
 
       // 获取presentable授权详情
       return window.FreelogApp.QI.get(`/v1/presentables/auth.json?pids=${presentableIDs}&nodeId=${nodeId}`)
-        .then(res => res.data)
+        .then(res => res.json())
         .then((res) => {
           if (res.errcode === 0) {
             return res.data
           }
           return Promise.reject(res.msg)
         })
-    },
-    hideAuthDialog({ isUpdatedContract }) {
-      this.isShowDialog = false
-      if (isUpdatedContract) {
-        this.refreshAuthPresentList()
-          .then((data) => authCallback(data))
-          .catch((e) => {
-            this.$message.error(e)
-            authCallback(null)
-          })
-      }
     },
     handleAuthError() {
       if(!this.isLogin) {

@@ -3,6 +3,8 @@ import styles from './index.less';
 import FUploadImage from '@/components/FUploadImage';
 import {FContentText} from '@/components/FText';
 import {RcFile, UploadChangeParam} from "antd/lib/upload/interface";
+import {uploadImage} from "@/services/storages";
+import {i18nMessage} from "@/utils/i18n";
 
 interface FUploadResourceCoverProps {
   value?: string;
@@ -14,40 +16,49 @@ export default function ({value, onChange}: FUploadResourceCoverProps) {
   const uploadConfig = {
     accept: 'image/*',
     beforeUpload: (file: RcFile, FileList: RcFile[]) => {
-      console.log(file, 'file');
-      onChange && onChange('https://cn.bing.com/th?id=OHR.PantheonParis_ZH-CN1546295756_UHD.jpg&pid=hp&w=3840&h=2160&rs=1&c=4&r=0');
+      // console.log(file, 'file1');
+      upload(file);
       return false;
     },
     onChange: (info: UploadChangeParam) => {
       // console.log(info, '########');
     },
+    multiple: false,
   };
+
+  async function upload(file: File) {
+    const res = await uploadImage({
+      file: file,
+    });
+    // console.log(res, 'RRRRRRRRR');
+    onChange && onChange(res.data.url);
+  }
 
   return (<div className={styles.cover}>
     {!value
       ? (<FUploadImage  {...uploadConfig}>
         <a className={styles.FUploadImageChildren}>
           <i className={'freelog fl-icon-shangchuanfengmian'}/>
-          <span>上传封面</span>
+          <span>{i18nMessage('upload_image')}</span>
         </a>
       </FUploadImage>)
       : (<div className={styles.FUploadImageChildren}>
-        <img src={value}/>
+        <img src={value} alt=""/>
       </div>)
     }
     <div className={styles.coverTip}>
       {value && <FUploadImage {...uploadConfig}>
-        <a className={styles.ReUpload}>重新上传</a>
+        <a className={styles.ReUpload}>{i18nMessage('replace_resource_image')}</a>
       </FUploadImage>}
-        <div style={{height: 15}}/>
-        <FContentText type="additional2" text={'只支持JPG/PNG/GIF，GIF文件不能动画化，大小不超过5M，建议尺寸为800X600；'}/>
-        <div style={{height: 5}}/>
-        <FContentText type="additional2" text={'未上传封面时，默认使用系统封面。'}/>
-        </div>
-        </div>);
-      }
+      <div style={{height: 15}}/>
+      <FContentText type="additional2" text={i18nMessage('rules_resource_image')}/>
+      <div style={{height: 5}}/>
+      <FContentText type="additional2" text={'未上传封面时，默认使用系统封面。'}/>
+    </div>
+  </div>);
+}
 
-      // interface UploadProps {
+// interface UploadProps {
 //   children?: React.ReactNode;
 //   on
 // }

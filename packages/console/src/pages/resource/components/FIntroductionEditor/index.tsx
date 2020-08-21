@@ -11,11 +11,20 @@ interface FIntroductionEditorProps extends TextAreaProps {
   // onChange?: (value: string) => void;
 }
 
-export default function ({className, value = '', onChange}: FIntroductionEditorProps) {
+let textInput: any;
+
+export default function ({className, value, ...props}: FIntroductionEditorProps) {
+
+  React.useEffect(() => {
+    textInput.focus();
+  }, []);
+
   return (<div className={styles.introduction}>
     <Input.TextArea
+      {...props}
+      ref={(input) => textInput = input}
       value={value}
-      onChange={onChange}
+      // onChange={(e) => onChange && onChange(e)}
       className={styles.TextArea}
     />
     <span className={styles.FInputWordCount}>{String(value).length}</span>

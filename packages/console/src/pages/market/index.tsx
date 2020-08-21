@@ -1,15 +1,13 @@
 import React from 'react';
 import styles from './index.less';
 import FCenterLayout from '@/layouts/FCenterLayout';
-import {Button} from 'antd';
 import FAffixTabs from '@/components/FAffixTabs';
-import FInput from '@/components/FInput';
-import FResourceCard from "@/components/FResourceCard";
-import {connect, Dispatch} from 'dva';
-import {ConnectState, MarketPageModelState} from "@/models/connect";
-import {OnChangeInputTextAction, OnChangeResourceTypeAction, OnChangeTabValueAction} from "@/models/marketPage";
-import {router} from 'umi';
-import {resourceTypes} from "@/utils/globals";
+import {router, withRouter} from 'umi';
+import Resources from "./Resources";
+import Examples from "@/pages/market/Examples";
+import {RouteComponentProps} from "react-router";
+import {connect, Dispatch} from "dva";
+import {ChangeAction} from "@/models/global";
 
 const navs = [
   {
@@ -22,20 +20,34 @@ const navs = [
   },
 ];
 
-const filters = [{
-  value: -1,
-  text: '全部类型'
-}, ...resourceTypes.map((i) => ({value: i}))];
 
-interface MarketProps {
+interface MarketProps extends RouteComponentProps {
   dispatch: Dispatch;
-  market: MarketPageModelState,
+  route: any;
 }
 
-function Market({dispatch, market}: MarketProps) {
+function Market({dispatch, match, history, location, route, ...props}: MarketProps) {
+
+  const [tabValue, setTabValue] = React.useState<'1' | '2'>(match.path === '/resource/list' ? '1' : '2');
+
+  React.useEffect(() => {
+    dispatch<ChangeAction>({
+      type: 'global/change',
+      payload: {
+        route: route,
+      },
+    });
+  }, [route]);
+
+  React.useEffect(() => {
+    setTabValue(match.path === '/market' ? '1' : '2')
+  }, [match.path]);
 
   function onChangeTab(value: '1' | '2') {
-    if (value === '2') {
+    if (value === '1' && tabValue !== '1') {
+      return router.push('/market');
+    }
+    if (value === '2' && tabValue !== '2') {
       return router.push('/example');
     }
   }
@@ -44,78 +56,17 @@ function Market({dispatch, market}: MarketProps) {
     <FCenterLayout>
       <FAffixTabs
         options={navs}
-        value={'1'}
+        value={tabValue}
         // onChange={(value) => dispatch<OnChangeTabValueAction>({type: 'marketPage/onChangeTabValue', payload: value})}
         onChange={onChangeTab}
       />
-      <div style={{height: 30}}/>
-      <div className={styles.filter}>
-        <Labels
-          options={filters}
-          value={market.resourceType}
-          onChange={(value) => dispatch<OnChangeResourceTypeAction>({
-            type: 'marketPage/onChangeResourceType',
-            payload: value,
-          })}
-        />
-        <FInput
-          value={market.inputText}
-          onChange={(e) => dispatch<OnChangeInputTextAction>({
-            type: 'marketPage/onChangeInputText',
-            payload: e.target.value
-          })}
-          theme="dark"
-          size="small"
-          className={styles.filterInput}
-        />
-      </div>
+      {tabValue === '1' && <Resources/>}
+      {tabValue === '2' && <Examples/>}
 
-      <div style={{height: 30}}/>
-
-      <div className={styles.Content}>
-        {
-          market.dataSource.map((resource: any) => (
-            <FResourceCard key={resource.id} resource={resource} className={styles.FResourceCard}/>))
-        }
-
-        <div className={styles.bottomPadding}/>
-        <div className={styles.bottomPadding}/>
-        <div className={styles.bottomPadding}/>
-        <div className={styles.bottomPadding}/>
-      </div>
-
-      <div style={{height: 100}}/>
-
-      <div className={styles.bottom}>
-        <Button className={styles.loadMore}>加载更多</Button>
-      </div>
-
-      {/*<div style={{height: 100}}/>*/}
     </FCenterLayout>
   );
 }
 
-export default connect(({marketPage}: ConnectState) => ({
-  market: marketPage,
-}))(Market);
 
-interface Labels {
-  options: {
-    value: string | number;
-    text?: string | number;
-  }[];
-  value: string | number;
-  onChange?: (value: string | number) => void;
-}
+export default withRouter(connect()(Market));
 
-function Labels({options, value, onChange}: Labels) {
-  return (<div>
-    {
-      options.map((i, j) => (
-        <a key={i.value}
-           className={styles.filterTag + ' ' + (i.value === value ? styles.filterTagActive : '')}
-           onClick={() => onChange && onChange(i.value)}
-        >{i.text || i.value}</a>))
-    }
-  </div>)
-}

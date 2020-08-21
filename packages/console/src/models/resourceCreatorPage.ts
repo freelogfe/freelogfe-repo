@@ -1,52 +1,42 @@
 import {AnyAction} from 'redux';
 import {Effect, EffectsCommandMap, Subscription, SubscriptionAPI} from 'dva';
 import {DvaReducer} from './shared';
+import {create} from '@/services/resources';
+import {ConnectState} from "@/models/connect";
+import {router} from "umi";
 
 export interface ResourceCreatorPageModelState {
   name: string;
+  nameErrorText: string;
   resourceType: string;
+  resourceTypeErrorText: string;
   introduction: string;
   cover: string;
   labels: string[];
 }
 
-export interface OnChangeNameAction extends AnyAction {
-  type: 'resourceCreatorPage/onChangeName';
-  payload: string;
+export interface OnCreateAction extends AnyAction {
+  type: 'resourceCreatorPage/create';
 }
 
-export interface OnChangeResourceTypeAction extends AnyAction {
-  type: 'resourceCreatorPage/onChangeResourceType';
-  payload: string;
-}
+// export interface OnVerifyAction extends AnyAction {
+//   type: 'verify';
+// }
 
-export interface OnChangeIntroductionAction extends AnyAction {
-  type: 'resourceCreatorPage/onChangeIntroduction';
-  payload: string;
-}
-
-export interface OnChangeCoverAction extends AnyAction {
-  type: 'resourceCreatorPage/onChangeCover';
-  payload: string;
-}
-
-export interface OnChangeLabelsAction extends AnyAction {
-  type: 'resourceCreatorPage/onChangeLabels';
-  payload: string[];
+export interface ChangeAction extends AnyAction {
+  type: 'change' | 'resourceCreatorPage/change',
+  payload: Partial<ResourceCreatorPageModelState>;
 }
 
 export interface ResourceCreatorPageModelType {
   namespace: 'resourceCreatorPage';
   state: ResourceCreatorPageModelState;
   effects: {
-    fetchDataSource: Effect;
+    create: (action: OnCreateAction, effects: EffectsCommandMap) => void;
+    // verify: (action: OnVerifyAction, effects: EffectsCommandMap) => void;
   };
   reducers: {
-    onChangeName: DvaReducer<ResourceCreatorPageModelState, OnChangeNameAction>;
-    onChangeResourceType: DvaReducer<ResourceCreatorPageModelState, OnChangeResourceTypeAction>;
-    onChangeIntroduction: DvaReducer<ResourceCreatorPageModelState, OnChangeIntroductionAction>;
-    onChangeCover: DvaReducer<ResourceCreatorPageModelState, OnChangeCoverAction>;
-    onChangeLabels: DvaReducer<ResourceCreatorPageModelState, OnChangeLabelsAction>;
+    change: DvaReducer<ResourceCreatorPageModelState, ChangeAction>;
   };
   subscriptions: { setup: Subscription };
 }
@@ -57,33 +47,59 @@ const Model: ResourceCreatorPageModelType = {
 
   state: {
     name: '',
+    // /^(?!_)[a-z0-9_]{3,20}(?<!_)$/
+    nameErrorText: '',
     resourceType: '',
+    resourceTypeErrorText: '',
     introduction: '',
     cover: '',
     labels: [],
   },
 
   effects: {
-    * fetchDataSource(_: AnyAction, {call, put}: EffectsCommandMap) {
-      yield put({type: 'save'});
+    * create({}: OnCreateAction, {call, put, select}: EffectsCommandMap) {
+      const params = yield select(({resourceCreatorPage}: ConnectState) => ({
+        name: resourceCreatorPage.name,
+        resourceType: resourceCreatorPage.resourceType,
+        policies: [],
+        coverImages: resourceCreatorPage.cover ? [resourceCreatorPage.cover] : [],
+        intro: resourceCreatorPage.introduction,
+        tags: resourceCreatorPage.labels,
+      }));
+      const {nameErrorText, resourceTypeErrorText} = verifyDate(params);
+      if (nameErrorText || resourceTypeErrorText) {
+        return yield put<ChangeAction>({
+          type: 'change',
+          payload: {
+            nameErrorText,
+            resourceTypeErrorText,
+          },
+        });
+      }
+
+      const {data} = yield call(create, params);
+      yield put<ChangeAction>({
+        type: 'change',
+        payload: {
+          name: '',
+          nameErrorText: '',
+          resourceType: '',
+          resourceTypeErrorText: '',
+          introduction: '',
+          cover: '',
+          labels: [],
+        },
+      });
+      router.replace(`/resource/${data.resourceId}/success`);
     },
   },
 
   reducers: {
-    onChangeName(state: ResourceCreatorPageModelState, action): ResourceCreatorPageModelState {
-      return {...state, name: action.payload};
-    },
-    onChangeResourceType(state: ResourceCreatorPageModelState, action): ResourceCreatorPageModelState {
-      return {...state, resourceType: action.payload};
-    },
-    onChangeIntroduction(state: ResourceCreatorPageModelState, action): ResourceCreatorPageModelState {
-      return {...state, introduction: action.payload};
-    },
-    onChangeCover(state: ResourceCreatorPageModelState, action): ResourceCreatorPageModelState {
-      return {...state, cover: action.payload};
-    },
-    onChangeLabels(state: ResourceCreatorPageModelState, action): ResourceCreatorPageModelState {
-      return {...state, labels: action.payload};
+    change(state, {payload}) {
+      return {
+        ...state,
+        ...payload,
+      };
     },
   },
 
@@ -95,3 +111,24 @@ const Model: ResourceCreatorPageModelType = {
 };
 
 export default Model;
+
+function verifyDate({name, resourceType}: any) {
+  let nameErrorText = '';
+  if (!name) {
+    nameErrorText = '请输入资源名称';
+  } else if (name.length > 60) {
+    nameErrorText = '不多于60个字符';
+  } else if (!/^(?!.*(\\|\/|:|\*|\?|"|<|>|\||\s|@|\$|#)).{1,60}$/.test(name)) {
+    nameErrorText = `不符合正则 /^(?!.*(\\\\|\\/|:|\\*|\\?|"|<|>|\\||\\s|@|\\$|#)).{1,60}$/`;
+  }
+
+  let resourceTypeErrorText = '';
+  if (!resourceType) {
+    resourceTypeErrorText = '请输入资源类型';
+  } else if (resourceType.length < 3) {
+    resourceTypeErrorText = '不少于3个字符';
+  } else if (!/^(?!_)[a-z0-9_]{3,20}(?<!_)$/.test(resourceType)) {
+    resourceTypeErrorText = `不符合正则 /^(?!_)[a-z0-9_]{3,20}(?<!_)$/`;
+  }
+  return {nameErrorText, resourceTypeErrorText};
+}

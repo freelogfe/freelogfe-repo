@@ -9,7 +9,7 @@ interface FHornProps {
 }
 
 export default function ({className, children, extra}: FHornProps) {
-  return (<div className={styles.FHorn + ' ' + className}>
+  return (<div className={styles.FHorn + ' ' + (className || '')}>
     {extra && <div className={styles.rightTop}>{extra}</div>}
     {children}
   </div>);

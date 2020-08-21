@@ -11,10 +11,15 @@ interface FUploadImageProps extends UploadProps {
 }
 
 export default function ({children, ...props}: FUploadImageProps) {
+
   return (
     <div className={styles.styles}>
-      <ImgCrop rotate grid aspect={4 / 3}>
-        <Upload {...props} showUploadList={false}>
+      <ImgCrop
+        rotate
+        grid
+        aspect={4 / 3}
+      >
+        <Upload{...props} showUploadList={false}>
           {children}
         </Upload>
       </ImgCrop>

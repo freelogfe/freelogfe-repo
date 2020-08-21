@@ -55,19 +55,19 @@ export default function initQI(): IFreelogQuery {
   return {
     fetch,
     create: createQIFetch,
-    get(url, options) {
+    get(url, options = {}) {
       return fetch(url, Object.assign(options, { method: 'get' }))
     },
-    delete(url, options) {
+    delete(url, options = {}) {
       return fetch(url, Object.assign(options, { method: 'delete' }))
     },
-    options(url, options) {
+    options(url, options = {}) {
       return fetch(url, Object.assign(options, { method: 'options' }))
     },
-    post(url, options) {
+    post(url, options = {}) {
       return fetch(url, Object.assign(options, { method: 'post' }))
     },
-    put(url, options) {
+    put(url, options = {}) {
       return fetch(url, Object.assign(options, { method: 'put' }))
     },
     resolveSubDependDataUrl,

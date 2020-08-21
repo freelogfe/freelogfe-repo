@@ -5,6 +5,13 @@
 // import {extend} from 'dva/fetch';
 import axios from 'axios';
 import {notification} from 'antd';
+import NProgress from '@/components/fNprogress';
+// import '~'
+
+// notification.config({
+//   duration: 1000000
+// });
+
 
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
@@ -23,6 +30,15 @@ const codeMessage: any = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
+
+export const apiHost = `${window.location.protocol}//qi.${(window.location.host.match(/(?<=\.).*/) || [''])[0]}`;
+
+if (window.location.hostname.includes('.com')) {
+  // const arr = window.location.hostname.split('.');
+  // arr[0] = 'qi';
+  axios.defaults.baseURL = apiHost;
+  axios.defaults.withCredentials = true;
+}
 
 /**
  * 异常处理程序
@@ -46,14 +62,45 @@ const errorHandler = (error: { response: Response }): Response => {
   return response;
 };
 
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  NProgress.start();
+  return config;
+}, function (error) {
+  // Do something with request error
+  NProgress.done();
+  return Promise.reject(error);
+});
+
 /**
  * 配置request请求时的默认参数
  */
 axios.interceptors.response.use(function (response) {
+  // console.log(response, 'response');
   // Do something with response data
-  return response;
+  NProgress.done();
+  if (response.status !== 200) {
+    const error = {
+      description: codeMessage[response.status],
+      message: response.status,
+    };
+    notification.error(error);
+    throw new Error(JSON.stringify(error));
+  }
+  const {data} = response;
+  if (data.errcode !== 0 || data.ret !== 0) {
+
+    notification.error({
+      message: data.msg,
+    });
+    throw new Error(JSON.stringify(data));
+  }
+  return data;
 }, function (error) {
+  // console.log(error, 'errorerror');
   // Do something with response error
+  NProgress.done();
   return Promise.reject(error);
 });
 

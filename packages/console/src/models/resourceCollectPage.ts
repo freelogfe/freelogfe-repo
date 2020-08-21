@@ -1,68 +1,100 @@
 import {AnyAction} from 'redux';
 import {Effect, EffectsCommandMap, Subscription, SubscriptionAPI} from 'dva';
 import {DvaReducer} from './shared';
-import {ResourcePageModelState} from "@/models/resourcePage";
+import {list, ListParamsType} from "@/services/resources";
+import {ConnectState, ResourceListPageModelState} from "@/models/connect";
+import {resourceList, ResourceListParamsType} from "@/services/collections";
+
+// import {ResourcePageModelState} from "@/models/resourceListPage";
 
 export interface ResourceCollectPageModelState {
   resourceType: string;
   resourceStatus: string;
   inputText: string;
-  dataSource: any[];
   pageCurrent: number;
   pageSize: number;
   totalNum: number;
+  dataSource: {
+    id: string;
+    cover: string;
+    title: string;
+    version: string;
+    policy: string[];
+    type: string;
+  }[];
 }
 
-export interface OnChangeResourceTypeAction extends AnyAction {
-  type: 'resourceCollectPage/onChangeResourceType',
-  payload: string;
+// export interface OnChangeResourceTypeAction extends AnyAction {
+//   type: 'resourceCollectPage/onChangeResourceType',
+//   payload: string;
+// }
+//
+// export interface OnChangeResourceStatusAction extends AnyAction {
+//   type: 'resourceCollectPage/onChangeResourceStatus',
+//   payload: string;
+// }
+//
+// export interface OnChangeInputTextAction extends AnyAction {
+//   type: 'resourceCollectPage/onChangeInputText',
+//   payload: string;
+// }
+
+// export interface ChangeDataSourceAction extends AnyAction {
+//   type: 'resourceCollectPage/changeDataSource' | 'changeDataSource',
+//   payload: ResourceCollectPageModelState['dataSource'];
+// }
+
+// export interface OnChangePageCurrentAction extends AnyAction {
+//   type: 'resourceCollectPage/onChangePageCurrent',
+//   payload: number;
+// }
+
+// export interface OnChangePageSizeAction extends AnyAction {
+//   type: 'resourceCollectPage/onChangePageSize',
+//   payload: number;
+// }
+
+// export interface OnChangeTotalNumAction extends AnyAction {
+//   type: 'resourceCollectPage/onChangeTotalNum' | 'onChangeTotalNum',
+//   payload: number;
+// }
+
+export interface FetchDataSourceAction extends AnyAction {
+  type: 'resourceCollectPage/fetchDataSource' | 'fetchDataSource',
 }
 
-export interface OnChangeResourceStatusAction extends AnyAction {
-  type: 'resourceCollectPage/onChangeResourceStatus',
-  payload: string;
+export interface ChangeStatesAction extends AnyAction {
+  type: 'resourceCollectPage/changeStates',
+  payload: {
+    resourceType?: string;
+    resourceStatus?: string;
+    inputText?: string;
+    pageCurrent?: number;
+    pageSize?: number;
+  };
 }
 
-export interface OnChangeInputTextAction extends AnyAction {
-  type: 'resourceCollectPage/onChangeInputText',
-  payload: string;
-}
-
-export interface ChangeDataSourceAction extends AnyAction {
-  type: 'resourceCollectPage/changeDataSource',
-  payload: any[];
-  restart?: boolean;
-}
-
-export interface OnChangePageCurrentAction extends AnyAction {
-  type: 'resourceCollectPage/onChangePageCurrent',
-  payload: number;
-}
-
-export interface OnChangePageSizeAction extends AnyAction {
-  type: 'resourceCollectPage/onChangePageSize',
-  payload: number;
-}
-
-export interface OnChangeTotalNumAction extends AnyAction {
-  type: 'resourceCollectPage/onChangeTotalNum',
-  payload: number;
+export interface ChangeAction extends AnyAction {
+  type: 'change',
+  payload: Partial<ResourceListPageModelState>;
 }
 
 export interface ResourceCollectModelType {
   namespace: 'resourceCollectPage';
   state: ResourceCollectPageModelState;
   effects: {
-    fetchDataSource: Effect;
+    changeStates: (action: ChangeStatesAction, effects: EffectsCommandMap) => void;
+    fetchDataSource: (action: FetchDataSourceAction, effects: EffectsCommandMap) => void;
   };
   reducers: {
-    onChangeResourceType: DvaReducer<ResourcePageModelState, OnChangeResourceTypeAction>;
-    onChangeResourceStatus: DvaReducer<ResourcePageModelState, OnChangeResourceStatusAction>;
-    onChangeInputText: DvaReducer<ResourcePageModelState, OnChangeInputTextAction>;
-    changeDataSource: DvaReducer<ResourcePageModelState, ChangeDataSourceAction>;
-    onChangePageCurrent: DvaReducer<ResourcePageModelState, OnChangePageCurrentAction>;
-    onChangePageSize: DvaReducer<ResourcePageModelState, OnChangePageSizeAction>;
-    onChangeTotalNum: DvaReducer<ResourcePageModelState, OnChangeTotalNumAction>;
+    change: DvaReducer<ResourceCollectPageModelState, ChangeAction>;
+    // onChangeResourceType: DvaReducer<ResourceCollectPageModelState, OnChangeResourceTypeAction>;
+    // onChangeResourceStatus: DvaReducer<ResourceCollectPageModelState, OnChangeResourceStatusAction>;
+    // onChangeInputText: DvaReducer<ResourceCollectPageModelState, OnChangeInputTextAction>;
+    // changeDataSource: DvaReducer<ResourceCollectPageModelState, ChangeDataSourceAction>;
+    // onChangePageCurrent: DvaReducer<ResourceCollectPageModelState, OnChangePageCurrentAction>;
+    // onChangePageSize: DvaReducer<ResourceCollectPageModelState, OnChangePageSizeAction>;
+    // onChangeTotalNum: DvaReducer<ResourceCollectPageModelState, OnChangeTotalNumAction>;
   };
   subscriptions: { setup: Subscription };
 }
@@ -73,65 +105,105 @@ const Model: ResourceCollectModelType = {
 
   state: {
     resourceType: '-1',
-    resourceStatus: '-1',
+    resourceStatus: '2',
     inputText: '',
-    dataSource: Array(11).fill(null).map((i, j) => ({
-      id: j,
-      cover: '',
-      title: '这里是发行名称1',
-      version: '1.0.10',
-      policy: ['免费1', '免费2', '免费3'],
-      type: 'image',
-    })),
+    dataSource: [],
     pageCurrent: 1,
     pageSize: 20,
-    totalNum: 11,
+    totalNum: -1,
   },
 
   effects: {
-    * fetchDataSource(_: AnyAction, {call, put}: EffectsCommandMap) {
-      yield put({type: 'save'});
+    * changeStates({payload}: ChangeStatesAction, {put}: EffectsCommandMap) {
+      if (payload.resourceType || payload.inputText || payload.pageSize || payload.resourceStatus) {
+        yield put<ChangeAction>({
+          type: 'change',
+          payload: {
+            ...payload,
+            pageCurrent: 1,
+          },
+        });
+      } else {
+        yield put<ChangeAction>({
+          type: 'change',
+          payload,
+        });
+      }
+      yield put<FetchDataSourceAction>({
+        type: 'fetchDataSource',
+      });
+    },
+    * fetchDataSource(_: FetchDataSourceAction, {call, put, select}: EffectsCommandMap) {
+      const params: ResourceListParamsType = yield select(({resourceCollectPage}: ConnectState) => ({
+        page: resourceCollectPage.pageCurrent,
+        pageSize: resourceCollectPage.pageSize,
+        keywords: resourceCollectPage.inputText,
+        resourceType: resourceCollectPage.resourceType === '-1' ? undefined : resourceCollectPage.resourceType,
+        resourceStatus: resourceCollectPage.resourceStatus === '-1' ? 2 : resourceCollectPage.resourceStatus,
+      }));
+      const {data} = yield call(resourceList, params);
+      // TODO:
+      yield put<ChangeAction>({
+        type: 'change',
+        payload: {
+          dataSource: [],
+          totalNum: data.totalItem,
+        },
+      });
+      // yield put({type: 'save'});
+      // yield put<ChangeDataSourceAction>({
+      //   type: 'changeDataSource',
+      //   payload: [],
+      // });
+      // yield put<OnChangeTotalNumAction>({
+      //   type: 'onChangeTotalNum',
+      //   payload: data.totalItem,
+      // });
     },
   },
 
   reducers: {
-    onChangeResourceType(state: ResourcePageModelState, action: OnChangeResourceTypeAction): ResourcePageModelState {
-      return {...state, resourceType: action.payload};
-    },
-    onChangeResourceStatus(state: ResourcePageModelState, action: OnChangeResourceStatusAction): ResourcePageModelState {
-      return {...state, resourceStatus: action.payload};
-    },
-    onChangeInputText(state: ResourcePageModelState, action: OnChangeInputTextAction): ResourcePageModelState {
-      return {...state, inputText: action.payload};
-    },
-    changeDataSource(state: ResourcePageModelState, {payload, restart = false}: ChangeDataSourceAction): ResourcePageModelState {
-      if (restart) {
-        return {
-          ...state,
-          dataSource: payload
-        };
-      }
+    change(state: ResourceCollectPageModelState, action: ChangeAction): ResourceCollectPageModelState {
       return {
         ...state,
-        dataSource: [
-          ...state.dataSource,
-          payload,
-        ],
+        ...action.payload
       };
     },
-    onChangePageCurrent(state: ResourcePageModelState, action: OnChangePageCurrentAction): ResourcePageModelState {
-      return {...state, pageCurrent: action.payload};
-    },
-    onChangePageSize(state: ResourcePageModelState, action: OnChangePageSizeAction): ResourcePageModelState {
-      return {...state, pageSize: action.payload};
-    },
-    onChangeTotalNum(state: ResourcePageModelState, action: OnChangeTotalNumAction): ResourcePageModelState {
-      return {...state, totalNum: action.payload};
-    },
+    // onChangeResourceType(state: ResourceCollectPageModelState, action: OnChangeResourceTypeAction): ResourceCollectPageModelState {
+    //   return {...state, resourceType: action.payload};
+    // },
+    // onChangeResourceStatus(state: ResourceCollectPageModelState, action: OnChangeResourceStatusAction): ResourceCollectPageModelState {
+    //   return {...state, resourceStatus: action.payload};
+    // },
+    // onChangeInputText(state: ResourceCollectPageModelState, action: OnChangeInputTextAction): ResourceCollectPageModelState {
+    //   return {...state, inputText: action.payload};
+    // },
+    // changeDataSource(state: ResourceCollectPageModelState, {payload, restart = false}: ChangeDataSourceAction): ResourceCollectPageModelState {
+    //   return {
+    //     ...state,
+    //     dataSource: payload
+    //   };
+    // },
+    // onChangePageCurrent(state: ResourceCollectPageModelState, action: OnChangePageCurrentAction): ResourceCollectPageModelState {
+    //   return {...state, pageCurrent: action.payload};
+    // },
+    // onChangePageSize(state: ResourceCollectPageModelState, action: OnChangePageSizeAction): ResourceCollectPageModelState {
+    //   return {...state, pageSize: action.payload};
+    // },
+    // onChangeTotalNum(state: ResourceCollectPageModelState, action: OnChangeTotalNumAction): ResourceCollectPageModelState {
+    //   return {...state, totalNum: action.payload};
+    // },
   },
 
   subscriptions: {
     setup({dispatch, history}: SubscriptionAPI) {
+      history.listen((listener) => {
+        if (listener.pathname === '/resource/collect') {
+          dispatch<FetchDataSourceAction>({
+            type: 'fetchDataSource',
+          });
+        }
+      });
     },
   },
 

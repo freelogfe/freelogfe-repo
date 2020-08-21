@@ -49,7 +49,8 @@ export function getEnvLanguage() {
 }
 
 export function getMainDomain() {
-  return getEnvType() === 'prod' ? 'freelog.com' : 'testfreelog.com'
+  const envType = getEnvType()
+  return envType === 'dev' ? 'freelog.com' : envType === 'prod' ? 'freelog.com' : 'testfreelog.com'
 }
 
 export function getQIoringin() {

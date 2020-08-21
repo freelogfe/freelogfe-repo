@@ -1,11 +1,24 @@
 import {AnyAction} from 'redux';
 import {Effect, EffectsCommandMap, Subscription, SubscriptionAPI} from 'dva';
 import {DvaReducer} from './shared';
-import {FAuthPanelProps} from "@/pages/resource/components/FAuthPanel";
+import {FAuthPanelProps} from "@/pages/resource/containers/FAuthPanel";
+import {
+  batchInfo,
+  BatchInfoParamsType, batchSetContracts, BatchSetContractsParamsType,
+  resolveResources,
+  ResolveResourcesParamsType,
+  update,
+  UpdateParamsType
+} from "@/services/resources";
+import {FetchDataSourceAction} from "@/models/resourceInfo";
+import {policiesList, PoliciesListParamsType} from "@/services/policies";
+import {contracts, ContractsParamsType} from "@/services/contracts";
+import moment from "moment";
+import {ConnectState} from "@/models/connect";
 
 export interface ResourceAuthPageModelState {
   policies: {
-    id: string | number;
+    id: string;
     title: string;
     status: 'executing' | 'stopped';
     code: string;
@@ -18,149 +31,245 @@ export interface ResourceAuthPageModelState {
     authorizedParty: string,
     createDate: string,
     status: 'executing' | 'stopped';
-  }[] | null;
+  }[];
 }
 
-export interface ChangePoliciesAction {
-  type: 'resourceAuthPage/changePolicies';
-  payload: ResourceAuthPageModelState['policies'];
+export interface UpdatePoliciesAction {
+  type: 'resourceAuthPage/updatePolicies';
+  payload: Partial<Exclude<ResourceAuthPageModelState['policies'], null>[number]>;
+  id: string;
 }
 
-export interface ChangeContractsAuthorizedAction {
-  type: 'resourceAuthPage/changeContractsAuthorized';
-  payload: ResourceAuthPageModelState['contractsAuthorized'];
+export interface ChangeAction extends AnyAction {
+  type: 'change' | 'resourceAuthPage/change',
+  payload: Partial<ResourceAuthPageModelState>;
 }
 
-export interface ChangeContractsAuthorizeAction {
-  type: 'resourceAuthPage/changeContractsAuthorize';
-  payload: ResourceAuthPageModelState['contractsAuthorize'];
+export interface FetchPoliciesAction extends AnyAction {
+  type: 'resourceAuthPage/fetchPolicies',
+  payload: { policyId: string, policyName: string, status: 0 | 1, policyText: string; }[];
 }
 
+export interface FetchAuthorizedAction extends AnyAction {
+  type: 'resourceAuthPage/fetchAuthorized' | 'fetchAuthorized',
+  payload: {
+    baseResourceId: string;
+    activatedResourceId?: string;
+  };
+}
+
+export interface FetchAuthorizeAction extends AnyAction {
+  type: 'resourceAuthPage/fetchAuthorize',
+  payload: string;
+}
+
+export interface UpdateAuthorizedAction extends AnyAction {
+  type: 'resourceAuthPage/updateAuthorized',
+  payload: {
+    version: string;
+    policyId: string;
+    operation: 0 | 1;
+  }[];
+}
 
 export interface ResourceAuthPageModelType {
   namespace: 'resourceAuthPage';
   state: ResourceAuthPageModelState;
   effects: {
-    fetchDataSource: Effect;
+    fetchPolicies: (action: FetchPoliciesAction, effects: EffectsCommandMap) => void;
+    updatePolicies: (action: UpdatePoliciesAction, effects: EffectsCommandMap) => void;
+    fetchAuthorized: (action: FetchAuthorizedAction, effects: EffectsCommandMap) => void;
+    fetchAuthorize: (action: FetchAuthorizeAction, effects: EffectsCommandMap) => void;
+    updateAuthorized: (action: UpdateAuthorizedAction, effects: EffectsCommandMap) => void;
   };
   reducers: {
-    changePolicies: DvaReducer<ResourceAuthPageModelState, ChangePoliciesAction>;
-    changeContractsAuthorized: DvaReducer<ResourceAuthPageModelState, ChangeContractsAuthorizedAction>;
-    changeContractsAuthorize: DvaReducer<ResourceAuthPageModelState, ChangeContractsAuthorizeAction>;
+    change: DvaReducer<ResourceAuthPageModelState, ChangeAction>;
   };
   subscriptions: { setup: Subscription };
 }
-
-const policies: ResourceAuthPageModelState['policies'] = [1, 2, 3, 4, 5, 6].map((i) => ({
-  id: i,
-  title: '免费策略' + i,
-  status: 'executing',
-  code: 'for public:\n' +
-    '  initial:\n' +
-    '    active\n' +
-    '    recontractable\n' +
-    '    presentable\n' +
-    '    terminate',
-}));
-
-const contractsAuthorized: FAuthPanelProps['dataSource'] = [1, 2, 3, 4, 5, 6].map((i) => ({
-  id: i,
-  activated: i === 2,
-  title: 'ww-zh/PB-markdown' + i,
-  resourceType: 'markdown',
-  version: '1.2.3',
-  contracts: [{
-    checked: true,
-    title: '策略1',
-    status: 'executing',
-    code: 'initial:\n' +
-      '  active\n' +
-      '  recontractable\n' +
-      '  presentable\n' +
-      '  terminate',
-    id: 'adhjtyrghgjhxdfthgasdhdflgkftr',
-    date: '2019-10-10',
-    versions: [{version: '10.5.2', checked: true}, {version: '10.5.3', checked: false}],
-  }, {
-    checked: true,
-    title: '策略2',
-    status: 'executing',
-    code: 'initial:\n' +
-      '  active\n' +
-      '  recontractable\n' +
-      '  presentable\n' +
-      '  terminate',
-    id: 'adhjtyrghgjhxdfthgasdhdfl2324gkftr',
-    date: '2019-10-10',
-    versions: [{version: '10.5.2', checked: true}, {version: '10.5.3', checked: false}],
-  }],
-  policies: [{
-    id: '123423',
-    title: '策略2',
-    code: 'init:\n' +
-      '  proceed to state_1 on action_1\n' +
-      'state_1:\n' +
-      '  active\n' +
-      '  proceed to state_2 on action_2\n' +
-      'state_2:\n' +
-      '  active\n' +
-      '  proceed to state_3 on action_3',
-  }, {
-    id: '12342323',
-    title: '策略2',
-    code: 'init:\n' +
-      '  proceed to state_1 on action_1\n' +
-      'state_1:\n' +
-      '  active\n' +
-      '  proceed to state_2 on action_2\n' +
-      'state_2:\n' +
-      '  active\n' +
-      '  proceed to state_3 on action_3',
-  }],
-}));
-
-const contractsAuthorize: ResourceAuthPageModelState['contractsAuthorize'] = [
-  {
-    key: '1',
-    contractName: '免费策略1',
-    contractID: 'asjfgjiergingnsdfshskh',
-    authorizedParty: '资源xxx',
-    createDate: '2020-05-19',
-    status: 'executing'
-  },
-  {
-    key: '2',
-    contractName: '免费',
-    contractID: 'injgshudfgnsgkzsityre',
-    authorizedParty: '节点xxx',
-    createDate: '2020-05-19',
-    status: 'executing'
-  },
-];
 
 const Model: ResourceAuthPageModelType = {
 
   namespace: 'resourceAuthPage',
 
   state: {
-    policies: policies,
-    contractsAuthorized: contractsAuthorized,
-    contractsAuthorize: contractsAuthorize,
+    policies: [],
+    contractsAuthorized: [],
+    contractsAuthorize: [],
   },
   effects: {
-    * fetchDataSource(_: AnyAction, {call, put}: EffectsCommandMap) {
-      yield put({type: 'save'});
+    * fetchPolicies({payload}: FetchPoliciesAction, {call, put}: EffectsCommandMap) {
+      const policies: ResourceAuthPageModelState['policies'] = payload.map((i) => ({
+        id: i.policyId,
+        title: i.policyName,
+        status: i.status === 1 ? 'executing' : 'stopped',
+        code: i.policyText,
+      }));
+      yield put<ChangeAction>({
+        type: 'change',
+        payload: {
+          policies: policies,
+        }
+      });
+    },
+    * updatePolicies(action: UpdatePoliciesAction, {call, put}: EffectsCommandMap) {
+      const params = {
+        resourceId: action.id,
+        // [action.payload.id ? 'updatePolicies' : 'addPolicies']: [
+        [action.payload.status ? 'updatePolicies' : 'addPolicies']: [
+          {
+            policyId: action.payload.id,
+            status: action.payload.status === 'stopped' ? 0 : 1,
+          }
+        ],
+      };
+      yield call(update, params);
+      yield put<FetchDataSourceAction>({
+        type: 'resourceInfo/fetchDataSource',
+        payload: action.id,
+      });
+    },
+    * fetchAuthorized({payload: {baseResourceId, activatedResourceId}}: FetchAuthorizedAction, {call, put}: EffectsCommandMap) {
+      const params: ResolveResourcesParamsType = {
+        resourceId: baseResourceId,
+      };
+      const {data} = yield call(resolveResources, params);
+      // console.log(data, 'datadata232323');
+      if (data.length === 0) {
+        return yield put<ChangeAction>({
+          type: 'change',
+          payload: {
+            contractsAuthorized: [],
+          },
+        });
+      }
+
+      const resourceParams: BatchInfoParamsType = {
+        resourceIds: data.map((i: any) => i.resourceId).join(','),
+        isLoadPolicyInfo: 1,
+      };
+      // console.log(resourceParams, 'resourceParams908hik');
+      const {data: resourcesInfoData} = yield call(batchInfo, resourceParams);
+      // console.log(resourcesInfoData, 'resourcesInfoDataresourcesInfoData');
+
+      const contractsParams: ContractsParamsType = {
+        identityType: 2,
+        licenseeId: baseResourceId,
+        isLoadPolicyInfo: 1,
+      };
+
+      const {data: {dataList: contractsData}} = yield call(contracts, contractsParams);
+      // console.log(contractsData, 'contractsDatacontractsData');
+      // const {data: resourceData} = yield call()
+
+      const contractsAuthorized = data.map((i: any/* 关系资源id */, j: number) => {
+        // 当前资源信息
+        const currentResource = resourcesInfoData.find((resource: any) => resource.resourceId === i.resourceId);
+        // console.log(currentResource, 'currentResource');
+        const allEnabledVersions: string[] = i.versions.map((version: any) => version.version);
+        const allContracts = contractsData
+          .filter((c: any) => c.licensorId === i.resourceId);
+        // console.info(allContracts, 'allContracts');
+
+        const allUsedPoliciesId = allContracts.map((c: any) => c.policyId);
+        // console.info(allUsedPoliciesId, 'allUsedPoliciesId');
+        const allEnabledPolicies = resourcesInfoData.find((resource: any) => resource.resourceId === i.resourceId)?.policies?.filter((resource: any) => !allUsedPoliciesId.includes(resource.policyId));
+        // console.log(allEnabledPolicies, 'allEnabledPolicies');
+        return {
+          id: currentResource.resourceId,
+          activated: activatedResourceId ? activatedResourceId === currentResource.resourceId : (j === 0),
+          title: currentResource.resourceName,
+          resourceType: currentResource.resourceType,
+          version: '',
+          contracts: allContracts
+            .map((c: any /* 当前合约 */) => {
+              // console.log(c, '当前合约');
+              // console.log(i, '关系');
+              return {
+                checked: true,
+                id: c.contractId,
+                policyId: c.policyId,
+                title: c.contractName,
+                status: c.status === 0 ? 'stopping' : 'executing',
+                code: c.policyInfo.policyText,
+                date: moment(c.createDate).format('YYYY-MM-DD HH:mm'),
+                // versions: [{version: '10.5.2', checked: true}, {version: '10.5.3', checked: false}]
+                versions: allEnabledVersions.map((v: string) => {
+                  // console.log(i, currentResource, c, v, 'aw39osidc');
+                  const versionContracts = i.versions?.find((version: any) => version.version === v)?.contracts;
+                  const versionChecked: boolean = !!versionContracts?.find((contract: any) => contract.contractId === c.contractId);
+                  return {
+                    version: v,
+                    checked: versionChecked,
+                    disabled: (versionContracts.length === 1) && versionChecked,
+                  };
+                }),
+              };
+            }),
+          policies: allEnabledPolicies.map((policy: any) => ({
+            id: policy.policyId,
+            title: policy.policyName,
+            code: policy.policyText,
+            allEnabledVersions: allEnabledVersions,
+          })),
+        }
+      });
+      // console.log(contractsAuthorized, 'contractsAuthorized');
+      yield put<ChangeAction>({
+        type: 'change',
+        payload: {
+          contractsAuthorized,
+        },
+      });
+    },
+    * fetchAuthorize({payload}: FetchAuthorizeAction, {call, put}: EffectsCommandMap) {
+      const params: ContractsParamsType = {
+        identityType: 1,
+        licensorId: payload,
+      };
+      const {data} = yield call(contracts, params);
+      yield put<ChangeAction>({
+        type: 'change',
+        payload: {
+          contractsAuthorize: data.dataList.map((i: any) => ({
+            key: i.contractId,
+            contractName: i.contractName,
+            contractID: i.contractId,
+            authorizedParty: i.licenseeName,
+            createDate: moment(i.createDate).format('YYYY-MM-DD HH:mm'),
+            status: i.isAuth ? 'executing' : 'stopped',
+          })),
+        }
+      });
+    },
+    * updateAuthorized({payload}: UpdateAuthorizedAction, {select, call, put}: EffectsCommandMap) {
+      const {resourceId, activatedResourceId} = yield select(({resourceInfo, resourceAuthPage}: ConnectState) => ({
+        resourceId: resourceInfo.info?.resourceId,
+        activatedResourceId: (resourceAuthPage.contractsAuthorized.find((auth) => auth.activated) as any).id,
+      }));
+      const params: BatchSetContractsParamsType = {
+        resourceId,
+        subjects: [{
+          subjectId: activatedResourceId,
+          versions: payload,
+        }],
+      };
+      const {data} = yield call(batchSetContracts, params);
+      yield put<FetchAuthorizedAction>({
+        type: 'fetchAuthorized',
+        payload: {
+          baseResourceId: resourceId,
+          activatedResourceId: activatedResourceId,
+        },
+      });
     }
   },
   reducers: {
-    changePolicies(state: ResourceAuthPageModelState, action: ChangePoliciesAction): ResourceAuthPageModelState {
-      return {...state, policies: action.payload};
-    },
-    changeContractsAuthorized(state: ResourceAuthPageModelState, action: ChangeContractsAuthorizedAction): ResourceAuthPageModelState {
-      return {...state, contractsAuthorized: action.payload};
-    },
-    changeContractsAuthorize(state: ResourceAuthPageModelState, action: ChangeContractsAuthorizeAction): ResourceAuthPageModelState {
-      return {...state, contractsAuthorize: action.payload};
+    change(state, {payload}) {
+      return {
+        ...state,
+        ...payload,
+      };
     },
   },
   subscriptions: {

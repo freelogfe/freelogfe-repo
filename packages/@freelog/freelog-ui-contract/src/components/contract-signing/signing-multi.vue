@@ -34,7 +34,7 @@
   import ContractSigningSingle from './signing-single.vue'
 
   import { getContractState, } from './common.js'
-  import getUserInfo from '@freelog/freelog-ui-login/src/shared/getUserInfo'
+  import contractMixins from '../../mixins.js'
   import en from '@freelog/freelog-i18n/ui-contract/en'
   import zhCN from '@freelog/freelog-i18n/ui-contract/zh-CN'
 
@@ -59,6 +59,7 @@
         default: 0
       }
     },
+    mixins: [ contractMixins ],
     data() {
       return {
         isRender: false,
@@ -78,16 +79,13 @@
       nodeId() {
         return this.selectedPresentable.nodeId
       },
-      userId() {
-        var userInfo = getUserInfo()
-        return userInfo && userInfo.userId
-      },
       selectedReleaseId() {
         return this.selectedPresentable.releaseInfo.releaseId
       },
     },
     methods: {
-      init() {
+      async init() {
+        const userId = await this.getUserId()
         const presentableIds = this.presentableList.map(p => p.presentableId)
         return this.$axios.get(`/v1/contracts/`, {
           params: {
@@ -95,7 +93,7 @@
             presentableIds: presentableIds.join(','),
             contractType: 3,
             partyOne: this.nodeId,
-            partyTwo: this.userId,
+            partyTwo: userId,
             isDefault: 1,
             identityType: 2
           }

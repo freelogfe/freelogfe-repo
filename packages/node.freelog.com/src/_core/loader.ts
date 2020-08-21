@@ -1,5 +1,14 @@
 
+/**
+ * qiankun
+ * https://github.com/umijs/qiankun
+ * 
+ * element-ui：getComputedStyle问题（https://github.com/umijs/qiankun/issues/634）
+ */
+
 import { execScripts } from 'import-html-entry'
+import { getExternalStyleSheets } from 'import-html-entry/lib/index'
+import { genLinkReplaceSymbol } from 'import-html-entry/lib/process-tpl'
 import { createSandbox } from 'qiankun/lib/sandbox/index'
 import { registerApplication, start, mountRootParcel, RegisterApplicationConfig, LifeCycles, Parcel } from 'single-spa'
 import { isFunction } from './utils'
@@ -8,6 +17,7 @@ export interface IRegistrableApp {
   name: string
   container: string | HTMLElement
   scripts:  Array<string> 
+  styles?: Array<string>
   app: Promise <any>
   activeWhen: RegisterApplicationConfig['activeWhen']
   customProps?: RegisterApplicationConfig['customProps']
@@ -17,6 +27,7 @@ export interface ILoadableApp {
   name: string
   container: string | HTMLElement
   scripts:  Array<string> 
+  styles?: Array<string>
 }
 
 export interface ILoadableConfiguration {
@@ -25,12 +36,12 @@ export interface ILoadableConfiguration {
 
 export function registerMicroApps(apps: Array<IRegistrableApp>): void {
   for (const app of apps) {
-    const { name, activeWhen, container, scripts, customProps = {} } = app
+    const { name, activeWhen, container, scripts, styles, customProps = {} } = app
     registerApplication({
       name, 
       activeWhen,
       customProps,
-      app: async () => loodApp({ name, scripts, container }, { sandbox: { strictStyleIsolation: true } }),
+      app: async () => loodApp({ name, container, scripts, styles }, { sandbox: { strictStyleIsolation: true } }),
     })
   }
   start()
@@ -87,7 +98,7 @@ function getAppWrapper(appName: String, appContent: string, strictStyleIsolation
 }
 
 async function loodApp(app: ILoadableApp, configuration: ILoadableConfiguration = {}) {
-  const { name: appName, scripts, container } = app
+  const { name: appName, scripts = [], styles = [], container } = app
   const { sandbox = true } = configuration
   const strictStyleIsolation = typeof sandbox === 'object' && !!sandbox.strictStyleIsolation
   const containerElement: HTMLElement | null = typeof container === 'string' ? document.querySelector(container) : container
@@ -95,14 +106,15 @@ async function loodApp(app: ILoadableApp, configuration: ILoadableConfiguration 
     throw new Error(`[FreelogApp] container with ${container} not existed`)
   }
   const rawContainerContent = containerElement && containerElement.innerHTML || ''
-  const appWrapper: HTMLElement| ShadowRoot = getAppWrapper(appName, rawContainerContent, strictStyleIsolation)
+  const stylesHTML = await getStylesHTML(styles)
+  const appWrapper: HTMLElement| ShadowRoot = getAppWrapper(appName, stylesHTML + rawContainerContent, strictStyleIsolation)
   const appRootGetter = () => strictStyleIsolation ? appWrapper.shadowRoot : appWrapper
 
   let global: Window = window
   let mountSandbox = () => Promise.resolve()
   let unmountSandbox = () => Promise.resolve()
   if (sandbox) {
-    const sandboxInstance = createSandbox(appName, appRootGetter, false)
+    const sandboxInstance = createSandbox(appName, appRootGetter, false, false)
     global = sandboxInstance.proxy
     mountSandbox = sandboxInstance.mount
     unmountSandbox = sandboxInstance.unmount
@@ -115,7 +127,6 @@ async function loodApp(app: ILoadableApp, configuration: ILoadableConfiguration 
     update = () => Promise.resolve(),
   } = getLifecyclesFromExports(scriptExports, appName, global) || {}
 
-  
   const parcelConfig = {
     bootstrap,
     mount: [ 
@@ -137,3 +148,22 @@ async function loodApp(app: ILoadableApp, configuration: ILoadableConfiguration 
   }
   return parcelConfig
 }
+
+async function getStylesHTML(styles: string []): Promise<string> {
+  if (styles.length === 0) return ''
+  try {
+    const styleSheets: string [] = await getExternalStyleSheets(styles)
+    const setStylePlaceholder2HTML = (tpl: string) => styles.reduceRight((html = '', styleSrc) => `${genLinkReplaceSymbol(styleSrc)}${html}`, tpl)
+    let embedHTML: string = setStylePlaceholder2HTML('')
+    embedHTML = styles.reduce((html, styleSrc, i) => {
+      html = html.replace(genLinkReplaceSymbol(styleSrc), `<style>/* ${styleSrc} */${styleSheets[i]}</style>`)
+      return html
+    }, embedHTML)
+    return embedHTML
+  } catch(e) {
+    console.log('[FreelogApp Error]:', e)
+  } finally {
+    return ''
+  }
+}
+

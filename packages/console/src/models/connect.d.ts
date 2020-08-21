@@ -1,36 +1,46 @@
 import {GlobalSearchingModelState} from './globalSearching';
 import {MarketPageModelState} from './marketPage';
-import {ResourcePageModelState} from './resourcePage';
+import {ResourceListPageModelState} from './resourceListPage';
 import {ResourceCollectPageModelState} from './resourceCollectPage';
 import {ResourceCreatorPageModelState} from './resourceCreatorPage';
 import {ResourceInfoPageModelState} from './resourceInfoPage';
-import {ResourceVersionPageModelState} from './ResourceVersionPage';
+import {ResourceVersionCreatorPageModelState} from './resourceVersionCreatorPage';
 import {ResourceVersionEditorPageModelState} from './ResourceVersionEditorPage';
 import {ResourceAuthPageModelState} from './resourceAuthPage';
-import {ResourceSilderModelState} from './resourceSilder';
+// import {ResourceSilderModelState} from './resourceSilder';
+import {ResourceInfoModelState} from './resourceInfo';
+// import {RouterHistoriesModelState} from './routerHistories';
+import {UserModelState} from './user';
+import {GlobalModelState} from './global';
 
 export {
+  // RouterHistoriesModelState,
   GlobalSearchingModelState,
   MarketPageModelState,
-  ResourcePageModelState,
+  ResourceListPageModelState,
   ResourceCollectPageModelState,
   ResourceCreatorPageModelState,
   ResourceInfoPageModelState,
-  ResourceVersionPageModelState,
+  ResourceVersionCreatorPageModelState,
   ResourceVersionEditorPageModelState,
   ResourceAuthPageModelState,
-  ResourceSilderModelState,
+  ResourceInfoModelState,
+  UserModelState,
+  GlobalModelState,
 };
 
 export interface ConnectState {
+  // routerHistories: RouterHistoriesModelState,
   globalSearching: GlobalSearchingModelState,
   marketPage: MarketPageModelState;
-  resourcePage: ResourcePageModelState;
+  resourceListPage: ResourceListPageModelState;
   resourceCollectPage: ResourceCollectPageModelState;
   resourceCreatorPage: ResourceCreatorPageModelState;
   resourceInfoPage: ResourceInfoPageModelState;
-  resourceVersionPage: ResourceVersionPageModelState;
+  resourceVersionCreatorPage: ResourceVersionCreatorPageModelState;
   resourceVersionEditorPage: ResourceVersionEditorPageModelState;
   resourceAuthPage: ResourceAuthPageModelState;
-  resourceSilder: ResourceSilderModelState;
+  resourceInfo: ResourceInfoModelState;
+  user: UserModelState,
+  global: GlobalModelState,
 }

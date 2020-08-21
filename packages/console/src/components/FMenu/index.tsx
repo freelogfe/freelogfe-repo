@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styles from './index.less';
 import {Menu} from 'antd';
-import {ClickParam} from 'antd/lib/menu';
 
 interface FMenuItem {
   text?: React.ReactNode;

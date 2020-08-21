@@ -14,7 +14,7 @@ window.FreelogApp.loadMicroApp({
   scripts: [ `//static.${mainDomain}/pagebuild/pagebuild-auth.${pbAuthContentHash}.js` ],
 })
 
-if (envType !== 'dev') {
+if (envType !== 'dev' ) {
   // 页面性能数据采集
   fReport.performanceReport({
     reportUrl: 'http://report.testfreelog.com/v1/report/performance'
@@ -26,3 +26,6 @@ function getPagebuildAuthContentHash(outputFilenames, appName) {
   outputFilenames = JSON.parse(outputFilenames)
   return outputFilenames[appName]
 }
+
+
+

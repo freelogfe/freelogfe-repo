@@ -6,7 +6,7 @@ interface FResourceCoverProps {
   width?: number | string;
   height?: number | string;
   src?: string;
-  status?: '' | 'online' | 'no-online';
+  status?: '' | 'online' | 'stopped';
   children?: React.ReactNode | React.ReactNodeArray;
 }
 
@@ -14,6 +14,11 @@ export default function ({width, height, src, status, children}: FResourceCoverP
   return (<div className={styles.Cover}>
     {src && (<img src={src} alt=""/>)}
     {children}
-    {status ? (<Status normal={status === 'online'} className={styles.Status}/>) : ''}
+    {status
+      ? (<Status
+        normal={status === 'online'}
+        className={styles.Status}
+      />)
+      : ''}
   </div>);
 }

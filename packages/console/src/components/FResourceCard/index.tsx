@@ -5,6 +5,7 @@ import Policy from './Policy';
 import {FContentText} from '@/components/FText';
 
 import styles from './index.less';
+import {i18nMessage} from "@/utils/i18n";
 
 type EventFunc = (resource: FResourceCardProps['resource']) => void
 
@@ -17,6 +18,7 @@ interface FResourceCardProps {
     version: string;
     policy: string[];
     type: string;
+    status: 0 | 1;
   };
   onBoomJuice?: EventFunc;
   onClickDetails?: EventFunc;
@@ -48,21 +50,26 @@ export default function ({
                 {
                   type === 'favorite'
                     ? (
-                      <a onClick={() => onBoomJuice && onBoomJuice(resource)}>取消收藏</a>
+                      <a onClick={() => onBoomJuice && onBoomJuice(resource)}>{i18nMessage('remove_from_collection')}</a>
                     )
                     : (
                       <>
-                        <a onClick={() => onClickDetails && onClickDetails(resource)}>资源详情</a>
+                        <a
+                          onClick={() => onClickDetails && onClickDetails(resource)}>{i18nMessage('resource_details')}</a>
                         <Divider className={styles.Divider} type="vertical"/>
-                        <a onClick={() => onClickEditing && onClickEditing(resource)}>编辑</a>
+                        <a onClick={() => onClickEditing && onClickEditing(resource)}>{i18nMessage('edit_resource')}</a>
                         <Divider className={styles.Divider} type="vertical"/>
-                        <a onClick={() => onClickRevision && onClickRevision(resource)}>更新版本</a>
+                        <a
+                          onClick={() => onClickRevision && onClickRevision(resource)}>{i18nMessage('update_resource')}</a>
                       </>
                     )
                 }
               </div>
             </nav>
-            <Status normal={true} className={styles.Status}/>
+            <Status
+              normal={resource.status === 1}
+              className={styles.Status}
+            />
           </>)
         }
 
@@ -77,7 +84,8 @@ export default function ({
         <div style={{height: '6px'}}/>
         <div className={styles.MetaInfo}>
           <FContentText type="additional1" text={resource.type}/>
-          <FContentText type="additional1" text={'最新版本 ' + resource.version}/>
+          <FContentText type="additional1"
+                        text={resource.version ? (i18nMessage('latest_version') + ' ' + resource.version) : '暂无版本'}/>
         </div>
         <div style={{height: '15px'}}/>
         <div className={styles.MetaFooter}>
@@ -85,8 +93,9 @@ export default function ({
             {
               resource.policy.map((i: string) => <Policy key={i} text={i}/>)
             }
+            {/*<Policy text={resource.policy[0]}/>*/}
           </div>
-          <a onClick={() => onClickMore && onClickMore(resource)}>更多>></a>
+          <a onClick={() => onClickMore && onClickMore(resource)}>{i18nMessage('more_details')}>></a>
         </div>
       </div>
     </div>

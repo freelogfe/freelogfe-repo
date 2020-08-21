@@ -79,7 +79,11 @@
         // chcheLoginEventCBs = []
       },
       loginSuccessHandler(data) {
-        chcheLoginEventCBs.forEach(cb => cb())
+        chcheLoginEventCBs.forEach(cb => {
+          if (typeof cb === 'function') {
+            cb(data)
+          }
+        })
         this.loginDialogVisible = false
       },
       mountAuthHandlerBox() {

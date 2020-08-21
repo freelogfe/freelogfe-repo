@@ -10,9 +10,14 @@
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@tmp/*": ["src/pages/.umi/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@tmp/*": [
+        "src/pages/.umi/*"
+      ]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   }
 }

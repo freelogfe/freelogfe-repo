@@ -1,5 +1,5 @@
 import { LAST_AUTH_INFO, USER_SESSION, LOGIN_NAME, LOGIN_PATH, HOME_PATH, USER_CENTER_PATH } from './constant'
-import { setItemForStorage, getAuthInfoByCookie, getItemFromStorage, isSafeUrl } from './utils'
+import { setItemForStorage, getItemFromStorage, isSafeUrl } from './utils'
 
 function goToPath(path) {
 	return new Promise(resolve => {

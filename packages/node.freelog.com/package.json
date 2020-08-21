@@ -25,7 +25,7 @@
     "axios": "^0.19.2",
     "element-ui": "^2.13.1",
     "import-html-entry": "^1.7.3",
-    "qiankun": "^2.0.11",
+    "qiankun": "^2.0.21",
     "single-spa": "^5.5.2",
     "source-map-loader": "^0.2.4",
     "style-ext-html-webpack-plugin": "^4.1.2",

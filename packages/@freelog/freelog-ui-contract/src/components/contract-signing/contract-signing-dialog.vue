@@ -1,11 +1,11 @@
 <!--<i18n src="../../i18n-locales/contractSigning.json"></i18n>-->
 <template>
   <el-dialog
-          :close-on-click-modal="false"
-          width="1000px"
-          top="5vh"
-          :visible.sync="isShowDialog"
-          @close="handleClose"
+    :close-on-click-modal="false"
+    width="1000px"
+    top="5vh"
+    :visible.sync="isShowDialog"
+    @close="handleClose"
   >
     <div slot="title" class="contract-dialog-title">
       {{$t('contractSigning.dialog.title')}}<span>{{hostname}}</span>
@@ -52,7 +52,7 @@
         callbackData: {},
         selectedIndex: 0,
         lastContractChangeNumber: 0,
-        currentCOntractChangeNumber: 0
+        currentContractChangeNumber: 0
       }
     },
     methods: {
@@ -64,16 +64,21 @@
         this.callbackData = data
       },
       handleClose() {
-        this.isShowDialog = false
-        this.$emit('update:visible', false)
-        this.$emit('close-dialog', {
-          data: this.callbackData,
-          isUpdatedContract: this.currentCOntractChangeNumber !== this.lastContractChangeNumber
-        })
-        this.lastContractChangeNumber = this.currentCOntractChangeNumber
+        try {
+          this.isShowDialog = false
+          const data = {
+            data: this.callbackData,
+            isUpdatedContract: this.currentContractChangeNumber !== this.lastContractChangeNumber
+          }
+          this.$emit('close-dialog', data)
+          this.$emit('update:visible', false)
+          this.lastContractChangeNumber = this.currentContractChangeNumber
+        } catch(e) {
+          console.log('[e]:', e)
+        }
       },
       hadUpdatedContract() {
-        this.currentCOntractChangeNumber += 1
+        this.currentContractChangeNumber += 1
       }
     },
     computed: {

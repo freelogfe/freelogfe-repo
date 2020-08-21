@@ -6,5 +6,8 @@
 	"wrong_verified_code": "验证码错误",
 	"test00": "test",
 	"wrong_username_password": "账户或密码错误",
-	"remove": "删除"
+	"remove": "删除",
+	"saved_successfully": "保存成功",
+	"cancel": "取消",
+	"relationship_status_pending": "待执行"
 }

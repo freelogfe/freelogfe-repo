@@ -1,5 +1,6 @@
 import { 
-  Button, Checkbox, Form, FormItem, Input, Option, Select,Tooltip,  
+  Button, Checkbox, Form, FormItem, Input, Option, Select, Tooltip, 
+  // Popover,
   Message, MessageBox, Dialog, Loading 
 } from 'element-ui'
 
@@ -14,6 +15,7 @@ export default {
     Vue.component(Select.name, Select)
     Vue.component(Tooltip.name, Tooltip)
     Vue.component(Dialog.name, Dialog)
+    // Vue.component(Popover.name, Popover)
 
     Vue.prototype.$loading = Loading.service
     Vue.prototype.$message = Message

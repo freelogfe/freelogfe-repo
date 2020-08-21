@@ -101,6 +101,7 @@
   import ContractRemark from './remark-part.vue'
 
   import { getContractState } from './common.js'
+  import contractMixins from '../../mixins.js'
   import getUserInfo from '@freelog/freelog-ui-login/src/shared/getUserInfo'
   import en from '@freelog/freelog-i18n/ui-contract/en'
   import zhCN from '@freelog/freelog-i18n/ui-contract/zh-CN'
@@ -125,6 +126,7 @@
         type: Object
       }
     },
+    mixins: [ contractMixins ],
     data() {
       return {
         resourceIntro: '',                // 资源描述
@@ -141,10 +143,6 @@
       }
     },
     computed: {
-      userId() {
-        var userInfo = getUserInfo()
-        return userInfo && userInfo.userId
-      },
       releaseId() {
         return this.presentable.releaseInfo.releaseId
       },
@@ -259,24 +257,24 @@
           url: `/v1/contracts/setDefault?contractId=${this.selectedContract.contractId}`,
           method: 'PUT',
         })
-          .then(res => res.data)
-          .then((res) => {
-            if (res.errcode === 0) {
-              this.selectedContract.isDefault = 1
-              this.updateContract(this.selectedContract)
-              this.$forceUpdate()
-            } else {
-              throw new Error()
-            }
+        .then(res => res.data)
+        .then((res) => {
+          if (res.errcode === 0) {
+            this.selectedContract.isDefault = 1
+            this.updateContract(this.selectedContract)
+            this.$forceUpdate()
+          } else {
+            throw new Error()
+          }
+        })
+        .catch(() => {
+          const errorText = this.$i18n.t('contractSigning.errors[1]')
+          this.$message({
+            type: 'error',
+            showClose: true,
+            message: errorText
           })
-          .catch(() => {
-            const errorText = this.$i18n.t('contractSigning.errors[1]')
-            this.$message({
-              type: 'error',
-              showClose: true,
-              message: errorText
-            })
-          })
+        })
       },
       // 显示confirm 弹窗
       showConfirm(type) {
@@ -295,8 +293,9 @@
           }
         }
       },
-      getContractRecords() {
-        this.$axios.get(`/v1/contracts/terminatedContracts?partyTwo=${this.userId}&targetId=${this.presentableId}&identityType=2`)
+      async getContractRecords() {
+        const userId = await this.getUserId()
+        this.$axios.get(`/v1/contracts/terminatedContracts?partyTwo=${userId}&targetId=${this.presentableId}&identityType=2`)
           .then(res => res.data)
           .then(res => {
             if(res.errcode === 0) {

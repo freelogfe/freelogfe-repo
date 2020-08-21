@@ -6,7 +6,7 @@ export default function (content: React.ReactNode, type: 'success' | 'warning' |
   message.info({
     content: (<Alert className={styles[type] + ' ' + styles.alert} message={content} type={type}/>),
     className: styles.message,
-    duration: 1000,
+    // duration: ,
     icon: <div/>,
   });
 };

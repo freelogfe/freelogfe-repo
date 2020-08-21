@@ -2,10 +2,48 @@
   height: 548px;
   background-color: #F7F8F9;
   border-radius: 4px;
+  overflow: auto;
 }
 
 .diagram {
   height: 500px;
   background-color: #F7F8F9;
   border-radius: 4px;
+}
+
+.container {
+  box-sizing: border-box;
+  //width: 1000px;
+  max-width: 100%;
+  min-height: 100%;
+  //margin: 0 auto;
+  //padding: 30px 20px;
+  padding: 20px 100px;
+  //overflow: hidden;
+  //background-color: #fff;
+  //border-right: solid 1px #eee;
+  //border-left: solid 1px #eee;
+
+  img, audio, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  p {
+    white-space: pre-wrap;
+    min-height: 1em;
+  }
+
+  pre {
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  blockquote {
+    margin: 0;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-left: 3px solid #d1d1d1;
+  }
 }
